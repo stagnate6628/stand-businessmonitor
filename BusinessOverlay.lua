@@ -33,6 +33,12 @@ local border_colour = { r = 1, g = 0, b = 1, a = 0.75 }
 
 r:toggle('Enable', {}, '', function(s) draw = s end, draw)
 local bools = r:list('Views', {}, '')
+for k, v in data do
+	bools:toggle(v.label, {}, '', function(s)
+		v.state = s
+	end, v.state)
+end
+
 r:divider('Configuration')
 r:slider('X Position', {}, '', 0, 83, 0, 1, function(v) x = v / 100 end)
 r:slider('Y Position', {}, '', 0, 71, 0, 1, function(v) y = v / 100 end)
@@ -42,12 +48,6 @@ end)
 r:colour('Text Colour', {}, '', text_colour, true, function(c) 
 	text_colour = c
 end)
-
-for k, v in data do
-	bools:toggle(v.label, {}, '', function(s)
-		v.state = s
-	end, v.state)
-end
 
 local ptr = memory.alloc(4)
 
