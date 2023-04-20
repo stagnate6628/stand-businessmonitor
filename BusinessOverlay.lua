@@ -2,7 +2,6 @@ local r = menu.my_root()
 
 local draw = true
 
-local h = 0.05
 local x = 0
 local y = 0
 
