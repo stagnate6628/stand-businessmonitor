@@ -7,8 +7,8 @@ local h = 0.05
 local x = 0
 local y = 0
 
-local min_height<constexpr> = 0.03
-local max_height<constexpr> = 0.26
+local min_height = 0.03
+local max_height = 0.26
 
 local data = {
     { label = "Nightclub", state = true },
