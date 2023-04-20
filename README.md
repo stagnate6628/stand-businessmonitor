@@ -1,5 +1,5 @@
 # stand-businessoverlay
-A subjectively better overlay for businesses
+An alternative Business Overlay for Stand
 
 # Preview
 ![](https://raw.githubusercontent.com/stagnate6628/stand-businessoverlay/main/preview.png)
