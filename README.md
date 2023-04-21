@@ -1,6 +1,12 @@
 # stand-businessoverlay
 An alternative Business Overlay for Stand
 
+Differences from MusinessBanager:
+- more visible overlay
+- doesn't compromise display
+- acid lab view
+- arcade/agency safes
+
 # Preview
 ![](https://raw.githubusercontent.com/stagnate6628/stand-businessoverlay/main/preview.png)
 
