@@ -1,12 +1,13 @@
-local r = menu.my_root()
+local root = menu.my_root()
+local directx, util = directx, util
 
 local draw = true
 
 local x = 0
 local y = 0
 
-local min_height<constexpr> = 0.03
-local max_height<constexpr> = 0.26
+local min_height = 0.03
+local max_height = 0.29
 
 local data = {
 	{ label = "Nightclub", state = true },
@@ -31,21 +32,30 @@ local background_colour = { r = 0, g = 0, b = 0, a = 0.75 }
 local text_colour = { r = 1, g = 1, b = 1, a = 1 }
 local border_colour = { r = 1, g = 0, b = 1, a = 0.75 }
 
-r:toggle('Enable', {}, '', function(s) draw = s end, draw)
-local bools = r:list('Views', {}, '')
+root:toggle('Enable', {}, '', function(s) draw = s end, draw)
+
+local bools = root:list('Views', {}, '')
 for k, v in data do
 	bools:toggle(v.label, {}, '', function(s)
 		v.state = s
 	end, v.state)
 end
 
-r:divider('Configuration')
-r:slider('X Position', {}, '', 0, 83, 0, 1, function(v) x = v / 100 end)
-r:slider('Y Position', {}, '', 0, 71, 0, 1, function(v) y = v / 100 end)
-r:colour('Background Colour', {}, '', background_colour, true, function(c)
+local children = bools:getChildren()
+local state_ref = bools:list_select('State', {}, '', {'Enable All', 'Disable All' }, 1, function(idx)
+	for k, v in children do
+		v.value = idx == 1
+	end
+end):detach()
+children[1]:attachBefore(state_ref)
+
+root:divider('Configuration')
+root:slider('X Position', {}, '', 0, 83, 0, 1, function(v) x = v / 100 end)
+root:slider('Y Position', {}, '', 0, 71, 0, 1, function(v) y = v / 100 end)
+root:colour('Background Colour', {}, '', background_colour, true, function(c)
 	background_colour = c
 end)
-r:colour('Text Colour', {}, '', text_colour, true, function(c) 
+root:colour('Text Colour', {}, '', text_colour, true, function(c) 
 	text_colour = c
 end)
 
@@ -180,14 +190,12 @@ util.create_tick_handler(function()
 		--util.draw_centred_text('overlay: waiting for session transition')
 		util.yield()
 	end
-
+	
 	if draw then
 		populate()
 
 		local last_pos = y
 		local height = calculate_height(get_line_count())
-		local max_height = calculate_height(15.5)
-
 		if height > max_height then
 			height = max_height
 		end
@@ -195,7 +203,7 @@ util.create_tick_handler(function()
 		directx.draw_rect(x, y, 0.17, height, background_colour)
 
 		for k, v in data do
-			if not data[k].state then
+			if not v.state then
 				continue
 			end
 
