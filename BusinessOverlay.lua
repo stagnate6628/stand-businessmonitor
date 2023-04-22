@@ -30,7 +30,7 @@ local data = {
 
 local background_colour = { r = 0, g = 0, b = 0, a = 0.75 }
 local text_colour = { r = 1, g = 1, b = 1, a = 1 }
-local border_colour = { r = 1, g = 0, b = 1, a = 0.75 }
+local max_colour = { r = 0, g = 1, b = 0, a = 1 }
 
 root:toggle('Enable', {}, '', function(s) draw = s end, draw)
 
@@ -55,8 +55,11 @@ root:slider('Y Position', {}, '', 0, 71, 0, 1, function(v) y = v / 100 end)
 root:colour('Background Colour', {}, '', background_colour, true, function(c)
 	background_colour = c
 end)
-root:colour('Text Colour', {}, '', text_colour, true, function(c) 
+root:colour('Text Colour', {}, '', text_colour, false, function(c) 
 	text_colour = c
+end)
+root:colour('Max Colour', {}, '', max_colour, false, function(c)
+	max_colour = c
 end)
 
 local ptr = memory.alloc(4)
@@ -91,80 +94,145 @@ local function populate()
 		local c = data[i]
 		switch i do
 			-- nightclub
-			case 1:
+			case 1: 
 				c.value_1 = tostring(stat_get_int('CLUB_POPULARITY') / 10):gsub('%.?0+$', '') .. '%'
-				c.value_2 = stat_get_int('CLUB_SAFE_CASH_VALUE')
+				c.value_2 = {
+					val = stat_get_int('CLUB_SAFE_CASH_VALUE'),
+					max = 250_000
+				}
 			break
 			-- arcade safe
 			case 2: 
-				c.value_2 = stat_get_int('ARCADE_SAFE_CASH_VALUE')
+				c.value_2 = {
+					val = stat_get_int('ARCADE_SAFE_CASH_VALUE'),
+					max = 100_000
+				}
 			break
 			-- agency safe
 			case 3:
-				c.value_2 = stat_get_int('FIXER_SAFE_CASH_VALUE')
+				c.value_2 = {
+					val = stat_get_int('FIXER_SAFE_CASH_VALUE'),
+					max = 250_000
+				}
 			break
 			-- cash
 			case 4:
 				c.value_1 = stat_get_int('MATTOTALFORFACTORY' .. 0) .. '%'
-				c.value_2 = stat_get_int('PRODTOTALFORFACTORY' .. 0) .. '/' .. get_global_int(18941)
+				c.value_2 = {
+					val = stat_get_int('PRODTOTALFORFACTORY' .. 0),
+					delim = '/',
+					max = get_global_int(18941)
+				}
 			break
 			-- forgery
 			case 5:
 				c.value_1 = stat_get_int('MATTOTALFORFACTORY' .. 4) .. '%'
-				c.value_2 = stat_get_int('PRODTOTALFORFACTORY' .. 4) .. '/' .. get_global_int(18933)
+				c.value_2 = {
+					val = stat_get_int('PRODTOTALFORFACTORY' .. 4),
+					delim = '/',
+					max = get_global_int(18941)
+				}
 			break
 			-- weed
 			case 6:
 				c.value_1 = stat_get_int('MATTOTALFORFACTORY' .. 3) .. '%'
-				c.value_2 = stat_get_int('PRODTOTALFORFACTORY' .. 3) .. '/' .. get_global_int(18909)
+				c.value_2 = {
+					val = stat_get_int('PRODTOTALFORFACTORY' .. 3),
+					delim = '/',
+					max = get_global_int(18909)
+				}
 			break
 			-- cocaine
 			case 7:
 				c.value_1 = stat_get_int('MATTOTALFORFACTORY' .. 1) .. '%'
-				c.value_2 = stat_get_int('PRODTOTALFORFACTORY' .. 1) .. '/' .. get_global_int(18925)
+				c.value_2 = {
+					val = stat_get_int('PRODTOTALFORFACTORY' .. 1),
+					delim = '/',
+					max = get_global_int(18925)
+				}
 			break
 			-- meth
 			case 8:
 				c.value_1 = stat_get_int('MATTOTALFORFACTORY' .. 2) .. '%'
-				c.value_2 = stat_get_int('PRODTOTALFORFACTORY' .. 2) .. '/' .. get_global_int(18917)
+				c.value_2 = {
+					val = stat_get_int('PRODTOTALFORFACTORY' .. 2),
+					delim = '/',
+					max = get_global_int(18917)
+				}
 			break
 			-- bunker
 			case 9:
 				c.value_1 = stat_get_int('MATTOTALFORFACTORY' .. 5) .. '%'
-				c.value_2 = stat_get_int('PRODTOTALFORFACTORY' .. 5) .. '/' .. get_global_int(21531)
+				c.value_2 = {
+					val = stat_get_int('PRODTOTALFORFACTORY' .. 5),
+					delim = '/',
+					max = get_global_int(21531)
+				}
 			break
 			-- acid lab
 			case 10:
 				c.value_1 = stat_get_int('MATTOTALFORFACTORY' .. 6) .. '%'
-				c.value_2 = stat_get_int('PRODTOTALFORFACTORY' .. 6) .. '/' .. get_global_int(21531)
+				c.value_2 = {
+					val = stat_get_int('PRODTOTALFORFACTORY' .. 6),
+					delim = '/',
+					max = get_global_int(21531),
+				}
 			break
 			-- hub cargo
 			case 11:
-				c.value_2 = stat_get_int('HUB_PROD_TOTAL_' .. 0) .. '/' .. get_global_int(24394)
+				c.value_2 = {
+					val = stat_get_int('HUB_PROD_TOTAL_' .. 0),
+					delim = '/',
+					max = get_global_int(24394)
+				}
 			break
 			-- hub weapons
 			case 12:
-				c.value_2 = stat_get_int('HUB_PROD_TOTAL_' .. 1) .. '/' .. get_global_int(24388)
+				c.value_2 = {
+					val = stat_get_int('HUB_PROD_TOTAL_' .. 1),
+					delim = '/',
+					max = get_global_int(24388)
+				}
 			break
 			-- hub cocaine
 			case 13:
-				c.value_2 = stat_get_int('HUB_PROD_TOTAL_' .. 2) .. '/' .. get_global_int(24389)
+				c.value_2 = {
+					val = stat_get_int('HUB_PROD_TOTAL_' .. 2),
+					delim = '/',
+					max = get_global_int(24389)
+				}
 			break
 			-- hub meth
 			case 14:
-				c.value_2 = stat_get_int('HUB_PROD_TOTAL_' .. 3) .. '/' .. get_global_int(24390)
+				c.value_2 = {
+					val = stat_get_int('HUB_PROD_TOTAL_' .. 3),
+					delim = '/',
+					max = get_global_int(24390)
+				}
 			break
 			-- hub weed
 			case 15:
-				c.value_2 = stat_get_int('HUB_PROD_TOTAL_' .. 4) .. '/' .. get_global_int(24391)
+				c.value_2 = {
+					val = stat_get_int('HUB_PROD_TOTAL_' .. 4),
+					delim = '/',
+					max = get_global_int(24391)
+				}
 			break
 			-- hub forgery
 			case 16:
-				c.value_2 = stat_get_int('HUB_PROD_TOTAL_' .. 5) .. '/' .. get_global_int(24392)
+				c.value_2 = {
+					val = stat_get_int('HUB_PROD_TOTAL_' .. 5),
+					delim = '/', 
+					max = get_global_int(24392)
+				}
 			break
 			-- hub cash
 			case 17:
-				c.value_2 = stat_get_int('HUB_PROD_TOTAL_' .. 6) .. '/' .. get_global_int(24393)
+				c.value_2 = {
+					val = stat_get_int('HUB_PROD_TOTAL_' .. 6),
+					delim = '/',
+					max = get_global_int(24393)
+				}
 			break
 		end
 	end
@@ -213,7 +281,12 @@ util.create_tick_handler(function()
 				directx.draw_text(x + 0.11, last_pos, v.value_1, ALIGN_TOP_RIGHT, 0.425, text_colour)
 			end
 			if v.value_2 then
-				directx.draw_text(x + 0.16, last_pos, v.value_2, ALIGN_TOP_RIGHT, 0.425, text_colour)
+				local str = v.value_2.val
+				if v.value_2.delim != nil then
+					str ..= v.value_2.delim .. v.value_2.max
+				end
+				directx.draw_text(x + 0.16, last_pos, str, 
+					ALIGN_TOP_RIGHT, 0.425, v.value_2.val == v.value_2.max ? max_colour : text_colour)
 			end
 		end
 	end
