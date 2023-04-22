@@ -10,22 +10,22 @@ local min_height = 0.03
 local max_height = 0.29
 
 local data = {
-	{ label = "Nightclub", state = true },
-	{ label = "Arcade", state = true },
-	{ label = "Agency", state = true },
-	{ label = "Cash", state = true },
-	{ label = "Forgery", state = true },
-	{ label = "Weed", state = true },
-	{ label = "Cocaine", state = true },
-	{ label = "Meth", state = true },
-	{ label = "Bunker", state = true },
-	{ label = "Acid Lab", state = true },
-	{ label = "Hub Cargo", state = true },
-	{ label = "Hub Weapons", state = true },
-	{ label = "Hub Meth", state = true },
-	{ label = "Hub Forgery", state = true },
-	{ label = "Hub Weed", state = true },
-	{ label = "Hub Cash", state = true }
+	{ label = 'Nightclub', state = true },
+	{ label = 'Arcade', state = true },
+	{ label = 'Agency', state = true },
+	{ label = 'Cash', state = true },
+	{ label = 'Forgery', state = true },
+	{ label = 'Weed', state = true },
+	{ label = 'Cocaine', state = true },
+	{ label = 'Meth', state = true },
+	{ label = 'Bunker', state = true },
+	{ label = 'Acid Lab', state = true },
+	{ label = 'Hub Cargo', state = true },
+	{ label = 'Hub Weapons', state = true },
+	{ label = 'Hub Meth', state = true },
+	{ label = 'Hub Forgery', state = true },
+	{ label = 'Hub Weed', state = true },
+	{ label = 'Hub Cash', state = true }
 }
 
 local background_colour = { r = 0, g = 0, b = 0, a = 0.75 }
