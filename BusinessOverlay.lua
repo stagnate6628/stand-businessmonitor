@@ -3,7 +3,7 @@ local directx, util = directx, util
 
 local draw = true
 
-local x = 0
+local x = 0.67
 local y = 0
 
 local min_height = 0.03
@@ -285,8 +285,11 @@ util.create_tick_handler(function()
 				if v.value_2.delim != nil then
 					str ..= v.value_2.delim .. v.value_2.max
 				end
-				directx.draw_text(x + 0.16, last_pos, str, 
-					ALIGN_TOP_RIGHT, 0.425, v.value_2.val == v.value_2.max ? max_colour : text_colour)
+				directx.draw_text(
+					x + 0.16, last_pos, str, 
+					ALIGN_TOP_RIGHT, 0.425, 
+					v.value_2.val == v.value_2.max ? max_colour : text_colour
+				)
 			end
 		end
 	end
