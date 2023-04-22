@@ -175,7 +175,7 @@ local function populate()
 				c.value_2 = {
 					val = stat_get_int('PRODTOTALFORFACTORY' .. 6),
 					delim = '/',
-					max = get_global_int(21531),
+					max = get_global_int(18949),
 				}
 			break
 			-- hub cargo
