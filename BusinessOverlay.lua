@@ -130,7 +130,7 @@ local function populate()
 				c.value_2 = {
 					val = stat_get_int('PRODTOTALFORFACTORY' .. 4),
 					delim = '/',
-					max = get_global_int(18941)
+					max = get_global_int(18933)
 				}
 			break
 			-- weed
