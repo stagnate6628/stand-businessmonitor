@@ -286,7 +286,7 @@ util.create_tick_handler(function()
 				if v.value_2.delim ~= nil then
 					str = str .. v.value_2.delim .. v.value_2.max
 				end
-                if v.value_2.val = v.value_2.max then
+                if v.value_2.val == v.value_2.max then
                     colour = max_colour
                 end
 				directx.draw_text(x + 0.16, last_pos, str, ALIGN_TOP_RIGHT, 0.425, colour)
