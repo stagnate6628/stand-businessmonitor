@@ -22,6 +22,7 @@ local data = {
 	{ label = 'Acid Lab', state = true },
 	{ label = 'Hub Cargo', state = true },
 	{ label = 'Hub Weapons', state = true },
+    { label = 'Hub Cocaine', state = true },
 	{ label = 'Hub Meth', state = true },
 	{ label = 'Hub Forgery', state = true },
 	{ label = 'Hub Weed', state = true },
@@ -52,10 +53,6 @@ children[1]:attachBefore(state_ref)
 root:divider('Configuration')
 root:slider('X Position', {}, '', 0, 83, 0, 1, function(v) x = v / 100 end)
 root:slider('Y Position', {}, '', 0, 71, 0, 1, function(v) y = v / 100 end)
-root:slider('Max Height', {}, '', 0, 1000000000, 29, 1, function(v) max_height = v / 1000 end)
-root:action('toast', {}, '', function()
-    util.toast(max_height)
-end)
 root:colour('Background Colour', {}, '', background_colour, true, function(c)
 	background_colour = c
 end)
@@ -84,10 +81,6 @@ local function stat_get_int(hash)
 	return nil
 end
 
-local function get_global_int(addr)
-	return memory.read_int(memory.script_global(262145 + addr))
-end
-
 -- this could probably be more optimized but who cares!
 local function populate()
 	for i = 1, #data do
@@ -102,21 +95,21 @@ local function populate()
 				c.value_1 = tostring(stat_get_int('CLUB_POPULARITY') / 10):gsub('%.?0+$', '') .. '%'
 				c.value_2 = {
 					val = stat_get_int('CLUB_SAFE_CASH_VALUE'),
-					max = 250_000
+					max = 250000
 				}
 			break
 			-- arcade safe
 			case 2: 
 				c.value_2 = {
 					val = stat_get_int('ARCADE_SAFE_CASH_VALUE'),
-					max = 100_000
+					max = 100000
 				}
 			break
 			-- agency safe
 			case 3:
 				c.value_2 = {
 					val = stat_get_int('FIXER_SAFE_CASH_VALUE'),
-					max = 250_000
+					max = 250000
 				}
 			break
 			-- cash
@@ -125,7 +118,7 @@ local function populate()
 				c.value_2 = {
 					val = stat_get_int('PRODTOTALFORFACTORY' .. 0),
 					delim = '/',
-					max = get_global_int(18941)
+					max = 40-- get_global_int(18941)
 				}
 			break
 			-- forgery
@@ -134,7 +127,7 @@ local function populate()
 				c.value_2 = {
 					val = stat_get_int('PRODTOTALFORFACTORY' .. 4),
 					delim = '/',
-					max = get_global_int(18933)
+					max = 60--get_global_int(18933)
 				}
 			break
 			-- weed
@@ -143,7 +136,7 @@ local function populate()
 				c.value_2 = {
 					val = stat_get_int('PRODTOTALFORFACTORY' .. 3),
 					delim = '/',
-					max = get_global_int(18909)
+					max = 80--get_global_int(18909)
 				}
 			break
 			-- cocaine
@@ -152,7 +145,7 @@ local function populate()
 				c.value_2 = {
 					val = stat_get_int('PRODTOTALFORFACTORY' .. 1),
 					delim = '/',
-					max = get_global_int(18925)
+					max = 10--get_global_int(18925)
 				}
 			break
 			-- meth
@@ -161,7 +154,7 @@ local function populate()
 				c.value_2 = {
 					val = stat_get_int('PRODTOTALFORFACTORY' .. 2),
 					delim = '/',
-					max = get_global_int(18917)
+					max = 20--get_global_int(18917)
 				}
 			break
 			-- bunker
@@ -170,7 +163,7 @@ local function populate()
 				c.value_2 = {
 					val = stat_get_int('PRODTOTALFORFACTORY' .. 5),
 					delim = '/',
-					max = get_global_int(21531)
+					max = 100--get_global_int(21531)
 				}
 			break
 			-- acid lab
@@ -179,7 +172,7 @@ local function populate()
 				c.value_2 = {
 					val = stat_get_int('PRODTOTALFORFACTORY' .. 6),
 					delim = '/',
-					max = get_global_int(18949),
+					max = 160--get_global_int(18949),
 				}
 			break
 			-- hub cargo
@@ -187,7 +180,7 @@ local function populate()
 				c.value_2 = {
 					val = stat_get_int('HUB_PROD_TOTAL_' .. 0),
 					delim = '/',
-					max = get_global_int(24394)
+					max = 50--get_global_int(24394)
 				}
 			break
 			-- hub weapons
@@ -195,7 +188,7 @@ local function populate()
 				c.value_2 = {
 					val = stat_get_int('HUB_PROD_TOTAL_' .. 1),
 					delim = '/',
-					max = get_global_int(24388)
+					max = 100--get_global_int(24388)
 				}
 			break
 			-- hub cocaine
@@ -203,7 +196,7 @@ local function populate()
 				c.value_2 = {
 					val = stat_get_int('HUB_PROD_TOTAL_' .. 2),
 					delim = '/',
-					max = get_global_int(24389)
+					max = 10--get_global_int(24389)
 				}
 			break
 			-- hub meth
@@ -211,31 +204,31 @@ local function populate()
 				c.value_2 = {
 					val = stat_get_int('HUB_PROD_TOTAL_' .. 3),
 					delim = '/',
-					max = get_global_int(24390)
-				}
-			break
-			-- hub weed
-			case 15:
-				c.value_2 = {
-					val = stat_get_int('HUB_PROD_TOTAL_' .. 4),
-					delim = '/',
-					max = get_global_int(24391)
+					max = 20--get_global_int(24390)
 				}
 			break
 			-- hub forgery
+			case 15:
+                c.value_2 = {
+                    val = stat_get_int('HUB_PROD_TOTAL_' .. 5),
+                    delim = '/', 
+                    max = 60--get_global_int(24392)
+                }
+			break
+			-- hub weed
 			case 16:
-				c.value_2 = {
-					val = stat_get_int('HUB_PROD_TOTAL_' .. 5),
-					delim = '/', 
-					max = get_global_int(24392)
-				}
+                c.value_2 = {
+                    val = stat_get_int('HUB_PROD_TOTAL_' .. 4),
+                    delim = '/',
+                    max = 80--get_global_int(24391)
+                }
 			break
 			-- hub cash
 			case 17:
 				c.value_2 = {
 					val = stat_get_int('HUB_PROD_TOTAL_' .. 6),
 					delim = '/',
-					max = get_global_int(24393)
+					max = 40--get_global_int(24393)
 				}
 			break
 		end
@@ -256,7 +249,7 @@ local function calculate_height(line_count)
 	local height = min_height + (max_height - min_height) * line_count / 14
 	return math.ceil(height * 100) / 100
 end
-local max_height_alt = calculate_height(15.5)
+local max_height_alt = 0.31
 
 util.create_tick_handler(function()
 	while not util.is_session_started() and util.is_session_transition_active() do
