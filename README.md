@@ -5,6 +5,7 @@ Differences from MusinessBanager Monitor:
 - more visible overlay
 - doesn't compromise display
 - customizable (to an extent)
+  *some stuff may need to be offset properly if you do make adjustments*
 - acid lab view
 - arcade/agency safe
 
