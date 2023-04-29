@@ -27,7 +27,7 @@ local data = {
 	{ label = 'Acid Lab', state = true },
 	{ label = 'Hub Cargo', state = true },
 	{ label = 'Hub Weapons', state = true },
-    { label = 'Hub Cocaine', state = true },
+	{ label = 'Hub Cocaine', state = true },
 	{ label = 'Hub Meth', state = true },
 	{ label = 'Hub Forgery', state = true },
 	{ label = 'Hub Weed', state = true },
@@ -196,19 +196,19 @@ local function populate()
 			break
 			-- hub forgery
 			case 15:
-                c.value_2 = {
-                    val = util.stat_get_int64('HUB_PROD_TOTAL_' .. 5),
-                    delim = '/', 
-                    max = 60--get_global_int(24392)
-                }
+				c.value_2 = {
+				    val = util.stat_get_int64('HUB_PROD_TOTAL_' .. 5),
+				    delim = '/', 
+				    max = 60--get_global_int(24392)
+				}
 			break
 			-- hub weed
 			case 16:
-                c.value_2 = {
-                    val = util.stat_get_int64('HUB_PROD_TOTAL_' .. 4),
-                    delim = '/',
-                    max = 80--get_global_int(24391)
-                }
+				c.value_2 = {
+				    val = util.stat_get_int64('HUB_PROD_TOTAL_' .. 4),
+				    delim = '/',
+				    max = 80--get_global_int(24391)
+				}
 			break
 			-- hub cash
 			case 17:
