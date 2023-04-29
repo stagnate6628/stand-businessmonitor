@@ -4,13 +4,11 @@ An alternative Business Overlay for Stand
 Differences from MusinessBanager Monitor:
 - more visible overlay
 - doesn't compromise display
-- acid lab view
-- arcade/agency safes
 - customizable (to an extent)
+- acid lab view
+- arcade/agency safe
 
 # Preview
-**doesnt properly reflect current version but will fix later**
-
 ![](https://raw.githubusercontent.com/stagnate6628/stand-businessoverlay/main/preview.png)
 
 # Contributing
