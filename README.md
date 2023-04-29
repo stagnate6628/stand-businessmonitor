@@ -6,6 +6,7 @@ Differences from MusinessBanager:
 - doesn't compromise display
 - acid lab view
 - arcade/agency safes
+- customizable (to an extent)
 
 # Preview
 ![](https://raw.githubusercontent.com/stagnate6628/stand-businessoverlay/main/preview.png)
