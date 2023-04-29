@@ -1,6 +1,12 @@
 local root = menu.my_root()
 local directx, util = directx, util
 
+local og_stat_get_int64 = util.stat_get_int64
+util.stat_get_int64 = function(stat)
+    return og_stat_get_int64('MP' .. util.get_char_slot() .. '_' .. stat)
+end
+
+
 local draw = true
 
 local x = 0.67
@@ -63,24 +69,6 @@ root:colour('Max Colour', {}, '', max_colour, false, function(c)
 	max_colour = c
 end)
 
-local ptr = memory.alloc(4)
-
-local function og_stat_get_int(statHash, outValue, p2)
-	native_invoker.begin_call()
-	native_invoker.push_arg_int(statHash)
-	native_invoker.push_arg_pointer(outValue)
-	native_invoker.push_arg_int(p2)
-	native_invoker.end_call_2(0x767FBC2AC802EF3D)
-	return native_invoker.get_return_value_bool()
-end
-
-local function stat_get_int(hash)
-	if og_stat_get_int(util.joaat('MP' .. util.get_char_slot() .. '_' .. hash), ptr, -1) then
-		return memory.read_int(ptr)
-	end
-	return nil
-end
-
 -- this could probably be more optimized but who cares!
 local function populate()
 	for i = 1, #data do
@@ -92,85 +80,85 @@ local function populate()
 		switch i do
 			-- nightclub
 			case 1: 
-				c.value_1 = tostring(stat_get_int('CLUB_POPULARITY') / 10):gsub('%.?0+$', '') .. '%'
+				c.value_1 = tostring(util.stat_get_int64('CLUB_POPULARITY') / 10):gsub('%.?0+$', '') .. '%'
 				c.value_2 = {
-					val = stat_get_int('CLUB_SAFE_CASH_VALUE'),
+					val = util.stat_get_int64('CLUB_SAFE_CASH_VALUE'),
 					max = 250000
 				}
 			break
 			-- arcade safe
 			case 2: 
 				c.value_2 = {
-					val = stat_get_int('ARCADE_SAFE_CASH_VALUE'),
+					val = util.stat_get_int64('ARCADE_SAFE_CASH_VALUE'),
 					max = 100000
 				}
 			break
 			-- agency safe
 			case 3:
 				c.value_2 = {
-					val = stat_get_int('FIXER_SAFE_CASH_VALUE'),
+					val = util.stat_get_int64('FIXER_SAFE_CASH_VALUE'),
 					max = 250000
 				}
 			break
 			-- cash
 			case 4:
-				c.value_1 = stat_get_int('MATTOTALFORFACTORY' .. 0) .. '%'
+				c.value_1 = util.stat_get_int64('MATTOTALFORFACTORY' .. 0) .. '%'
 				c.value_2 = {
-					val = stat_get_int('PRODTOTALFORFACTORY' .. 0),
+					val = util.stat_get_int64('PRODTOTALFORFACTORY' .. 0),
 					delim = '/',
 					max = 40-- get_global_int(18941)
 				}
 			break
 			-- forgery
 			case 5:
-				c.value_1 = stat_get_int('MATTOTALFORFACTORY' .. 4) .. '%'
+				c.value_1 = util.stat_get_int64('MATTOTALFORFACTORY' .. 4) .. '%'
 				c.value_2 = {
-					val = stat_get_int('PRODTOTALFORFACTORY' .. 4),
+					val = util.stat_get_int64('PRODTOTALFORFACTORY' .. 4),
 					delim = '/',
 					max = 60--get_global_int(18933)
 				}
 			break
 			-- weed
 			case 6:
-				c.value_1 = stat_get_int('MATTOTALFORFACTORY' .. 3) .. '%'
+				c.value_1 = util.stat_get_int64('MATTOTALFORFACTORY' .. 3) .. '%'
 				c.value_2 = {
-					val = stat_get_int('PRODTOTALFORFACTORY' .. 3),
+					val = util.stat_get_int64('PRODTOTALFORFACTORY' .. 3),
 					delim = '/',
 					max = 80--get_global_int(18909)
 				}
 			break
 			-- cocaine
 			case 7:
-				c.value_1 = stat_get_int('MATTOTALFORFACTORY' .. 1) .. '%'
+				c.value_1 = util.stat_get_int64('MATTOTALFORFACTORY' .. 1) .. '%'
 				c.value_2 = {
-					val = stat_get_int('PRODTOTALFORFACTORY' .. 1),
+					val = util.stat_get_int64('PRODTOTALFORFACTORY' .. 1),
 					delim = '/',
 					max = 10--get_global_int(18925)
 				}
 			break
 			-- meth
 			case 8:
-				c.value_1 = stat_get_int('MATTOTALFORFACTORY' .. 2) .. '%'
+				c.value_1 = util.stat_get_int64('MATTOTALFORFACTORY' .. 2) .. '%'
 				c.value_2 = {
-					val = stat_get_int('PRODTOTALFORFACTORY' .. 2),
+					val = util.stat_get_int64('PRODTOTALFORFACTORY' .. 2),
 					delim = '/',
 					max = 20--get_global_int(18917)
 				}
 			break
 			-- bunker
 			case 9:
-				c.value_1 = stat_get_int('MATTOTALFORFACTORY' .. 5) .. '%'
+				c.value_1 = util.stat_get_int64('MATTOTALFORFACTORY' .. 5) .. '%'
 				c.value_2 = {
-					val = stat_get_int('PRODTOTALFORFACTORY' .. 5),
+					val = util.stat_get_int64('PRODTOTALFORFACTORY' .. 5),
 					delim = '/',
 					max = 100--get_global_int(21531)
 				}
 			break
 			-- acid lab
 			case 10:
-				c.value_1 = stat_get_int('MATTOTALFORFACTORY' .. 6) .. '%'
+				c.value_1 = util.stat_get_int64('MATTOTALFORFACTORY' .. 6) .. '%'
 				c.value_2 = {
-					val = stat_get_int('PRODTOTALFORFACTORY' .. 6),
+					val = util.stat_get_int64('PRODTOTALFORFACTORY' .. 6),
 					delim = '/',
 					max = 160--get_global_int(18949),
 				}
@@ -178,7 +166,7 @@ local function populate()
 			-- hub cargo
 			case 11:
 				c.value_2 = {
-					val = stat_get_int('HUB_PROD_TOTAL_' .. 0),
+					val = util.stat_get_int64('HUB_PROD_TOTAL_' .. 0),
 					delim = '/',
 					max = 50--get_global_int(24394)
 				}
@@ -186,7 +174,7 @@ local function populate()
 			-- hub weapons
 			case 12:
 				c.value_2 = {
-					val = stat_get_int('HUB_PROD_TOTAL_' .. 1),
+					val = util.stat_get_int64('HUB_PROD_TOTAL_' .. 1),
 					delim = '/',
 					max = 100--get_global_int(24388)
 				}
@@ -194,7 +182,7 @@ local function populate()
 			-- hub cocaine
 			case 13:
 				c.value_2 = {
-					val = stat_get_int('HUB_PROD_TOTAL_' .. 2),
+					val = util.stat_get_int64('HUB_PROD_TOTAL_' .. 2),
 					delim = '/',
 					max = 10--get_global_int(24389)
 				}
@@ -202,7 +190,7 @@ local function populate()
 			-- hub meth
 			case 14:
 				c.value_2 = {
-					val = stat_get_int('HUB_PROD_TOTAL_' .. 3),
+					val = util.stat_get_int64('HUB_PROD_TOTAL_' .. 3),
 					delim = '/',
 					max = 20--get_global_int(24390)
 				}
@@ -210,7 +198,7 @@ local function populate()
 			-- hub forgery
 			case 15:
                 c.value_2 = {
-                    val = stat_get_int('HUB_PROD_TOTAL_' .. 5),
+                    val = util.stat_get_int64('HUB_PROD_TOTAL_' .. 5),
                     delim = '/', 
                     max = 60--get_global_int(24392)
                 }
@@ -218,7 +206,7 @@ local function populate()
 			-- hub weed
 			case 16:
                 c.value_2 = {
-                    val = stat_get_int('HUB_PROD_TOTAL_' .. 4),
+                    val = util.stat_get_int64('HUB_PROD_TOTAL_' .. 4),
                     delim = '/',
                     max = 80--get_global_int(24391)
                 }
@@ -226,7 +214,7 @@ local function populate()
 			-- hub cash
 			case 17:
 				c.value_2 = {
-					val = stat_get_int('HUB_PROD_TOTAL_' .. 6),
+					val = util.stat_get_int64('HUB_PROD_TOTAL_' .. 6),
 					delim = '/',
 					max = 40--get_global_int(24393)
 				}
@@ -280,17 +268,16 @@ util.create_tick_handler(function()
 			end
 			if v.value_2 then
 				local str = v.value_2.val
-                local colour = text_colour
+                		local colour = text_colour
 				if v.value_2.delim ~= nil then
 					str = str .. v.value_2.delim .. v.value_2.max
 				end
-                if v.value_2.val == v.value_2.max then
-                    colour = max_colour
-                end
+				if v.value_2.val == v.value_2.max then
+				    colour = max_colour
+				end
 				directx.draw_text(x + 0.16, last_pos, str, ALIGN_TOP_RIGHT, 0.425, colour)
 			end
 		end
 	end
-
 	return true
 end)
