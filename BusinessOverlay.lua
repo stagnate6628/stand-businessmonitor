@@ -293,19 +293,18 @@ util.create_tick_handler(function()
 			if v.value_1 then
 				directx.draw_text(x + gap_1, last_pos, v.value_1, ALIGN_TOP_RIGHT, text_size, text_colour)
 			end
-			if v.value_2 then
-				local str = v.value_2.val
-				local colour = text_colour
-				if v.value_2.delim ~= nil then
-					str = str .. v.value_2.delim .. v.value_2.max
-				end
-				if v.value_2.val == v.value_2.max then
-				    colour = max_colour
-				end
-				directx.draw_text(x + gap_2, last_pos, str, ALIGN_TOP_RIGHT, text_size, colour)
+			
+			local str = v.value_2.val
+			local colour = text_colour
+			if v.value_2.delim ~= nil then
+				str = str .. v.value_2.delim .. v.value_2.max
 			end
-			::continue::
+			if v.value_2.val == v.value_2.max then
+				colour = max_colour
+			end
+			directx.draw_text(x + gap_2, last_pos, str, ALIGN_TOP_RIGHT, text_size, colour)
 		end
+		::continue::
 	end
 	return true
 end)
