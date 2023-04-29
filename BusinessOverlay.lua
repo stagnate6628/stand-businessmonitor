@@ -15,6 +15,7 @@ local width = 0.17
 
 local min_height = 0.03
 local max_height = 0.26
+local max_height_alt = 0.31
 
 local gap_1 = 0.11
 local gap_2 = 0.16
@@ -43,7 +44,7 @@ local background_colour = { r = 0, g = 0, b = 0, a = 0.75 }
 local text_colour = { r = 1, g = 1, b = 1, a = 1 }
 local max_colour = { r = 0, g = 1, b = 0, a = 1 }
 
-root:toggle('Enable', {}, '', function(s) draw = s end, draw)
+root:toggle('Enable Overlay', {}, '', function(s) draw = s end, draw)
 
 local bools = root:list('Views', {}, '')
 for k, v in data do
@@ -79,7 +80,7 @@ end)
 local function populate()
 	for i = 1, #data do
 		if not data[i].state then
-			continue
+			goto continue
 		end
 
 		local c = data[i]
@@ -228,6 +229,7 @@ local function populate()
 				}
 			break
 		end
+		::continue::
 	end
 end
 
@@ -245,7 +247,6 @@ local function calculate_height(line_count)
 	local height = min_height + (max_height - min_height) * line_count / 14
 	return math.ceil(height * 100) / 100
 end
-local max_height_alt = 0.31
 
 util.create_tick_handler(function()
 	while not util.is_session_started() and util.is_session_transition_active() do
