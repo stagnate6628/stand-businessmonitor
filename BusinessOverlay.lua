@@ -22,7 +22,7 @@ local gap_1 = 0.11
 local gap_2 = 0.16
 local row_gap = 0.0165
 
-local data = {
+local views = {
 	{ label = 'Nightclub', state = true },
 	{ label = 'Arcade', state = true },
 	{ label = 'Agency', state = true },
@@ -49,7 +49,7 @@ local max_colour = { r = 0, g = 1, b = 0, a = 1 }
 root:toggle('Enable Overlay', {}, '', function(s) draw = s end, draw)
 
 local bools = root:list('Views', {}, '')
-for k, v in data do
+for k, v in views do
 	bools:toggle(v.label, {}, '', function(s)
 		v.state = s
 	end, v.state)
@@ -64,13 +64,27 @@ end):detach()
 children[1]:attachBefore(state_ref)
 
 root:divider('Configuration')
-root:slider('Width', {}, '', 0, 300, 17, 1, function(v) width = v / 100 end)
-root:slider('X Position', {}, '', 0, 83, 67, 1, function(v) x = v / 100 end)
-root:slider('Y Position', {}, '', 0, 71, 0, 1, function(v) y = v / 100 end)
-root:slider('Text Size', {}, '', 0, 1000, 425, 10, function(v) text_size = v / 1000 end)
-root:slider('Left Col. Offset', {}, 'The offset of the left column from the origin (the default value.)', -66, 32, 11, 1, function(v) gap_1 = v / 100 end)
-root:slider('Right Col. Offset', {}, 'The offset of the right column from the origin (the default value.)', -68, 32, 16, 1, function(v) gap_2 = v / 100 end)
-root:slider('Row Gap', {}, 'The gap between each row.', 0, 100000, 165, 1, function(v) row_gap = v / 10000 end)
+root:slider('Width', {}, '', 0, 300, 17, 1, function(v) 
+	width = v / 100 
+end)
+root:slider('X Position', {}, '', 0, 83, 67, 1, function(v) 
+	x = v / 100 
+end)
+root:slider('Y Position', {}, '', 0, 71, 0, 1, function(v) 
+	y = v / 100
+end)
+root:slider('Text Size', {}, '', 0, 1000, 425, 1, function(v) 
+	text_size = v / 1000
+end)
+root:slider('Left Col. Offset', {}, 'The offset of the left column from the origin (the default value.)', -66, 32, 11, 1, function(v) 
+	gap_1 = v / 100
+end)
+root:slider('Right Col. Offset', {}, 'The offset of the right column from the origin (the default value.)', -68, 32, 16, 1, function(v) 
+	gap_2 = v / 100
+end)
+root:slider('Row Gap', {}, 'The gap between each row.', 0, 100000, 165, 1, function(v) 
+	row_gap = v / 10000
+end)
 root:colour('Background Colour', {}, '', background_colour, true, function(c)
 	background_colour = c
 end)
@@ -82,12 +96,12 @@ root:colour('Max Colour', {}, '', max_colour, false, function(c)
 end)
 
 local function populate()
-	for i = 1, #data do
-		if not data[i].state then
+	for i = 1, #views do
+		if not views[i].state then
 			goto continue
 		end
 
-		local c = data[i]
+		local c = views[i]
 		switch i do
 			-- nightclub
 			case 1: 
@@ -115,121 +129,121 @@ local function populate()
 			break
 			-- cash
 			case 4:
-				c.value_1 = util.stat_get_int64('MATTOTALFORFACTORY' .. 0) .. '%'
+				c.value_1 = util.stat_get_int64('MATTOTALFORFACTORY0') .. '%'
 				c.value_2 = {
-					val = util.stat_get_int64('PRODTOTALFORFACTORY' .. 0),
+					val = util.stat_get_int64('PRODTOTALFORFACTORY0'),
 					delim = '/',
 					max = 40-- get_global_int(18941)
 				}
 			break
 			-- forgery
 			case 5:
-				c.value_1 = util.stat_get_int64('MATTOTALFORFACTORY' .. 4) .. '%'
+				c.value_1 = util.stat_get_int64('MATTOTALFORFACTORY4') .. '%'
 				c.value_2 = {
-					val = util.stat_get_int64('PRODTOTALFORFACTORY' .. 4),
+					val = util.stat_get_int64('PRODTOTALFORFACTORY4'),
 					delim = '/',
 					max = 60--get_global_int(18933)
 				}
 			break
 			-- weed
 			case 6:
-				c.value_1 = util.stat_get_int64('MATTOTALFORFACTORY' .. 3) .. '%'
+				c.value_1 = util.stat_get_int64('MATTOTALFORFACTORY3') .. '%'
 				c.value_2 = {
-					val = util.stat_get_int64('PRODTOTALFORFACTORY' .. 3),
+					val = util.stat_get_int64('PRODTOTALFORFACTORY3'),
 					delim = '/',
 					max = 80--get_global_int(18909)
 				}
 			break
 			-- cocaine
 			case 7:
-				c.value_1 = util.stat_get_int64('MATTOTALFORFACTORY' .. 1) .. '%'
+				c.value_1 = util.stat_get_int64('MATTOTALFORFACTORY1') .. '%'
 				c.value_2 = {
-					val = util.stat_get_int64('PRODTOTALFORFACTORY' .. 1),
+					val = util.stat_get_int64('PRODTOTALFORFACTORY1'),
 					delim = '/',
 					max = 10--get_global_int(18925)
 				}
 			break
 			-- meth
 			case 8:
-				c.value_1 = util.stat_get_int64('MATTOTALFORFACTORY' .. 2) .. '%'
+				c.value_1 = util.stat_get_int64('MATTOTALFORFACTORY2') .. '%'
 				c.value_2 = {
-					val = util.stat_get_int64('PRODTOTALFORFACTORY' .. 2),
+					val = util.stat_get_int64('PRODTOTALFORFACTORY2'),
 					delim = '/',
 					max = 20--get_global_int(18917)
 				}
 			break
 			-- bunker
 			case 9:
-				c.value_1 = util.stat_get_int64('MATTOTALFORFACTORY' .. 5) .. '%'
+				c.value_1 = util.stat_get_int64('MATTOTALFORFACTORY5') .. '%'
 				c.value_2 = {
-					val = util.stat_get_int64('PRODTOTALFORFACTORY' .. 5),
+					val = util.stat_get_int64('PRODTOTALFORFACTORY5'),
 					delim = '/',
-					max = 100--get_global_int(21531)
+					max = 100
 				}
 			break
 			-- acid lab
 			case 10:
-				c.value_1 = util.stat_get_int64('MATTOTALFORFACTORY' .. 6) .. '%'
+				c.value_1 = util.stat_get_int64('MATTOTALFORFACTORY6') .. '%'
 				c.value_2 = {
-					val = util.stat_get_int64('PRODTOTALFORFACTORY' .. 6),
+					val = util.stat_get_int64('PRODTOTALFORFACTORY6'),
 					delim = '/',
-					max = 160--get_global_int(18949),
+					max = 160
 				}
 			break
 			-- hub cargo
 			case 11:
 				c.value_2 = {
-					val = util.stat_get_int64('HUB_PROD_TOTAL_' .. 0),
+					val = util.stat_get_int64('HUB_PROD_TOTAL_0'),
 					delim = '/',
-					max = 50--get_global_int(24394)
+					max = 50
 				}
 			break
 			-- hub weapons
 			case 12:
 				c.value_2 = {
-					val = util.stat_get_int64('HUB_PROD_TOTAL_' .. 1),
+					val = util.stat_get_int64('HUB_PROD_TOTAL_1'),
 					delim = '/',
-					max = 100--get_global_int(24388)
+					max = 100
 				}
 			break
 			-- hub cocaine
 			case 13:
 				c.value_2 = {
-					val = util.stat_get_int64('HUB_PROD_TOTAL_' .. 2),
+					val = util.stat_get_int64('HUB_PROD_TOTAL_2'),
 					delim = '/',
-					max = 10--get_global_int(24389)
+					max = 10
 				}
 			break
 			-- hub meth
 			case 14:
 				c.value_2 = {
-					val = util.stat_get_int64('HUB_PROD_TOTAL_' .. 3),
+					val = util.stat_get_int64('HUB_PROD_TOTAL_3'),
 					delim = '/',
-					max = 20--get_global_int(24390)
+					max = 20
 				}
 			break
 			-- hub forgery
 			case 15:
 				c.value_2 = {
-				    val = util.stat_get_int64('HUB_PROD_TOTAL_' .. 5),
-				    delim = '/', 
-				    max = 60--get_global_int(24392)
+				    val = util.stat_get_int64('HUB_PROD_TOTAL_5'),
+				    delim = '/',
+				    max = 60
 				}
 			break
 			-- hub weed
 			case 16:
 				c.value_2 = {
-				    val = util.stat_get_int64('HUB_PROD_TOTAL_' .. 4),
+				    val = util.stat_get_int64('HUB_PROD_TOTAL_4'),
 				    delim = '/',
-				    max = 80--get_global_int(24391)
+				    max = 80
 				}
 			break
 			-- hub cash
 			case 17:
 				c.value_2 = {
-					val = util.stat_get_int64('HUB_PROD_TOTAL_' .. 6),
+					val = util.stat_get_int64('HUB_PROD_TOTAL_6'),
 					delim = '/',
-					max = 40--get_global_int(24393)
+					max = 40
 				}
 			break
 		end
@@ -239,7 +253,7 @@ end
 
 local function get_line_count()
 	local c = 0
-	for k, v in data do
+	for k, v in views do
 		if v.state then
 			c = c + 1
 		end
@@ -269,7 +283,7 @@ util.create_tick_handler(function()
 
 		directx.draw_rect(x, y, width, height, background_colour)
 
-		for k, v in data do
+		for k, v in views do
 			if not v.state then
 				goto continue
 			end
