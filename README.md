@@ -10,6 +10,7 @@ Differences from MusinessBanager Monitor:
 
 # Preview
 **doesnt properly reflect current version but will fix later**
+
 ![](https://raw.githubusercontent.com/stagnate6628/stand-businessoverlay/main/preview.png)
 
 # Contributing
