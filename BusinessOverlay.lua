@@ -55,6 +55,14 @@ for k, v in views do
 	end, v.state)
 end
 
+local children = bools:getChildren()
+local ref = bools:list_select('State', {}, '', { 'Disable All', 'Enable All', }, 1, function(idx)
+	for k, v in children do
+		v.value = idx ~= 1
+	end
+end):detach()
+children[1]:attachBefore(ref)
+
 root:divider('Configuration')
 root:slider('Width', {}, '', 0, 300, 17, 1, function(v) 
 	width = v / 100 
@@ -296,8 +304,8 @@ util.create_tick_handler(function()
 				colour = max_colour
 			end
 			directx.draw_text(x + gap_2, last_pos, str, ALIGN_TOP_RIGHT, text_size, colour)
+			::continue::
 		end
-		::continue::
 	end
 	return true
 end)
