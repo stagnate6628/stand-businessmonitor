@@ -7,7 +7,7 @@ local x = 0.67
 local y = 0
 
 local min_height = 0.03
-local max_height = 0.29
+local max_height = 0.26
 
 local data = {
 	{ label = 'Nightclub', state = true },
@@ -52,6 +52,10 @@ children[1]:attachBefore(state_ref)
 root:divider('Configuration')
 root:slider('X Position', {}, '', 0, 83, 0, 1, function(v) x = v / 100 end)
 root:slider('Y Position', {}, '', 0, 71, 0, 1, function(v) y = v / 100 end)
+root:slider('Max Height', {}, '', 0, 1000000000, 29, 1, function(v) max_height = v / 1000 end)
+root:action('toast', {}, '', function()
+    util.toast(max_height)
+end)
 root:colour('Background Colour', {}, '', background_colour, true, function(c)
 	background_colour = c
 end)
@@ -252,6 +256,7 @@ local function calculate_height(line_count)
 	local height = min_height + (max_height - min_height) * line_count / 14
 	return math.ceil(height * 100) / 100
 end
+local max_height_alt = calculate_height(15.5)
 
 util.create_tick_handler(function()
 	while not util.is_session_started() and util.is_session_transition_active() do
@@ -264,8 +269,8 @@ util.create_tick_handler(function()
 
 		local last_pos = y
 		local height = calculate_height(get_line_count())
-		if height > max_height then
-			height = max_height
+		if height > max_height_alt then
+			height = max_height_alt
 		end
 
 		directx.draw_rect(x, y, 0.17, height, background_colour)
