@@ -6,7 +6,6 @@ util.stat_get_int64 = function(stat)
     return og_stat_get_int64('MP' .. util.get_char_slot() .. '_' .. stat)
 end
 
-
 local draw = true
 
 local x = 0.67
