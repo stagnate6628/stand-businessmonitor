@@ -17,8 +17,10 @@ local min_height = 0.03
 local max_height = 0.26
 local max_height_alt = 0.31
 
+local text_size = 0.425
 local gap_1 = 0.11
 local gap_2 = 0.16
+local row_gap = 0.0165
 
 local data = {
 	{ label = 'Nightclub', state = true },
@@ -65,8 +67,10 @@ root:divider('Configuration')
 root:slider('Width', {}, '', 0, 300, 17, 1, function(v) width = v / 100 end)
 root:slider('X Position', {}, '', 0, 83, 67, 1, function(v) x = v / 100 end)
 root:slider('Y Position', {}, '', 0, 71, 0, 1, function(v) y = v / 100 end)
+root:slider('Text Size', {}, '', 0, 1000, 425, 10, function(v) text_size = v / 1000 end)
 root:slider('Left Col. Offset', {}, 'The offset of the left column from the origin (the default value.)', -66, 32, 11, 1, function(v) gap_1 = v / 100 end)
 root:slider('Right Col. Offset', {}, 'The offset of the right column from the origin (the default value.)', -68, 32, 16, 1, function(v) gap_2 = v / 100 end)
+root:slider('Row Gap', {}, 'The gap between each row.', 0, 100000, 165, 1, function(v) row_gap = v / 10000 end)
 root:colour('Background Colour', {}, '', background_colour, true, function(c)
 	background_colour = c
 end)
@@ -270,10 +274,10 @@ util.create_tick_handler(function()
 				goto continue
 			end
 
-			last_pos = last_pos + 0.0165
-			directx.draw_text(x + 0.003, last_pos, v.label, ALIGN_TOP_LEFT, 0.425, text_colour)
+			last_pos = last_pos + row_gap
+			directx.draw_text(x + 0.003, last_pos, v.label, ALIGN_TOP_LEFT, text_size, text_colour)
 			if v.value_1 then
-				directx.draw_text(x + gap_1, last_pos, v.value_1, ALIGN_TOP_RIGHT, 0.425, text_colour)
+				directx.draw_text(x + gap_1, last_pos, v.value_1, ALIGN_TOP_RIGHT, text_size, text_colour)
 			end
 			if v.value_2 then
 				local str = v.value_2.val
@@ -284,7 +288,7 @@ util.create_tick_handler(function()
 				if v.value_2.val == v.value_2.max then
 				    colour = max_colour
 				end
-				directx.draw_text(x + gap_2, last_pos, str, ALIGN_TOP_RIGHT, 0.425, colour)
+				directx.draw_text(x + gap_2, last_pos, str, ALIGN_TOP_RIGHT, text_size, colour)
 			end
 			::continue::
 		end
