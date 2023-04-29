@@ -11,8 +11,13 @@ local draw = true
 local x = 0.67
 local y = 0
 
+local width = 0.17
+
 local min_height = 0.03
 local max_height = 0.26
+
+local gap_1 = 0.11
+local gap_2 = 0.16
 
 local data = {
 	{ label = 'Nightclub', state = true },
@@ -56,8 +61,11 @@ end):detach()
 children[1]:attachBefore(state_ref)
 
 root:divider('Configuration')
-root:slider('X Position', {}, '', 0, 83, 0, 1, function(v) x = v / 100 end)
+root:slider('Width', {}, '', 0, 300, 17, 1, function(v) width = v / 100 end)
+root:slider('X Position', {}, '', 0, 83, 67, 1, function(v) x = v / 100 end)
 root:slider('Y Position', {}, '', 0, 71, 0, 1, function(v) y = v / 100 end)
+root:slider('Left Col. Offset', {}, 'The offset of the left column from the origin (the default value.)', -66, 32, 11, 1, function(v) gap_1 = v / 100 end)
+root:slider('Right Col. Offset', {}, 'The offset of the right column from the origin (the default value.)', -68, 32, 16, 1, function(v) gap_2 = v / 100 end)
 root:colour('Background Colour', {}, '', background_colour, true, function(c)
 	background_colour = c
 end)
@@ -68,7 +76,6 @@ root:colour('Max Colour', {}, '', max_colour, false, function(c)
 	max_colour = c
 end)
 
--- this could probably be more optimized but who cares!
 local function populate()
 	for i = 1, #data do
 		if not data[i].state then
@@ -79,7 +86,9 @@ local function populate()
 		switch i do
 			-- nightclub
 			case 1: 
-				c.value_1 = tostring(util.stat_get_int64('CLUB_POPULARITY') / 10):gsub('%.?0+$', '') .. '%'
+				c.value_1 = tostring(
+					util.stat_get_int64('CLUB_POPULARITY') / 10
+				):gsub('%.?0+$', '') .. '%'
 				c.value_2 = {
 					val = util.stat_get_int64('CLUB_SAFE_CASH_VALUE'),
 					max = 250000
@@ -253,29 +262,30 @@ util.create_tick_handler(function()
 			height = max_height_alt
 		end
 
-		directx.draw_rect(x, y, 0.17, height, background_colour)
+		directx.draw_rect(x, y, width, height, background_colour)
 
 		for k, v in data do
 			if not v.state then
-				continue
+				goto continue
 			end
 
 			last_pos = last_pos + 0.0165
 			directx.draw_text(x + 0.003, last_pos, v.label, ALIGN_TOP_LEFT, 0.425, text_colour)
 			if v.value_1 then
-				directx.draw_text(x + 0.11, last_pos, v.value_1, ALIGN_TOP_RIGHT, 0.425, text_colour)
+				directx.draw_text(x + gap_1, last_pos, v.value_1, ALIGN_TOP_RIGHT, 0.425, text_colour)
 			end
 			if v.value_2 then
 				local str = v.value_2.val
-                		local colour = text_colour
+				local colour = text_colour
 				if v.value_2.delim ~= nil then
 					str = str .. v.value_2.delim .. v.value_2.max
 				end
 				if v.value_2.val == v.value_2.max then
 				    colour = max_colour
 				end
-				directx.draw_text(x + 0.16, last_pos, str, ALIGN_TOP_RIGHT, 0.425, colour)
+				directx.draw_text(x + gap_2, last_pos, str, ALIGN_TOP_RIGHT, 0.425, colour)
 			end
+			::continue::
 		end
 	end
 	return true
