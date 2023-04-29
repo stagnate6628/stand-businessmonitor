@@ -23,30 +23,30 @@ local gap_2 = 0.16
 local row_gap = 0.0165
 
 local views = {
-	{ label = 'Nightclub', state = true },
-	{ label = 'Arcade', state = true },
-	{ label = 'Agency', state = true },
-	{ label = 'Cash', state = true },
-	{ label = 'Forgery', state = true },
-	{ label = 'Weed', state = true },
-	{ label = 'Cocaine', state = true },
-	{ label = 'Meth', state = true },
-	{ label = 'Bunker', state = true },
-	{ label = 'Acid Lab', state = true },
-	{ label = 'Hub Cargo', state = true },
-	{ label = 'Hub Weapons', state = true },
-	{ label = 'Hub Cocaine', state = true },
-	{ label = 'Hub Meth', state = true },
-	{ label = 'Hub Forgery', state = true },
-	{ label = 'Hub Weed', state = true },
-	{ label = 'Hub Cash', state = true }
+	{ label = 'Nightclub', state = false },
+	{ label = 'Arcade', state = false },
+	{ label = 'Agency', state = false },
+	{ label = 'Cash', state = false },
+	{ label = 'Forgery', state = false },
+	{ label = 'Weed', state = false },
+	{ label = 'Cocaine', state = false },
+	{ label = 'Meth', state = false },
+	{ label = 'Bunker', state = false },
+	{ label = 'Acid Lab', state = false },
+	{ label = 'Hub Cargo', state = false },
+	{ label = 'Hub Weapons', state = false },
+	{ label = 'Hub Cocaine', state = false },
+	{ label = 'Hub Meth', state = false },
+	{ label = 'Hub Forgery', state = false },
+	{ label = 'Hub Weed', state = false },
+	{ label = 'Hub Cash', state = false }
 }
 
 local background_colour = { r = 0, g = 0, b = 0, a = 0.75 }
 local text_colour = { r = 1, g = 1, b = 1, a = 1 }
 local max_colour = { r = 0, g = 1, b = 0, a = 1 }
 
-root:toggle('Enable Overlay', {}, '', function(s) draw = s end, draw)
+root:toggle('Enabled', {}, '', function(s) draw = s end, draw)
 
 local bools = root:list('Views', {}, '')
 for k, v in views do
@@ -54,14 +54,6 @@ for k, v in views do
 		v.state = s
 	end, v.state)
 end
-
-local children = bools:getChildren()
-local state_ref = bools:list_select('State', {}, '', {'Enable All', 'Disable All' }, 1, function(idx)
-	for k, v in children do
-		v.value = idx == 1
-	end
-end):detach()
-children[1]:attachBefore(state_ref)
 
 root:divider('Configuration')
 root:slider('Width', {}, '', 0, 300, 17, 1, function(v) 
@@ -290,10 +282,11 @@ util.create_tick_handler(function()
 
 			last_pos = last_pos + row_gap
 			directx.draw_text(x + 0.003, last_pos, v.label, ALIGN_TOP_LEFT, text_size, text_colour)
+			
 			if v.value_1 then
 				directx.draw_text(x + gap_1, last_pos, v.value_1, ALIGN_TOP_RIGHT, text_size, text_colour)
 			end
-			
+
 			local str = v.value_2.val
 			local colour = text_colour
 			if v.value_2.delim ~= nil then
