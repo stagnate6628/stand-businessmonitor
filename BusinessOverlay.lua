@@ -86,10 +86,10 @@ root:divider('Configuration')
 root:slider_float('Width', {}, '', 0, 300, 17, 1, function(v) 
 	width = v / 100 
 end)
-root:slider_float('Max Height', {}, 'A scalar used to formulaiclly to determine the height of the window.', 0, 1000, 26, 1, function(v)
+root:slider_float('Max Height', {}, 'A scalar used to formulaiclly to determine the height of the window; does not truly determine the height of the window.', 0, 1000, 26, 1, function(v)
 	max_height = v / 100
 end)
-root:slider_float('Max Height Enforced', {}, 'The window height is capped to this value when the calculated height (used with "Max Height") exceeds it.', 0, 1000, 31, 1, function(v)
+root:slider_float('Max Height Enforced', {}, 'The true value of the window height to clamp to when the calculated height is larger.', 0, 1000, 31, 1, function(v)
 	max_height_alt = v / 100
 end)
 root:slider_float('X Position', {}, '', 0, 83, 67, 1, function(v) 
@@ -315,18 +315,21 @@ util.create_tick_handler(function()
 
 			last_pos = last_pos + row_gap
 			directx.draw_text(x + 0.003, last_pos, v.label, ALIGN_TOP_LEFT, text_size, text_colour)
+			
 			if v.value_1 then
 				directx.draw_text(x + gap_1, last_pos, v.value_1, ALIGN_TOP_RIGHT, text_size, text_colour)
 			end
-			
+
 			local str = v.value_2.val
 			local colour = text_colour
+
 			if v.value_2.delim ~= nil then
 				str = str .. v.value_2.delim .. v.value_2.max
 			end
 			if v.value_2.val == v.value_2.max then
 				colour = max_colour
 			end
+
 			directx.draw_text(x + gap_2, last_pos, str, ALIGN_TOP_RIGHT, text_size, colour)
 			::continue::
 		end
