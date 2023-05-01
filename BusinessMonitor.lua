@@ -19,7 +19,7 @@ local width = 0.167
 local min_height = 0.03
 local max_height = 0.31
 
-local alignments = { 
+local alignments = {
 	'ALIGN_TOP_LEFT', 'ALIGN_TOP_CENTRE', 'ALIGN_TOP_RIGHT',
 	'ALIGN_CENTRE_LEFT', 'ALIGN_CENTRE', 'ALIGN_CENTRE_RIGHT',
 	'ALIGN_BOTTOM_LEFT', 'ALIGN_BOTTOM_CENTRE', 'ALIGN_BOTTOM_RIGHT'
@@ -148,7 +148,6 @@ end)
 text:slider_float('Row Gap', {}, '', 0, 1000, 165, 1, function(v)
 	row_gap = v / 10000
 end)
-text:divider('Alignment')
 text:list_select('Label', {}, 'The "Property" text alignment.', alignments, 1, function(idx)
 	align_0 = idx
 end)
