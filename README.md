@@ -1,23 +1,15 @@
-# stand-businessoverlay
-An alternative Business Overlay for Stand
+# stand-businessmonitor
+An alternative Business Monitor for Stand
 
 Differences from MusinessBanager Monitor:
-- more visible overlay
-- doesn't compromise display
-- customizable (to an extent)
-  *some stuff may need to be offset properly if you do make adjustments*
-- acid lab view
-- arcade/agency safe
+- more visible overlay/doesn't compromise display
+- customization options (*some values don't really adapt well to changes, but for the most part work fine*)
+- arcade/agency/acid lab monitors
 
 # Preview
 ![](https://raw.githubusercontent.com/stagnate6628/stand-businessoverlay/main/preview.png)
 
-# Contributing
-Feel free to make changes as you see fit; my implementation certainly is flawed.
-
 # Credits
-Since this script was derived from MusinessBanager, it is right to credit the original authors:
-- IcyPhoenix
-- Ren
-- Stand
-- root-cause
+- IcyPhoenix/Ren/Stand Development Team (MusinessBanager)
+- root-cause (some stats)
+- 2Take1 (i literally stole their design)
