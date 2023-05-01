@@ -99,41 +99,49 @@ end):detach()
 children[1]:attachBefore(ref)
 
 root:divider('Configuration')
-root:slider_float('Width', {}, '', 0, 1000, 170, 1, function(v)
+
+local overlay = root:list('Overlay', {}, '')
+overlay:slider_float('Width', {}, '', 0, 1000, 170, 1, function(v)
 	width = v / 1000
 end)
-root:slider_float('Max Height', {},
-	'Affects the window height based on the number of lines, but does not directly determine it.',
-	0, 1000, 31, 1, function(v)
-		max_height = v / 100
-	end)
-root:slider_float('X Position', {}, '', 0, 83, 67, 1, function(v)
+overlay:slider_float('Min Height', {}, '', 0, 1000, 3, 1, function(v)
+	min_height = v / 100
+end)
+overlay:slider_float('Max Height', {}, '', 0, 1000, 31, 1, function(v)
+	max_height = v / 100
+end)
+
+local position = root:list('Position', {}, '')
+position:slider_float('X Position', {}, '', 0, 83, 67, 1, function(v)
 	x = v / 100
 end)
-root:slider_float('Y Position', {}, '', 0, 71, 0, 1, function(v)
+position:slider_float('Y Position', {}, '', 0, 71, 0, 1, function(v)
 	y = v / 100
 end)
-root:slider_float('Left Column Offset', {},
-	'The offset of the left column (supplies) from the window origin.', -66, 32, 11, 1, function(v)
+position:slider_float('Left Column', {}, 'A.k.a "Supplies"', -66,
+	32, 11, 1, function(v)
 		gap_1 = v / 100
 	end)
-root:slider_float('Right Column Offset', {},
-	'The offset of the right column (product) from the window origin.', -68, 32, 16, 1, function(v)
-		gap_2 = v / 100
-	end)
-root:slider_float('Row Gap', {}, '', 0, 1000, 165, 1, function(v)
-	row_gap = v / 10000
+position:slider_float('Right Column', {}, 'A.k.a "Product"', -68, 32, 16, 1, function(v)
+	gap_2 = v / 100
 end)
-root:slider_float('Text Size', {}, '', 0, 1000, 425, 1, function(v)
+
+local text = root:list('Text', {}, '')
+text:slider_float('Scale', {}, '', 0, 1000, 425, 1, function(v)
 	text_size = v / 1000
 end)
-root:colour('Background Colour', {}, '', background_colour, true, function(c)
+text:slider_float('Row Gap', {}, '', 0, 1000, 165, 1, function(v)
+	row_gap = v / 10000
+end)
+
+local colours = root:list('Colours', {}, '')
+colours:colour('Background Colour', {}, '', background_colour, true, function(c)
 	background_colour = c
 end)
-root:colour('Text Colour', {}, '', text_colour, false, function(c)
+colours:colour('Text Colour', {}, '', text_colour, false, function(c)
 	text_colour = c
 end)
-root:colour('Max Colour', {}, '', max_colour, false, function(c)
+colours:colour('Max Colour', {}, '', max_colour, false, function(c)
 	max_colour = c
 end)
 
@@ -160,12 +168,8 @@ util.create_tick_handler(function()
 
 	if draw then
 		local last_pos = y
-		local height = calculate_height(get_line_count())
-		-- if height > max_height_alt then
-		-- 	height = max_height_alt
-		-- end
 
-		draw_rect(x, y, width, height, background_colour)
+		draw_rect(x, y, width, calculate_height(get_line_count()), background_colour)
 
 		for k, v in views do
 			if not v.state then
