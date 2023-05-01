@@ -1,3 +1,6 @@
+-- todo:
+-- use translated labels?
+-- cache stats / any calculated values?
 local root = menu.my_root()
 
 local util = util
@@ -91,12 +94,13 @@ root:slider_float('Width', {}, '', 0, 300, 17, 1, function(v)
 	width = v / 100
 end)
 root:slider_float('Max Height', {},
-	'A scalar used to formulaiclly determine the height of the window given the number of lines; does not really determine window height but will still have an effect.',
+	'Affects the window height based on the number of lines, but does not directly determine it.',
 	0, 1000, 26, 1, function(v)
 		max_height = v / 100
 	end)
 root:slider_float('Max Height Enforced', {},
-	'The upper limit of the window height. If the calculated height (using "Max Height") is larger than this value, then the window height is set to this value.', 0, 1000, 31, 1, function(v)
+	'The upper limit of the window height. If the calculated height (using "Max Height") is larger than this value, then the window height is set to this value.',
+	0, 1000, 31, 1, function(v)
 		max_height_alt = v / 100
 	end)
 root:slider_float('X Position', {}, '', 0, 83, 67, 1, function(v)
