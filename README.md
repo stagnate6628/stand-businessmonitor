@@ -6,6 +6,11 @@ Differences from MusinessBanager Monitor:
 - customization options (*some values don't really adapt well to changes, but for the most part work fine*)
 - arcade/agency/acid lab monitors
 
+# Installation
+You can download the repository as [zip](https://github.com/stagnate6628/stand-businessmonitor/archive/refs/heads/main.zip) or the lua file.
+
+Drag to `%appdata%\Stand\Lua Scripts` and run, no additional files required and no hassle.
+
 # Preview
 ![](https://raw.githubusercontent.com/stagnate6628/stand-businessoverlay/main/preview.png)
 
