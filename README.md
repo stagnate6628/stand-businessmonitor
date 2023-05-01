@@ -13,7 +13,7 @@ You can download the repository as [zip](https://github.com/stagnate6628/stand-b
 Drag `BusinessMonitor.lua` to `%appdata%\Stand\Lua Scripts` and run, no additional files required and no hassle.
 
 # Preview
-![](https://raw.githubusercontent.com/stagnate6628/stand-businessoverlay/main/preview.png)
+[![](https://raw.githubusercontent.com/stagnate6628/stand-businessoverlay/main/preview.png)](https://raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/preview.png)
 
 # Credits
 - IcyPhoenix/Ren/Stand Development Team (MusinessBanager)
