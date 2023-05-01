@@ -17,8 +17,7 @@ local y = 0
 local width = 0.17
 
 local min_height = 0.03
-local max_height = 0.26
-local max_height_alt = 0.31
+local max_height = 0.31
 
 local gap_1 = 0.11
 local gap_2 = 0.16
@@ -48,12 +47,6 @@ local views = {
 	{ label = 'Hub Weed',    state = true },
 	{ label = 'Hub Cash',    state = true }
 }
-local dividers = {
-	[1] = 'Safes',
-	[4] = 'MC Business',
-	[11] = 'Nightclub'
-}
-
 local data = {
 	{ stat_1 = 'CLUB_POPULARITY',        stat_2 = 'CLUB_SAFE_CASH_VALUE', max = 250000 },        -- nightclub
 	{ stat_2 = 'ARCADE_SAFE_CASH_VALUE', max = 100000 },                                         -- arcade
@@ -72,6 +65,11 @@ local data = {
 	{ stat_2 = 'HUB_PROD_TOTAL_5',       delim = '/',                     max = 60 },            -- hub forgery
 	{ stat_2 = 'HUB_PROD_TOTAL_4',       delim = '/',                     max = 80 },            -- hub weed
 	{ stat_2 = 'HUB_PROD_TOTAL_6',       delim = '/',                     max = 40 }             -- hub cash
+}
+local dividers = {
+	[1] = 'Safes',
+	[4] = 'MC Business',
+	[11] = 'Nightclub'
 }
 
 root:toggle('Enabled', {}, '', function(s) draw = s end, draw)
@@ -101,18 +99,13 @@ end):detach()
 children[1]:attachBefore(ref)
 
 root:divider('Configuration')
-root:slider_float('Width', {}, '', 0, 3000, 170, 1, function(v)
+root:slider_float('Width', {}, '', 0, 1000, 170, 1, function(v)
 	width = v / 1000
 end)
 root:slider_float('Max Height', {},
 	'Affects the window height based on the number of lines, but does not directly determine it.',
-	0, 1000, 26, 1, function(v)
-		max_height = v / 100
-	end)
-root:slider_float('Max Height Enforced', {},
-	'The upper limit of the window height. If the calculated height (using "Max Height") is larger than this value, then the window height is set to this value.',
 	0, 1000, 31, 1, function(v)
-		max_height_alt = v / 100
+		max_height = v / 100
 	end)
 root:slider_float('X Position', {}, '', 0, 83, 67, 1, function(v)
 	x = v / 100
@@ -155,8 +148,8 @@ local function get_line_count()
 end
 
 local function calculate_height(line_count)
-	local height = min_height + (max_height - min_height) * line_count / 14
-	return math.ceil(height * 100) / 100
+	local height = min_height + (max_height - min_height) * line_count / 17
+	return height
 end
 
 util.create_tick_handler(function()
@@ -168,9 +161,9 @@ util.create_tick_handler(function()
 	if draw then
 		local last_pos = y
 		local height = calculate_height(get_line_count())
-		if height > max_height_alt then
-			height = max_height_alt
-		end
+		-- if height > max_height_alt then
+		-- 	height = max_height_alt
+		-- end
 
 		draw_rect(x, y, width, height, background_colour)
 
