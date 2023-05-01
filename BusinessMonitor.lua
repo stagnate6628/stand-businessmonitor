@@ -1,6 +1,3 @@
--- todo:
--- use translated labels?
--- cache stats / any calculated values?
 local root = menu.my_root()
 
 local util = util
@@ -51,6 +48,11 @@ local views = {
 	{ label = 'Hub Weed',    state = true },
 	{ label = 'Hub Cash',    state = true }
 }
+local dividers = {
+	[1] = 'Safes',
+	[4] = 'MC Business',
+	[11] = 'Nightclub'
+}
 
 local data = {
 	{ stat_1 = 'CLUB_POPULARITY',        stat_2 = 'CLUB_SAFE_CASH_VALUE', max = 250000 },        -- nightclub
@@ -75,16 +77,25 @@ local data = {
 root:toggle('Enabled', {}, '', function(s) draw = s end, draw)
 
 local bools = root:list('Views', {}, 'Configure what to monitor.')
-for _, v in views do
+for k, v in views do
+	if dividers[k] then
+		bools:divider(dividers[k])
+	end
+
 	bools:toggle(v.label, {}, '', function(s)
 		v.state = s
 	end, v.state)
 end
 
 local children = bools:getChildren()
-local ref = bools:list_select('State', {}, '', { 'Enable All', 'Disable All' }, 1, function(idx)
+local ref = bools:textslider_stateful('State', {}, '', { 'Enable All', 'Disable All' }, function(idx)
 	for _, v in children do
+		if v:getType() ~= COMMAND_TOGGLE then
+			goto continue
+		end
+
 		v.value = idx == 1
+		::continue::
 	end
 end):detach()
 children[1]:attachBefore(ref)
