@@ -19,7 +19,8 @@ local width = 0.167
 local min_height = 0.03
 local max_height = 0.31
 
-local alignments = { 'ALIGN_TOP_LEFT', 'ALIGN_TOP_CENTRE', 'ALIGN_TOP_RIGHT',
+local alignments = { 
+	'ALIGN_TOP_LEFT', 'ALIGN_TOP_CENTRE', 'ALIGN_TOP_RIGHT',
 	'ALIGN_CENTRE_LEFT', 'ALIGN_CENTRE', 'ALIGN_CENTRE_RIGHT',
 	'ALIGN_BOTTOM_LEFT', 'ALIGN_BOTTOM_CENTRE', 'ALIGN_BOTTOM_RIGHT'
 }
@@ -130,7 +131,7 @@ end)
 position:slider_float('Y Position', {}, '', 0, 71, 0, 1, function(v)
 	y = v / 100
 end)
-position:slider_float('Label', {}, '', -1000, 1000, 3, 1, function(v)
+position:slider_float('Label', {}, 'Aka. the "Property".', -1000, 1000, 3, 1, function(v)
 	gap_0 = v / 1000
 end)
 position:slider_float('Left Column', {}, 'Aka. "Supplies".', -66, 32, 11, 1, function(v)
@@ -148,13 +149,13 @@ text:slider_float('Row Gap', {}, '', 0, 1000, 165, 1, function(v)
 	row_gap = v / 10000
 end)
 text:divider('Alignment')
-text:list_select('Label', {}, '', alignments, 1, function(idx)
+text:list_select('Label', {}, 'The "Property" text alignment.', alignments, 1, function(idx)
 	align_0 = idx
 end)
-text:list_select('Left Column', {}, '', alignments, 3, function(idx)
+text:list_select('Left Column', {}, 'The "Supplies" text alignment.', alignments, 3, function(idx)
 	align_1 = idx
 end)
-text:list_select('Right Column', {}, '', alignments, 3, function(idx)
+text:list_select('Right Column', {}, 'The "Product" text alignment.', alignments, 3, function(idx)
 	align_2 = idx
 end)
 
