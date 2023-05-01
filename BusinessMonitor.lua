@@ -19,8 +19,20 @@ local width = 0.167
 local min_height = 0.03
 local max_height = 0.31
 
+local alignments = { 'ALIGN_TOP_LEFT', 'ALIGN_TOP_CENTRE', 'ALIGN_TOP_RIGHT',
+	'ALIGN_CENTRE_LEFT', 'ALIGN_CENTRE', 'ALIGN_CENTRE_RIGHT',
+	'ALIGN_BOTTOM_LEFT', 'ALIGN_BOTTOM_CENTRE', 'ALIGN_BOTTOM_RIGHT'
+}
+
+local gap_0 = 0.003
+local align_0 = ALIGN_TOP_LEFT
+
 local gap_1 = 0.11
+local align_1 = ALIGN_TOP_RIGHT
+
 local gap_2 = 0.16
+local align_2 = ALIGN_TOP_RIGHT
+
 local row_gap = 0.0165
 local text_size = 0.425
 
@@ -118,11 +130,13 @@ end)
 position:slider_float('Y Position', {}, '', 0, 71, 0, 1, function(v)
 	y = v / 100
 end)
-position:slider_float('Left Column', {}, 'A.k.a "Supplies"', -66,
-	32, 11, 1, function(v)
-		gap_1 = v / 100
-	end)
-position:slider_float('Right Column', {}, 'A.k.a "Product"', -68, 32, 16, 1, function(v)
+position:slider_float('Label', {}, '', -1000, 1000, 3, 1, function(v)
+	gap_0 = v / 1000
+end)
+position:slider_float('Left Column', {}, 'Aka. "Supplies".', -66, 32, 11, 1, function(v)
+	gap_1 = v / 100
+end)
+position:slider_float('Right Column', {}, 'Aka. "Product".', -68, 32, 16, 1, function(v)
 	gap_2 = v / 100
 end)
 
@@ -132,6 +146,16 @@ text:slider_float('Scale', {}, '', 0, 1000, 425, 1, function(v)
 end)
 text:slider_float('Row Gap', {}, '', 0, 1000, 165, 1, function(v)
 	row_gap = v / 10000
+end)
+text:divider('Alignment')
+text:list_select('Label', {}, '', alignments, 1, function(idx)
+	align_0 = idx
+end)
+text:list_select('Left Column', {}, '', alignments, 3, function(idx)
+	align_1 = idx
+end)
+text:list_select('Right Column', {}, '', alignments, 3, function(idx)
+	align_2 = idx
 end)
 
 local colours = root:list('Colours', {}, '')
@@ -177,7 +201,7 @@ util.create_tick_handler(function()
 			end
 
 			last_pos = last_pos + row_gap
-			draw_text(x + 0.003, last_pos, v.label, ALIGN_TOP_LEFT, text_size, text_colour)
+			draw_text(x + gap_0, last_pos, v.label, align_0, text_size, text_colour)
 
 			local curr = data[k]
 			local stat_1, stat_2 = curr.stat_1, curr.stat_2
@@ -189,7 +213,7 @@ util.create_tick_handler(function()
 					value = math.floor(value / 10)
 				end
 
-				draw_text(x + gap_1, last_pos, value .. '%', ALIGN_TOP_RIGHT, text_size, text_colour)
+				draw_text(x + gap_1, last_pos, value .. '%', align_1, text_size, text_colour)
 			end
 
 			local val = util.stat_get_int64(stat_2)
@@ -203,7 +227,7 @@ util.create_tick_handler(function()
 				val = val .. curr.delim .. curr.max
 			end
 
-			draw_text(x + gap_2, last_pos, val, ALIGN_TOP_RIGHT, text_size, colour)
+			draw_text(x + gap_2, last_pos, val, align_2, text_size, colour)
 			::continue::
 		end
 	end
