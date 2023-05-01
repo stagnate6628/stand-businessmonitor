@@ -7,7 +7,7 @@ Differences from MusinessBanager Monitor:
 - arcade/agency/acid lab monitors
 
 # Preview
-![](https://raw.githubusercontent.com/stagnate6628/stand-businessoverlay/main/preview.jpg)
+![](https://raw.githubusercontent.com/stagnate6628/stand-businessoverlay/main/preview.png)
 
 # Credits
 - IcyPhoenix/Ren/Stand Development Team (MusinessBanager)
