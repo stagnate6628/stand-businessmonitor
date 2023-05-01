@@ -72,10 +72,9 @@ local data = {
 	{ stat_2 = 'HUB_PROD_TOTAL_6',       delim = '/',                     max = 40 }             -- hub cash
 }
 
-
 root:toggle('Enabled', {}, '', function(s) draw = s end, draw)
 
-local bools = root:list('Views', {}, 'Configure the views to monitor.')
+local bools = root:list('Views', {}, 'Configure what to monitor.')
 for _, v in views do
 	bools:toggle(v.label, {}, '', function(s)
 		v.state = s
