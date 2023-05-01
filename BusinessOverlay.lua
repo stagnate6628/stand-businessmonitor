@@ -177,11 +177,7 @@ util.create_tick_handler(function()
 					value = math.floor(value / 10)
 				end
 
-				draw_text(
-					x + gap_1, last_pos, value .. '%', ALIGN_TOP_RIGHT,
-					text_size,
-					text_colour
-				)
+				draw_text(x + gap_1, last_pos, value .. '%', ALIGN_TOP_RIGHT, text_size, text_colour)
 			end
 
 			local val = util.stat_get_int64(stat_2)
