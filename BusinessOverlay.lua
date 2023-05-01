@@ -1,5 +1,8 @@
 local root = menu.my_root()
-local directx, util = directx, util
+
+local util = util
+local draw_rect = directx.draw_rect
+local draw_text = directx.draw_text
 
 local og_stat_get_int64 = util.stat_get_int64
 util.stat_get_int64 = function(stat)
@@ -154,7 +157,7 @@ util.create_tick_handler(function()
 			height = max_height_alt
 		end
 
-		directx.draw_rect(x, y, width, height, background_colour)
+		draw_rect(x, y, width, height, background_colour)
 
 		for k, v in views do
 			if not v.state then
@@ -162,20 +165,20 @@ util.create_tick_handler(function()
 			end
 
 			last_pos = last_pos + row_gap
-			directx.draw_text(x + 0.003, last_pos, v.label, ALIGN_TOP_LEFT, text_size, text_colour)
+			draw_text(x + 0.003, last_pos, v.label, ALIGN_TOP_LEFT, text_size, text_colour)
 
 			local curr = data[k]
 			local stat_1, stat_2 = curr.stat_1, curr.stat_2
 
 			if stat_1 then
-				local stat = util.stat_get_int64(stat_1)
+				local value = util.stat_get_int64(stat_1)
 				-- properly format nightclub popualarity :|
 				if k == 1 then
-					stat = math.floor(stat / 10)
+					value = math.floor(value / 10)
 				end
 
-				directx.draw_text(
-					x + gap_1, last_pos, stat .. '%', ALIGN_TOP_RIGHT,
+				draw_text(
+					x + gap_1, last_pos, value .. '%', ALIGN_TOP_RIGHT,
 					text_size,
 					text_colour
 				)
@@ -193,7 +196,7 @@ util.create_tick_handler(function()
 				colour = max_colour
 			end
 
-			directx.draw_text(x + gap_2, last_pos, str, ALIGN_TOP_RIGHT, text_size, colour)
+			draw_text(x + gap_2, last_pos, str, ALIGN_TOP_RIGHT, text_size, colour)
 			::continue::
 		end
 	end
