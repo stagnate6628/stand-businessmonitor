@@ -110,11 +110,11 @@ root:slider_float('Y Position', {}, '', 0, 71, 0, 1, function(v)
 	y = v / 100
 end)
 root:slider_float('Left Column Offset', {},
-	'The offset of the left column (supplies) from the origin (the default value.)', -66, 32, 11, 1, function(v)
+	'The offset of the left column (supplies) from the window origin.', -66, 32, 11, 1, function(v)
 		gap_1 = v / 100
 	end)
 root:slider_float('Right Column Offset', {},
-	'The offset of the right column (product) from the origin (the default value.)', -68, 32, 16, 1, function(v)
+	'The offset of the right column (product) from the window origin.', -68, 32, 16, 1, function(v)
 		gap_2 = v / 100
 	end)
 root:slider_float('Row Gap', {}, '', 0, 1000, 165, 1, function(v)
