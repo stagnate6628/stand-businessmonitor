@@ -181,18 +181,17 @@ util.create_tick_handler(function()
 			end
 
 			local val = util.stat_get_int64(stat_2)
-			local str = val
 			local colour = text_colour
-
-			if curr.delim ~= nil then
-				str = str .. curr.delim .. curr.max
-			end
 
 			if val == curr.max then
 				colour = max_colour
 			end
 
-			draw_text(x + gap_2, last_pos, str, ALIGN_TOP_RIGHT, text_size, colour)
+			if curr.delim ~= nil then
+				val = val .. curr.delim .. curr.max
+			end
+
+			draw_text(x + gap_2, last_pos, val, ALIGN_TOP_RIGHT, text_size, colour)
 			::continue::
 		end
 	end
