@@ -90,8 +90,8 @@ end):detach()
 children[1]:attachBefore(ref)
 
 root:divider('Configuration')
-root:slider_float('Width', {}, '', 0, 300, 17, 1, function(v)
-	width = v / 100
+root:slider_float('Width', {}, '', 0, 3000, 170, 1, function(v)
+	width = v / 1000
 end)
 root:slider_float('Max Height', {},
 	'Affects the window height based on the number of lines, but does not directly determine it.',
