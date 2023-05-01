@@ -14,7 +14,7 @@ local draw = true
 local x = 0.67
 local y = 0
 
-local width = 0.17
+local width = 0.167
 
 local min_height = 0.03
 local max_height = 0.31
@@ -101,7 +101,7 @@ children[1]:attachBefore(ref)
 root:divider('Configuration')
 
 local overlay = root:list('Overlay', {}, '')
-overlay:slider_float('Width', {}, '', 0, 1000, 170, 1, function(v)
+overlay:slider_float('Width', {}, '', 0, 1000, 167, 1, function(v)
 	width = v / 1000
 end)
 overlay:slider_float('Min Height', {}, '', 0, 1000, 3, 1, function(v)
