@@ -46,23 +46,23 @@ local views = {
 	{ label = 'Hub Cash',    state = true }
 }
 local data = {
-	{ max = 250000, stat_1 = 'CLUB_POPULARITY', stat_2 = 'CLUB_SAFE_CASH_VALUE' }, -- nightclub
-	{ max = 100000, stat_2 = 'ARCADE_SAFE_CASH_VALUE' }, -- arcade
-	{ max = 250000, stat_2 = 'FIXER_SAFE_CASH_VALUE' }, -- agency safe
-	{ delim = '/',  max = 40, stat_1 = 'MATTOTALFORFACTORY0', stat_2 = 'PRODTOTALFORFACTORY0' }, -- cash
-	{ delim = '/',  max = 60, stat_1 = 'MATTOTALFORFACTORY4', stat_2 = 'PRODTOTALFORFACTORY4' }, -- forgery
-	{ delim = '/',  max = 80, stat_1 = 'MATTOTALFORFACTORY3', stat_2 = 'PRODTOTALFORFACTORY3' }, -- weed
-	{ delim = '/',  max = 10, stat_1 = 'MATTOTALFORFACTORY1', stat_2 = 'PRODTOTALFORFACTORY1' }, -- cocaine
-	{ delim = '/',  max = 20, stat_1 = 'MATTOTALFORFACTORY2', stat_2 = 'PRODTOTALFORFACTORY2' }, -- meth
-	{ delim = '/',  max = 100, stat_1 = 'MATTOTALFORFACTORY5', stat_2 = 'PRODTOTALFORFACTORY5' }, -- bunker
-	{ delim = '/',  max = 160, stat_1 = 'MATTOTALFORFACTORY6', stat_2 = 'PRODTOTALFORFACTORY6' }, -- acid lab
-	{ delim = '/',  max = 50, stat_2 = 'HUB_PROD_TOTAL_0' }, -- hub cargo
-	{ delim = '/',  max = 100, stat_2 = 'HUB_PROD_TOTAL_1' }, -- hub weapons
-	{ delim = '/',  max = 10, stat_2 = 'HUB_PROD_TOTAL_2' }, -- hub cocaine
-	{ delim = '/',  max = 20, stat_2 = 'HUB_PROD_TOTAL_3' }, -- hub meth
-	{ delim = '/',  max = 60, stat_2 = 'HUB_PROD_TOTAL_5' }, -- hub forgery
-	{ delim = '/',  max = 80, stat_2 = 'HUB_PROD_TOTAL_4' }, -- hub weed
-	{ delim = '/',  max = 40, stat_2 = 'HUB_PROD_TOTAL_6' } -- hub cash
+	{ max = 250000, stat_1 = 'CLUB_POPULARITY',       stat_2 = 'CLUB_SAFE_CASH_VALUE' },       -- nightclub
+	{ max = 100000, stat_2 = 'ARCADE_SAFE_CASH_VALUE' },                                       -- arcade
+	{ max = 250000, stat_2 = 'FIXER_SAFE_CASH_VALUE' },                                        -- agency safe
+	{ delim = '/',  max = 40,                         stat_1 = 'MATTOTALFORFACTORY0', stat_2 = 'PRODTOTALFORFACTORY0' }, -- cash
+	{ delim = '/',  max = 60,                         stat_1 = 'MATTOTALFORFACTORY4', stat_2 = 'PRODTOTALFORFACTORY4' }, -- forgery
+	{ delim = '/',  max = 80,                         stat_1 = 'MATTOTALFORFACTORY3', stat_2 = 'PRODTOTALFORFACTORY3' }, -- weed
+	{ delim = '/',  max = 10,                         stat_1 = 'MATTOTALFORFACTORY1', stat_2 = 'PRODTOTALFORFACTORY1' }, -- cocaine
+	{ delim = '/',  max = 20,                         stat_1 = 'MATTOTALFORFACTORY2', stat_2 = 'PRODTOTALFORFACTORY2' }, -- meth
+	{ delim = '/',  max = 100,                        stat_1 = 'MATTOTALFORFACTORY5', stat_2 = 'PRODTOTALFORFACTORY5' }, -- bunker
+	{ delim = '/',  max = 160,                        stat_1 = 'MATTOTALFORFACTORY6', stat_2 = 'PRODTOTALFORFACTORY6' }, -- acid lab
+	{ delim = '/',  max = 50,                         stat_2 = 'HUB_PROD_TOTAL_0' },           -- hub cargo
+	{ delim = '/',  max = 100,                        stat_2 = 'HUB_PROD_TOTAL_1' },           -- hub weapons
+	{ delim = '/',  max = 10,                         stat_2 = 'HUB_PROD_TOTAL_2' },           -- hub cocaine
+	{ delim = '/',  max = 20,                         stat_2 = 'HUB_PROD_TOTAL_3' },           -- hub meth
+	{ delim = '/',  max = 60,                         stat_2 = 'HUB_PROD_TOTAL_5' },           -- hub forgery
+	{ delim = '/',  max = 80,                         stat_2 = 'HUB_PROD_TOTAL_4' },           -- hub weed
+	{ delim = '/',  max = 40,                         stat_2 = 'HUB_PROD_TOTAL_6' }            -- hub cash
 }
 
 root:toggle('Enabled', {}, '', function(s) draw = s end, draw)
@@ -87,7 +87,7 @@ root:slider_float('Width', {}, '', 0, 300, 17, 1, function(v)
 	width = v / 100
 end)
 root:slider_float('Max Height', {},
-	'A scalar used to formulaiclly determine the height of the window given the number of lines; does not truly represent the window height.',
+	'A scalar used to formulaiclly determine the height of the window given the number of lines; may or may not truly represent the window height.',
 	0, 1000, 26, 1, function(v)
 		max_height = v / 100
 	end)
@@ -167,8 +167,12 @@ util.create_tick_handler(function()
 			local stat_1, stat_2 = curr.stat_1, curr.stat_2
 
 			if stat_1 then
+				local stat = util.stat_get_int64(stat_1)
+				if k == 1 then
+					stat = math.floor(stat / 10)
+				end
 				directx.draw_text(
-					x + gap_1, last_pos, math.floor(util.stat_get_int64(stat_1)) .. '%', ALIGN_TOP_RIGHT,
+					x + gap_1, last_pos, stat .. '%', ALIGN_TOP_RIGHT,
 					text_size,
 					text_colour
 				)
