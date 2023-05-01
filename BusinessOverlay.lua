@@ -45,10 +45,11 @@ local views = {
 	{ label = 'Hub Weed',    state = true },
 	{ label = 'Hub Cash',    state = true }
 }
+
 local data = {
-	{ max = 250000, stat_1 = 'CLUB_POPULARITY',       stat_2 = 'CLUB_SAFE_CASH_VALUE' },       -- nightclub
-	{ max = 100000, stat_2 = 'ARCADE_SAFE_CASH_VALUE' },                                       -- arcade
-	{ max = 250000, stat_2 = 'FIXER_SAFE_CASH_VALUE' },                                        -- agency safe
+	{ max = 250000, stat_1 = 'CLUB_POPULARITY',       stat_2 = 'CLUB_SAFE_CASH_VALUE' },                              -- nightclub
+	{ max = 100000, stat_2 = 'ARCADE_SAFE_CASH_VALUE' },                                                              -- arcade
+	{ max = 250000, stat_2 = 'FIXER_SAFE_CASH_VALUE' },                                                               -- agency safe
 	{ delim = '/',  max = 40,                         stat_1 = 'MATTOTALFORFACTORY0', stat_2 = 'PRODTOTALFORFACTORY0' }, -- cash
 	{ delim = '/',  max = 60,                         stat_1 = 'MATTOTALFORFACTORY4', stat_2 = 'PRODTOTALFORFACTORY4' }, -- forgery
 	{ delim = '/',  max = 80,                         stat_1 = 'MATTOTALFORFACTORY3', stat_2 = 'PRODTOTALFORFACTORY3' }, -- weed
@@ -56,13 +57,13 @@ local data = {
 	{ delim = '/',  max = 20,                         stat_1 = 'MATTOTALFORFACTORY2', stat_2 = 'PRODTOTALFORFACTORY2' }, -- meth
 	{ delim = '/',  max = 100,                        stat_1 = 'MATTOTALFORFACTORY5', stat_2 = 'PRODTOTALFORFACTORY5' }, -- bunker
 	{ delim = '/',  max = 160,                        stat_1 = 'MATTOTALFORFACTORY6', stat_2 = 'PRODTOTALFORFACTORY6' }, -- acid lab
-	{ delim = '/',  max = 50,                         stat_2 = 'HUB_PROD_TOTAL_0' },           -- hub cargo
-	{ delim = '/',  max = 100,                        stat_2 = 'HUB_PROD_TOTAL_1' },           -- hub weapons
-	{ delim = '/',  max = 10,                         stat_2 = 'HUB_PROD_TOTAL_2' },           -- hub cocaine
-	{ delim = '/',  max = 20,                         stat_2 = 'HUB_PROD_TOTAL_3' },           -- hub meth
-	{ delim = '/',  max = 60,                         stat_2 = 'HUB_PROD_TOTAL_5' },           -- hub forgery
-	{ delim = '/',  max = 80,                         stat_2 = 'HUB_PROD_TOTAL_4' },           -- hub weed
-	{ delim = '/',  max = 40,                         stat_2 = 'HUB_PROD_TOTAL_6' }            -- hub cash
+	{ delim = '/',  max = 50,                         stat_2 = 'HUB_PROD_TOTAL_0' },                                  -- hub cargo
+	{ delim = '/',  max = 100,                        stat_2 = 'HUB_PROD_TOTAL_1' },                                  -- hub weapons
+	{ delim = '/',  max = 10,                         stat_2 = 'HUB_PROD_TOTAL_2' },                                  -- hub cocaine
+	{ delim = '/',  max = 20,                         stat_2 = 'HUB_PROD_TOTAL_3' },                                  -- hub meth
+	{ delim = '/',  max = 60,                         stat_2 = 'HUB_PROD_TOTAL_5' },                                  -- hub forgery
+	{ delim = '/',  max = 80,                         stat_2 = 'HUB_PROD_TOTAL_4' },                                  -- hub weed
+	{ delim = '/',  max = 40,                         stat_2 = 'HUB_PROD_TOTAL_6' }                                   -- hub cash
 }
 
 root:toggle('Enabled', {}, '', function(s) draw = s end, draw)
@@ -168,9 +169,11 @@ util.create_tick_handler(function()
 
 			if stat_1 then
 				local stat = util.stat_get_int64(stat_1)
+				-- properly format nightclub popualarity :|
 				if k == 1 then
 					stat = math.floor(stat / 10)
 				end
+
 				directx.draw_text(
 					x + gap_1, last_pos, stat .. '%', ALIGN_TOP_RIGHT,
 					text_size,
