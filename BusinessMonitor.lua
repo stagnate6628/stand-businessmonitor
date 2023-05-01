@@ -53,24 +53,25 @@ local views = {
 }
 
 local data = {
-	{ max = 250000, stat_1 = 'CLUB_POPULARITY',       stat_2 = 'CLUB_SAFE_CASH_VALUE' },                              -- nightclub
-	{ max = 100000, stat_2 = 'ARCADE_SAFE_CASH_VALUE' },                                                              -- arcade
-	{ max = 250000, stat_2 = 'FIXER_SAFE_CASH_VALUE' },                                                               -- agency safe
-	{ delim = '/',  max = 40,                         stat_1 = 'MATTOTALFORFACTORY0', stat_2 = 'PRODTOTALFORFACTORY0' }, -- cash
-	{ delim = '/',  max = 60,                         stat_1 = 'MATTOTALFORFACTORY4', stat_2 = 'PRODTOTALFORFACTORY4' }, -- forgery
-	{ delim = '/',  max = 80,                         stat_1 = 'MATTOTALFORFACTORY3', stat_2 = 'PRODTOTALFORFACTORY3' }, -- weed
-	{ delim = '/',  max = 10,                         stat_1 = 'MATTOTALFORFACTORY1', stat_2 = 'PRODTOTALFORFACTORY1' }, -- cocaine
-	{ delim = '/',  max = 20,                         stat_1 = 'MATTOTALFORFACTORY2', stat_2 = 'PRODTOTALFORFACTORY2' }, -- meth
-	{ delim = '/',  max = 100,                        stat_1 = 'MATTOTALFORFACTORY5', stat_2 = 'PRODTOTALFORFACTORY5' }, -- bunker
-	{ delim = '/',  max = 160,                        stat_1 = 'MATTOTALFORFACTORY6', stat_2 = 'PRODTOTALFORFACTORY6' }, -- acid lab
-	{ delim = '/',  max = 50,                         stat_2 = 'HUB_PROD_TOTAL_0' },                                  -- hub cargo
-	{ delim = '/',  max = 100,                        stat_2 = 'HUB_PROD_TOTAL_1' },                                  -- hub weapons
-	{ delim = '/',  max = 10,                         stat_2 = 'HUB_PROD_TOTAL_2' },                                  -- hub cocaine
-	{ delim = '/',  max = 20,                         stat_2 = 'HUB_PROD_TOTAL_3' },                                  -- hub meth
-	{ delim = '/',  max = 60,                         stat_2 = 'HUB_PROD_TOTAL_5' },                                  -- hub forgery
-	{ delim = '/',  max = 80,                         stat_2 = 'HUB_PROD_TOTAL_4' },                                  -- hub weed
-	{ delim = '/',  max = 40,                         stat_2 = 'HUB_PROD_TOTAL_6' }                                   -- hub cash
+	{ stat_1 = 'CLUB_POPULARITY',        stat_2 = 'CLUB_SAFE_CASH_VALUE', max = 250000 },        -- nightclub
+	{ stat_2 = 'ARCADE_SAFE_CASH_VALUE', max = 100000 },                                         -- arcade
+	{ stat_2 = 'FIXER_SAFE_CASH_VALUE',  max = 250000 },                                         -- agency safe
+	{ stat_1 = 'MATTOTALFORFACTORY0',    stat_2 = 'PRODTOTALFORFACTORY0', delim = '/', max = 40 }, -- cash
+	{ stat_1 = 'MATTOTALFORFACTORY4',    stat_2 = 'PRODTOTALFORFACTORY4', delim = '/', max = 60 }, -- forgery
+	{ stat_1 = 'MATTOTALFORFACTORY3',    stat_2 = 'PRODTOTALFORFACTORY3', delim = '/', max = 80 }, -- weed
+	{ stat_1 = 'MATTOTALFORFACTORY1',    stat_2 = 'PRODTOTALFORFACTORY1', delim = '/', max = 10 }, -- cocaine
+	{ stat_1 = 'MATTOTALFORFACTORY2',    stat_2 = 'PRODTOTALFORFACTORY2', delim = '/', max = 20 }, -- meth
+	{ stat_1 = 'MATTOTALFORFACTORY5',    stat_2 = 'PRODTOTALFORFACTORY5', delim = '/', max = 100 }, -- bunker
+	{ stat_1 = 'MATTOTALFORFACTORY6',    stat_2 = 'PRODTOTALFORFACTORY6', delim = '/', max = 160 }, -- acid lab
+	{ stat_2 = 'HUB_PROD_TOTAL_0',       delim = '/',                     max = 50 },            -- hub cargo
+	{ stat_2 = 'HUB_PROD_TOTAL_1',       delim = '/',                     max = 100 },           -- hub weapons
+	{ stat_2 = 'HUB_PROD_TOTAL_2',       delim = '/',                     max = 10 },            -- hub cocaine
+	{ stat_2 = 'HUB_PROD_TOTAL_3',       delim = '/',                     max = 20 },            -- hub meth
+	{ stat_2 = 'HUB_PROD_TOTAL_5',       delim = '/',                     max = 60 },            -- hub forgery
+	{ stat_2 = 'HUB_PROD_TOTAL_4',       delim = '/',                     max = 80 },            -- hub weed
+	{ stat_2 = 'HUB_PROD_TOTAL_6',       delim = '/',                     max = 40 }             -- hub cash
 }
+
 
 root:toggle('Enabled', {}, '', function(s) draw = s end, draw)
 
