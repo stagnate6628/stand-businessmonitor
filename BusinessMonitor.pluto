@@ -203,7 +203,6 @@ util.create_tick_handler(function()
 			draw_text(x + gap_0, last_pos, v.label, align_0, text_size, text_colour)
 
 			local curr = data[k]
-
 			if stat_1 := curr.stat_1 then
 				local value = util.stat_get_int64(stat_1)
 				-- properly format nightclub popualarity :|
@@ -217,7 +216,9 @@ util.create_tick_handler(function()
 			local val = util.stat_get_int64(curr.stat_2)
 			local colour = val == curr.max ? max_colour : text_colour
 
-			val ..= (curr.delim or '') .. curr.max
+			if curr.delim then
+				val ..= curr.delim .. curr.max
+			end
 			draw_text(x + gap_2, last_pos, val, align_2, text_size, colour)
 		end
 	end
