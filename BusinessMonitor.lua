@@ -139,7 +139,7 @@ position:slider_float('Left Column', {}, 'Aka. "Supplies".', -66, 32, 11, 1, fun
 end).precision = 4
 position:slider_float('Right Column', {}, 'Aka. "Product".', -68, 32, 16, 1, function(v)
 	gap_2 = v / 100
-end).precision = 2
+end).precision = 4
 
 local text = root:list('Text', {}, '')
 text:slider_float('Scale', {}, '', 0, 1000, 425, 1, function(v)
