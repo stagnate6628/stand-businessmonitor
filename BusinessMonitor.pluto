@@ -100,13 +100,12 @@ end
 
 local children = bools:getChildren()
 local ref = bools:textslider_stateful('State', {}, '', { 'Enable All', 'Disable All' }, function(idx)
-	for _, v in children do
-		if v:getType() ~= COMMAND_TOGGLE then
-			goto continue
+	for children as v do
+		if v:getType() != COMMAND_TOGGLE then
+			continue
 		end
 
 		v.value = idx == 1
-		::continue::
 	end
 end):detach()
 children[1]:attachBefore(ref)
@@ -171,9 +170,9 @@ end)
 
 local function get_line_count()
 	local c = 0
-	for k, v in views do
+	for views as v do
 		if v.state then
-			c = c + 1
+			c += 1
 		end
 	end
 	return c
@@ -197,16 +196,15 @@ util.create_tick_handler(function()
 
 		for k, v in views do
 			if not v.state then
-				goto continue
+				continue
 			end
 
 			last_pos = last_pos + row_gap
 			draw_text(x + gap_0, last_pos, v.label, align_0, text_size, text_colour)
 
 			local curr = data[k]
-			local stat_1, stat_2 = curr.stat_1, curr.stat_2
 
-			if stat_1 then
+			if stat_1 := curr.stat_1 then
 				local value = util.stat_get_int64(stat_1)
 				-- properly format nightclub popualarity :|
 				if k == 1 then
@@ -216,19 +214,11 @@ util.create_tick_handler(function()
 				draw_text(x + gap_1, last_pos, value .. '%', align_1, text_size, text_colour)
 			end
 
-			local val = util.stat_get_int64(stat_2)
-			local colour = text_colour
+			local val = util.stat_get_int64(curr.stat_2)
+			local colour = val == curr.max ? max_colour : text_colour
 
-			if val == curr.max then
-				colour = max_colour
-			end
-
-			if curr.delim ~= nil then
-				val = val .. curr.delim .. curr.max
-			end
-
+			val ..= (curr.delim or '') .. curr.max
 			draw_text(x + gap_2, last_pos, val, align_2, text_size, colour)
-			::continue::
 		end
 	end
 	return true
