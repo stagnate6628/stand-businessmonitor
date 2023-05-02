@@ -116,7 +116,7 @@ root:divider('Configuration')
 local overlay = root:list('Overlay', {}, '')
 overlay:slider_float('Width', {}, '', 0, 1000, 167, 1, function(v)
 	width = v / 1000
-end)
+end).precision = 3
 overlay:slider_float('Min Height', {}, '', 0, 1000, 3, 1, function(v)
 	min_height = v / 100
 end)
@@ -133,21 +133,21 @@ position:slider_float('Y Position', {}, '', 0, 71, 0, 1, function(v)
 end)
 position:slider_float('Label', {}, 'Aka. the "Property".', -1000, 1000, 3, 1, function(v)
 	gap_0 = v / 1000
-end)
+end).precision = 4
 position:slider_float('Left Column', {}, 'Aka. "Supplies".', -66, 32, 11, 1, function(v)
 	gap_1 = v / 100
-end)
+end).precision = 4
 position:slider_float('Right Column', {}, 'Aka. "Product".', -68, 32, 16, 1, function(v)
 	gap_2 = v / 100
-end)
+end).precision = 2
 
 local text = root:list('Text', {}, '')
 text:slider_float('Scale', {}, '', 0, 1000, 425, 1, function(v)
 	text_size = v / 1000
-end)
+end).precision = 4
 text:slider_float('Row Gap', {}, '', 0, 1000, 165, 1, function(v)
 	row_gap = v / 10000
-end)
+end).precision = 4
 text:list_select('Label', {}, 'The "Property" text alignment.', alignments, 1, function(idx)
 	align_0 = idx
 end)
