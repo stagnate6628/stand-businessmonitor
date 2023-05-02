@@ -2,10 +2,10 @@
 An alternative Business Monitor for Stand
 
 Differences from MusinessBanager Monitor:
-- more visible overlay/doesn't compromise display
-- customization options (*not everything is dynamic to changes*)
-- arcade/agency/acid lab monitors
-- doesn't include ceo warehouses monitors
+- more visible business monitoring
+- customization options
+- arcade/agency/acid lab views
+- does not include ceo warehouses
 
 # Installation
 You can download the repository as [zip](https://github.com/stagnate6628/stand-businessmonitor/archive/refs/heads/main.zip) or the [lua file](https://raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/BusinessMonitor.pluto).
