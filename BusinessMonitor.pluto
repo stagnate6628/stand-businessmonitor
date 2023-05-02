@@ -118,10 +118,10 @@ overlay:slider_float('Width', {}, '', 0, 1000, 167, 1, function(v)
 end).precision = 3
 overlay:slider_float('Min Height', {}, '', 0, 1000, 3, 1, function(v)
 	min_height = v / 100
-end)
-overlay:slider_float('Max Height', {}, '', 0, 1000, 31, 1, function(v)
+end).precision = 2
+overlay:slider_float('Max Height', {}, 'Increasing this value subsequently increases the window height.', 0, 1000, 31, 1, function(v)
 	max_height = v / 100
-end)
+end).precision = 2
 
 local position = root:list('Position', {}, '')
 position:slider_float('X Position', {}, '', 0, 83, 67, 1, function(v)
@@ -184,8 +184,8 @@ local function calculate_height(line_count)
 end
 
 util.create_tick_handler(function()
-	while not util.is_session_started() and util.is_session_transition_active() do
-		--util.draw_centred_text('overlay: waiting for session transition')
+	while not util.is_session_started() or util.is_session_transition_active() do
+		--util.draw_centred_text('monitor: waiting for session')
 		util.yield()
 	end
 
