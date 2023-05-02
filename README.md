@@ -8,9 +8,9 @@ Differences from MusinessBanager Monitor:
 - doesn't include ceo warehouses monitors
 
 # Installation
-You can download the repository as [zip](https://github.com/stagnate6628/stand-businessmonitor/archive/refs/heads/main.zip) or the [lua file](https://raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/BusinessMonitor.lua).
+You can download the repository as [zip](https://github.com/stagnate6628/stand-businessmonitor/archive/refs/heads/main.zip) or the [lua file](https://raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/BusinessMonitor.pluto).
 
-Drag `BusinessMonitor.lua` to `%appdata%\Stand\Lua Scripts` and run, no additional files required.
+Drag `BusinessMonitor.pluto` to `%appdata%\Stand\Lua Scripts` and run, no additional files required.
 
 # Preview
 [![](https://raw.githubusercontent.com/stagnate6628/stand-businessoverlay/main/preview.png)](https://raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/preview.png)
