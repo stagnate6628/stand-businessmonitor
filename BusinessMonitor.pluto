@@ -199,7 +199,7 @@ util.create_tick_handler(function()
 				continue
 			end
 
-			last_pos = last_pos + row_gap
+			last_pos += row_gap
 			draw_text(x + gap_0, last_pos, v.label, align_0, text_size, text_colour)
 
 			local curr = data[k]
