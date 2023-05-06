@@ -15,6 +15,9 @@ Drag `BusinessMonitor.pluto` to `%appdata%\Stand\Lua Scripts` and run, no additi
 # Preview
 [![](https://raw.githubusercontent.com/stagnate6628/stand-businessoverlay/main/preview.png)](https://raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/preview.png)
 
+# Contributing
+please contribute :)
+
 # Credits
 - IcyPhoenix/Ren/Stand Development Team (MusinessBanager)
 - root-cause (some stats)
