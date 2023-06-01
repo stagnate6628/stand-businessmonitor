@@ -34,21 +34,22 @@ local background_colour = { r = 0, g = 0, b = 0, a = 0.8 }
 local text_colour = { r = 1, g = 1, b = 1, a = 1 }
 local max_colour = { r = 0, g = 1, b = 0, a = 1 }
 
-
+local safe_labels<const> = {
+	'Nightclub',
+	'Arcade',
+	'Agency'
+}
 local safes = {
 	{
-		label = 'Nightclub', 
 		stat_1 = 'CLUB_POPULARITY',
         stat_2 = 'CLUB_SAFE_CASH_VALUE',
         max = 250000
 	},
 	{
-        label = 'Arcade',
         stat_2 = 'ARCADE_SAFE_CASH_VALUE',
         max = 100000
     },
     {
-        label = 'Agency',
         stat_2 = 'FIXER_SAFE_CASH_VALUE',
         max = 250000
     }
@@ -86,61 +87,67 @@ local mc = {
 	[6] = { label = 'Acid Lab', max = 160 }
 }
 
+local nc_labels<const> = {
+	'Hub Cargo',
+	'Hub Weapons',
+	'Hub Cocaine',
+	'Hub Meth',
+	'Hub Weed',
+	'Hub Forgery',
+	'Hub Cash'
+}
 local nc = {
     {
-        label = 'Hub Cargo',
         stat_2 = 'HUB_PROD_TOTAL_0',
         max = 50
     },
     {
-        label = 'Hub Weapons',
         stat_2 = 'HUB_PROD_TOTAL_1',
         max = 100
     },
     {
-        label = 'Hub Cocaine',
         stat_2 = 'HUB_PROD_TOTAL_2',
         max = 10
     },
     {
-        label = 'Hub Meth',
         stat_2 = 'HUB_PROD_TOTAL_3',
         max = 20
     },
     {
-        label = 'Hub Weed',
         stat_2 = 'HUB_PROD_TOTAL_4',
         max = 80
     },
     {
-        label = 'Hub Forgery',
         stat_2 = 'HUB_PROD_TOTAL_5',
         max = 60
     },
     {
-        label = 'Hub Cash',
         stat_2 = 'HUB_PROD_TOTAL_6',
         max = 40
     }
 }
 
-local root = menu.my_root()
-local toggle = root:toggle('Enable', {}, '', function() end, true)
-local views = root:list('Views', {}, 'Configure what to monitor.', function() end)
-local refs = {}
+local toggle = r:toggle('Enable', {}, '', function() end, true)
+local views = r:list('Views', {}, 'Configure what to monitor.', function() end)
+
+local safes_ = views:list('Safes', {}, '', function() end)
+local mcs = views:list('Bikerwhat', {}, '', function() end)
+local hubs = views:list('Nightclub', {}, '', function() end)
 
 do
-	--[[views:textslider_stateful('State', {}, '', { 'Enable All', 'Disable All' }, function(idx)
-	
-	end)
-	for data as v do
-		local ref = views:toggle(v.label, {}, '', function() end, true)
-		table.insert(refs, ref)
-	end]]
+	for safe_labels as label do
+		safes_:toggle(label, {}, '', function() end, true)
+	end
+	for mc as v do
+		mcs:toggle(v.label, {}, '', function() end, true)
+	end
+	for nc_labels as label do
+		hubs:toggle(label, {}, '', function() end, true)
+	end
 
-	root:divider('Configuration')
+	r:divider('Configuration')
 
-	local window = root:list('Window', {}, '', function() end)
+	local window = r:list('Window', {}, '', function() end)
 	window:slider_float('Width', {}, '', 0, 10000, 167, 1, function(v)
 		width = v / 1000
 	end)
@@ -148,7 +155,7 @@ do
 		height = v / 100
 	end)
 
-	local position = root:list('Position', {}, '', function() end)
+	local position = r:list('Position', {}, '', function() end)
 	position:slider_float('X Position', {}, '', 0, 83, 67, 1, function(v)
 		x = v / 100
 	end)
@@ -165,7 +172,7 @@ do
 		gap_2 = v / 100
 	end).precision = 4
 
-	local text = root:list('Text', {}, '')
+	local text = r:list('Text', {}, '')
 	text:slider_float('Scale', {}, '', 0, 1000, 425, 1, function(v)
 		text_size = v / 1000
 	end).precision = 4
@@ -182,7 +189,7 @@ do
 		align_2 = idx
 	end)
 
-	local colours = root:list('Colours', {}, '')
+	local colours = r:list('Colours', {}, '')
 	colours:colour('Background Colour', {}, '', background_colour, true, function(c)
 		background_colour = c
 	end)
@@ -208,21 +215,24 @@ util.create_tick_handler(function()
 
 	-- there is definitely a better way to handle draw calls
 	if toggle.value then
-		to_draw = {}
-
 		directx.draw_rect(x, y, width, height, background_colour)
 
 		local tmp = y
 
 		-- safes
 		for i = 0, 2 do
+			if not safes_:getChildren()[i + 1].value then
+				continue
+			end
+
 			tmp += row_spacing
 
 			local curr = safes[i + 1]
+
 			table.insert(to_draw, {
 				x_pos = x + gap_0,
 				y_pos = tmp,
-				text = curr.label,
+				text = safe_labels[i + 1],
 				align = align_0,
 				size = text_size,
 				colour = text_colour
@@ -257,6 +267,10 @@ util.create_tick_handler(function()
 
 		-- mc businesses
 		for i = 0, 4 do
+			if not mcs:getChildren()[i + 1].value then
+				continue
+			end
+
 			tmp += row_spacing
 
 			local property = util.stat_get_int64($'factoryslot{i}')
@@ -295,6 +309,10 @@ util.create_tick_handler(function()
 
 		-- bunker/acid lab
 		for i = 5, 6 do
+			if not mcs:getChildren()[i + 1].value then
+				continue
+			end
+	
 			tmp += row_spacing
 
 			local curr = mc[i]
@@ -331,6 +349,10 @@ util.create_tick_handler(function()
 
 		-- nightclub
 		for i = 0, 6 do
+			if not hubs:getChildren()[i + 1].value then
+				continue
+			end
+
 			tmp += row_spacing
 
 			local curr = nc[i + 1]
@@ -339,7 +361,7 @@ util.create_tick_handler(function()
 			table.insert(to_draw, {
 				x_pos = x + gap_0,
 				y_pos = tmp,
-				text = curr.label,
+				text = nc_labels[i + 1],
 				align = align_0,
 				size = text_size,
 				colour = text_colour
@@ -355,6 +377,7 @@ util.create_tick_handler(function()
 			})
 		end
 
+		-- draw it all
 		for to_draw as v do
 			directx.draw_text(
 				v.x_pos,
@@ -365,6 +388,7 @@ util.create_tick_handler(function()
 				v.colour
 			)
 		end
+		to_draw = {}
 	end
 	return true
 end)
