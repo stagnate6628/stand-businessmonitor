@@ -1,6 +1,4 @@
-local r = menu.my_root()
 local char_slot = util.get_char_slot()
-
 local og_util_stat_get_int64 = util.stat_get_int64
 util.stat_get_int64 = function(stat)
 	return og_util_stat_get_int64($'MP{char_slot}_{stat}')
@@ -54,7 +52,8 @@ local safe<const> = {
 }
 
 --[[
-	[PROPERTY_ID]: [BIZ_TYPE]
+	afaik this is the easiest way to do this without nested loops
+	[PROPERTY_ID]: [BUSINESS_TYPE]
 	0 - forgery
 	1 - weed
 	2 - counterfit cash 
@@ -83,6 +82,8 @@ local mapping = {
     [19] = 2,
     [20] = 0
 }
+-- this is pretty scuffed
+local mc_labels_to_draw = { 'Forgery', 'Weed', 'Cash', 'Meth', 'Cocaine', 'Bunker', 'Acid Lab' }
 local mc<const> = {
 	[0] = { label = 'Forgery', max = 60 },
 	[1] = { label = 'Weed', max = 80 },
@@ -102,11 +103,12 @@ local nc<const> = {
 	{ label = 'Hub Cash', max = 40 }
 }
 
+local r = menu.my_root()
 local toggle = r:toggle('Enable', {}, '', function() end, true)
 local views = r:list('Views', {}, 'Configure what to monitor.', function() end)
 
 local safes_ = views:list('Safes', {}, '', function() end)
-local mcs = views:list('Bikerwhat', {}, '', function() end)
+local mcs = views:list('MC Business', {}, '', function() end)
 local hubs = views:list('Nightclub', {}, '', function() end)
 
 do
@@ -114,7 +116,13 @@ do
 		safes_:toggle(v.label, {}, '', function() end, true)
 	end
 	for mc as v do
-		mcs:toggle(v.label, {}, '', function() end, true)
+		mcs:toggle(v.label, {}, '', function(s)
+			if s then
+				table.insert(mc_labels_to_draw, v.label)
+			else
+				table.remove(mc_labels_to_draw, table.contains(mc_labels_to_draw, v.label), v.label)
+			end
+		end, true)
 	end
 	for nc as v do
 		hubs:toggle(v.label, {}, '', function() end, true)
@@ -123,35 +131,35 @@ do
 	r:divider('Configuration')
 
 	local window = r:list('Window', {}, '', function() end)
-	window:slider_float('Width', {}, '', 0, 10000, 167, 1, function(v)
+	window:slider_float('Width', {'bmwidth'}, '', 0, 10000, 167, 1, function(v)
 		width = v / 1000
 	end)
-	window:slider_float('Height', {}, '', 0, 10000, 31, 1, function(v)
+	window:slider_float('Height', {'bmheight'}, '', 0, 10000, 31, 1, function(v)
 		height = v / 100
 	end)
 
 	local position = r:list('Position', {}, '', function() end)
-	position:slider_float('X Position', {}, '', 0, 83, 67, 1, function(v)
+	position:slider_float('X Position', {'bmxpos'}, '', 0, 83, 67, 1, function(v)
 		x = v / 100
 	end)
-	position:slider_float('Y Position', {}, '', 0, 71, 0, 1, function(v)
+	position:slider_float('Y Position', {'bmypos'}, '', 0, 71, 0, 1, function(v)
 		y = v / 100
 	end)
-	position:slider_float('Label', {}, 'Aka. the "Property".', -1000, 1000, 3, 1, function(v)
+	position:slider_float('Label', {'bmlblpos'}, 'Aka. the "Property".', -1000, 1000, 3, 1, function(v)
 		gap_0 = v / 1000
 	end).precision = 4
-	position:slider_float('Left Column', {}, 'Aka. "Supplies".', -66, 32, 11, 1, function(v)
+	position:slider_float('Left Column', {'bmllblpos'}, 'Aka. "Supplies".', -66, 32, 11, 1, function(v)
 		gap_1 = v / 100
 	end).precision = 4
-	position:slider_float('Right Column', {}, 'Aka. "Product".', -68, 32, 16, 1, function(v)
+	position:slider_float('Right Column', {'bmrlblpos'}, 'Aka. "Product".', -68, 32, 16, 1, function(v)
 		gap_2 = v / 100
 	end).precision = 4
 
 	local text = r:list('Text', {}, '')
-	text:slider_float('Scale', {}, '', 0, 1000, 425, 1, function(v)
+	text:slider_float('Scale', {'bmtxtscale'}, '', 0, 1000, 425, 1, function(v)
 		text_size = v / 1000
 	end).precision = 4
-	text:slider_float('Row Spacing', {}, '', 0, 1000, 165, 1, function(v)
+	text:slider_float('Row Spacing', {'bmrowspacing'}, '', 0, 1000, 165, 1, function(v)
 		row_spacing = v / 10000
 	end).precision = 4
 	text:list_select('Label', {}, 'The "Property" text alignment.', alignments, 1, function(idx)
@@ -188,7 +196,6 @@ util.create_tick_handler(function()
 		util.yield_once()
 	end
 
-	-- there is definitely a better way to handle draw calls
 	if toggle.value then
 		directx.draw_rect(x, y, width, height, background_colour)
 
@@ -243,15 +250,15 @@ util.create_tick_handler(function()
 
 		-- mc businesses
 		for i = 0, 4 do
-			if not mcs:getChildren()[i + 1].value then
+			local property = util.stat_get_int64($'factoryslot{i}')
+			local curr = mc[mapping[property]]
+
+			-- very scuffed
+			if not table.contains(mc_labels_to_draw, curr.label) then
 				continue
 			end
 
 			tmp += row_spacing
-
-			local property = util.stat_get_int64($'factoryslot{i}')
-			local property_info = mapping[property]
-			local curr = mc[property_info]
 
 			table.insert(to_draw, {
 				x_pos = x + gap_0,
@@ -285,7 +292,8 @@ util.create_tick_handler(function()
 
 		-- bunker/acid lab
 		for i = 5, 6 do
-			if not mcs:getChildren()[i + 1].value then
+			local curr = mc[i]
+			if not table.contains(mc_labels_to_draw, curr.label) then
 				continue
 			end
 
@@ -352,7 +360,6 @@ util.create_tick_handler(function()
 			})
 		end
 
-		-- draw it all
 		for to_draw as v do
 			directx.draw_text(
 				v.x_pos,
