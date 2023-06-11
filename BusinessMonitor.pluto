@@ -49,7 +49,7 @@ end
 auto_updater.run_auto_update({
     source_url='https://raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/BusinessMonitor.pluto',
     script_relpath=SCRIPT_RELPATH,
-    verify_file_begins_with="--"
+    verify_file_begins_with='--'
 })
 
 local char_slot = util.get_char_slot()
@@ -197,13 +197,13 @@ do
 	position:slider_float('Y Position', {'bmypos'}, '', 0, 71, 0, 1, function(v)
 		y = v / 100
 	end)
-	position:slider_float('Label', {'bmlblpos'}, 'Aka. the 'Property'.', -1000, 1000, 3, 1, function(v)
+	position:slider_float('Label', {'bmlblpos'}, 'Aka. the "Property".', -1000, 1000, 3, 1, function(v)
 		gap_0 = v / 1000
 	end).precision = 4
-	position:slider_float('Left Column', {'bmllblpos'}, 'Aka. 'Supplies'.', -66, 32, 11, 1, function(v)
+	position:slider_float('Left Column', {'bmllblpos'}, 'Aka. "Supplies".', -66, 32, 11, 1, function(v)
 		gap_1 = v / 100
 	end).precision = 4
-	position:slider_float('Right Column', {'bmrlblpos'}, 'Aka. 'Product'.', -68, 32, 16, 1, function(v)
+	position:slider_float('Right Column', {'bmrlblpos'}, 'Aka. "Product".', -68, 32, 16, 1, function(v)
 		gap_2 = v / 100
 	end).precision = 4
 
@@ -214,13 +214,13 @@ do
 	text:slider_float('Row Spacing', {'bmrowspacing'}, '', 0, 1000, 165, 1, function(v)
 		row_spacing = v / 10000
 	end).precision = 4
-	text:list_select('Label', {}, 'The 'Property' text alignment.', alignments, 1, function(idx)
+	text:list_select('Label', {}, 'The "Property" text alignment.', alignments, 1, function(idx)
 		align_0 = idx
 	end)
-	text:list_select('Left Column', {}, 'The 'Supplies' text alignment.', alignments, 3, function(idx)
+	text:list_select('Left Column', {}, 'The "Supplies" text alignment.', alignments, 3, function(idx)
 		align_1 = idx
 	end)
-	text:list_select('Right Column', {}, 'The 'Product' text alignment.', alignments, 3, function(idx)
+	text:list_select('Right Column', {}, 'The "Product" text alignment.', alignments, 3, function(idx)
 		align_2 = idx
 	end)
 
