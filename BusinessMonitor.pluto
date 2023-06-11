@@ -192,7 +192,6 @@ end)
 
 util.create_tick_handler(function()
 	while not util.is_session_started() or util.is_session_transition_active() do
-		--util.draw_centred_text('monitor: waiting for session')
 		util.yield_once()
 	end
 
@@ -254,7 +253,7 @@ util.create_tick_handler(function()
 			local curr = mc[mapping[property]]
 
 			-- very scuffed
-			if not table.contains(mc_labels_to_draw, curr.label) then
+			if not curr and not table.contains(mc_labels_to_draw, curr?.label) then
 				continue
 			end
 
