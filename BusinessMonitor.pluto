@@ -50,7 +50,7 @@ auto_updater.run_auto_update({
     source_url='https://raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/BusinessMonitor.pluto',
     script_relpath=SCRIPT_RELPATH,
     verify_file_begins_with="--"
-})s
+})
 
 local char_slot = util.get_char_slot()
 local og_util_stat_get_int64 = util.stat_get_int64
