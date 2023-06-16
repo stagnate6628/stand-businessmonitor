@@ -92,19 +92,21 @@ local safe<const> = {
         stat_1 = 'CLUB_POPULARITY',
         stat_2 = 'CLUB_SAFE_CASH_VALUE',
         max = 250000,
+		state = true
     },
     {
 		label = 'Arcade',
         stat_2 = 'ARCADE_SAFE_CASH_VALUE',
-        max = 100000
+        max = 100000,
+		state = true
     },
     {
 		label = 'Agency',
         stat_2 = 'FIXER_SAFE_CASH_VALUE',
-        max = 250000
+        max = 250000,
+		state = true
     }
 }
-local safe_refs = {}
 --[[
 	afaik this is the easiest way to do this without nested loops
 	[PROPERTY_ID]: [BUSINESS_TYPE]
@@ -137,47 +139,47 @@ local mapping = {
     [20] = 0
 }
 local mc<const> = {
-	[0] = { label = 'Forgery', max = 60 },
-	[1] = { label = 'Weed', max = 80 },
-	[2] = { label = 'Cash', max = 40 },
-	[3] = { label = 'Meth', max = 20 },
-	[4] = { label = 'Cocaine', max = 10 },
-	[5] = { label = 'Bunker', max = 100 },
-	[6] = { label = 'Acid Lab', max = 160 }
+	[0] = { label = 'Forgery', max = 60, state = true },
+	[1] = { label = 'Weed', max = 80, state = true },
+	[2] = { label = 'Cash', max = 40, state = true },
+	[3] = { label = 'Meth', max = 20, state = true },
+	[4] = { label = 'Cocaine', max = 10, state = true },
+	[5] = { label = 'Bunker', max = 100, state = true },
+	[6] = { label = 'Acid Lab', max = 160, state = true }
 }
-local mc_refs = {}
-
 local nc<const> = {
-	{ label = 'Hub Cargo', max = 50 },
-	{ label = 'Hub Weapons', max = 100 },
-	{ label = 'Hub Cocaine', max = 10 },
-	{ label = 'Hub Meth', max = 20 },
-	{ label = 'Hub Weed', max = 80 },
-	{ label = 'Hub Forgery', max = 60 },
-	{ label = 'Hub Cash', max = 40 }
+	{ label = 'Hub Cargo', max = 50, state = true },
+	{ label = 'Hub Weapons', max = 100, state = true },
+	{ label = 'Hub Cocaine', max = 10, state = true },
+	{ label = 'Hub Meth', max = 20, state = true },
+	{ label = 'Hub Weed', max = 80, state = true },
+	{ label = 'Hub Forgery', max = 60, state = true },
+	{ label = 'Hub Cash', max = 40, state = true }
 }
-local nc_refs = {}
 
 local r = menu.my_root()
 local toggle = r:toggle('Enable', {}, '', function() end, true)
 local views = r:list('Views', {}, 'Configure what to monitor.')
 
-local safes_ = views:list('Safes')
-local mcs = views:list('MC Business')
-local hubs = views:list('Nightclub')
-
 do
+	local safes_ = views:list('Safes')
+	local mcs = views:list('MC Business')
+	local hubs = views:list('Nightclub')
+
 	for safe as v do
-		local ref = safes_:toggle(v.label, {}, '', function() end, true)
-		table.insert(safe_refs, ref)
+		safes_:toggle(v.label, {}, '', function(s)
+			v.state = s
+		end, v.state)
 	end
 	for mc as v do
-		local ref = mcs:toggle(v.label, {}, '', function() end, true)
-		table.insert(mc_refs, ref)
+		mcs:toggle(v.label, {}, '', function(s)
+			v.state = s
+		end, v.state)
 	end
 	for nc as v do
-		local ref = hubs:toggle(v.label, {}, '', function() end, true)
-		table.insert(nc_refs, ref)
+		hubs:toggle(v.label, {}, '', function(s)
+			v.state = s
+		end, v.state)
 	end
 
 	r:divider('Configuration')
@@ -255,7 +257,7 @@ util.create_tick_handler(function()
 		to_draw = {}
 
 		for k, v in safe do
-			if not safe_refs[k].value then
+			if not v.state then
 				continue
 			end
 
@@ -295,31 +297,27 @@ util.create_tick_handler(function()
 			})
 		end
 
-		for k, v in mc_refs do
-			if not v.value then
-				continue
-			end
-
-			tmp += row_spacing
-
-			local idx = k - 1
+		for k, v in mc do
 			local curr
+			if 0 <= k and k <= 4 then
+				local p = util.stat_get_int64($'factoryslot{k}')
+				local p_info = mapping[p]
 
-			local s = util.stat_get_int64($'MATTOTALFORFACTORY'..idx)
-			local p = util.stat_get_int64($'PRODTOTALFORFACTORY'..idx)
-
-			if 0 <= idx and idx <= 4 then
-				local property = util.stat_get_int64('factoryslot' .. idx)
-				local property_info = mapping[property]
-
-				if not property_info then
-					tmp -= row_spacing
+				if not p_info or not mc[p_info].state then
 					continue
 				end
-				curr = mc[property_info]
+				curr = mc[p_info]
 			else
-				curr = mc[idx]
+				if not mc[k].state then
+					continue
+				end
+				curr = mc[k]
 			end
+
+			local s = util.stat_get_int64($'MATTOTALFORFACTORY{k}')
+			local p = util.stat_get_int64($'PRODTOTALFORFACTORY{k}')
+
+			tmp += row_spacing
 
 			table.insert(to_draw, {
 				x_pos = x + gap_0,
@@ -348,7 +346,7 @@ util.create_tick_handler(function()
 		end
 
 		for k, v in nc do
-			if not nc_refs[k].value then
+			if not v.state then
 				continue
 			end
 
