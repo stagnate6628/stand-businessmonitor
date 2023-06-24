@@ -53,15 +53,6 @@ local safe<const> = {
 		state = true
     }
 }
---[[
-	afaik this is the easiest way to do this without nested loops
-	[PROPERTY_ID]: [BUSINESS_TYPE]
-	0 - forgery
-	1 - weed
-	2 - counterfit cash
-	3 - meth
-	4 - cocaine
-]]
 local mapping = {
     [1]  = 3,
     [2]  = 1,
