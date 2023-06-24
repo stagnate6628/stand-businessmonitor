@@ -1,4 +1,4 @@
-local SCRIPT_VERSION = '0.0.4'
+local SCRIPT_VERSION = '0.0.6'
 local resp = false
 async_http.init(
 	'https://raw.githubusercontent.com/stagnate6628/stand-businessmonitor/0.0.6/version',
