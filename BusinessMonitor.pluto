@@ -11,15 +11,14 @@ async_http.init(
 				$'Version "{body}" is out now, you are currently on "{SCRIPT_VERSION}".',
 				function()
 					async_http.init(
-						'https://raw.githubusercontent.com/stagnate6628/stand-businessmonitor/0.0.6/BusinessMonitor.pluto',
-						'',
-						function(body_)
-							local f = io.open(filesystem.scripts_dir() .. SCRIPT_RELPATH, 'wb')
-							f:write(body_)
-							f:close()
-							util.restart_script()
-						end
-					end
+					'https://raw.githubusercontent.com/stagnate6628/stand-businessmonitor/0.0.6/BusinessMonitor.pluto',
+					'',
+					function(body_)
+						local f = io.open(filesystem.scripts_dir() .. SCRIPT_RELPATH, 'wb')
+						f:write(body_)
+						f:close()
+						util.restart_script()
+					end)
 					async_http.dispatch()
 				end
 			)
