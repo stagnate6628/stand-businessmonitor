@@ -70,25 +70,25 @@ local text_colour = { r = 1, g = 1, b = 1, a = 1 }
 local max_colour = { r = 0, g = 1, b = 0, a = 1 }
 
 local safe<const> = {
-    {
-	label = 'Nightclub',
-        stat_1 = 'CLUB_POPULARITY',
-        stat_2 = 'CLUB_SAFE_CASH_VALUE',
-        max = 250000,
-	state = true
-    },
-    {
-	label = 'Arcade',
-        stat_2 = 'ARCADE_SAFE_CASH_VALUE',
-        max = 100000,
-	state = true
-    },
-    {
-	label = 'Agency',
-        stat_2 = 'FIXER_SAFE_CASH_VALUE',
-        max = 250000,
-	state = true
-    }
+	{
+		label = 'Nightclub',
+		stat_1 = 'CLUB_POPULARITY',
+		stat_2 = 'CLUB_SAFE_CASH_VALUE',
+		max = 250_000,
+		state = true
+	},
+	{
+		label = 'Arcade',
+		stat_2 = 'ARCADE_SAFE_CASH_VALUE',
+		max = 100_000
+		state = true
+	},
+	{
+		label = 'Agency',
+		stat_2 = 'FIXER_SAFE_CASH_VALUE',
+		max = 250_000,
+		state = true
+	}
 }
 local mapping<const> = {
     [1]  = 3,
