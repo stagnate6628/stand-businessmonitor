@@ -80,7 +80,7 @@ local safe<const> = {
 	{
 		label = 'Arcade',
 		stat_2 = 'ARCADE_SAFE_CASH_VALUE',
-		max = 100_000
+		max = 100_000,
 		state = true
 	},
 	{
