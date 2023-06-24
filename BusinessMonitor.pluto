@@ -1,3 +1,41 @@
+local SCRIPT_VERSION = '0.0.6'
+local resp = false
+async_http.init(
+	'https://raw.githubusercontent.com/stagnate6628/stand-businessmonitor/0.0.6/version',
+	'',
+	function(body, headers, status_code)
+		if soup.version_compare(SCRIPT_VERSION, body) == -1 then
+			menu.my_root():action(
+				'Update Script',
+				{},
+				$'Version "{body}" is out now, you are currently on "{SCRIPT_VERSION}".',
+				function()
+					async_http.init(
+						'https://raw.githubusercontent.com/stagnate6628/stand-businessmonitor/0.0.6/BusinessMonitor.pluto',
+						'',
+						function(body_)
+							local f = io.open(filesystem.scripts_dir() .. SCRIPT_RELPATH, 'wb')
+							f:write(body_)
+							f:close()
+							util.restart_script()
+						end
+					end
+					async_http.dispatch()
+				end
+			)
+			menu.my_root():divider('')
+		end
+		resp = true
+	end,
+	function()
+		resp = true
+	end
+)
+async_http.dispatch()
+repeat
+	util.yield()
+until resp
+
 local char_slot = util.get_char_slot()
 local og_util_stat_get_int64 = util.stat_get_int64
 util.stat_get_int64 = function(stat)
