@@ -224,6 +224,7 @@ util.create_tick_handler(function()
 			end
 
 			local out = util.stat_get_int64(v.stat_2)
+
 			table.insert(to_draw, {
 				x_pos = x + gap_2,
 				y_pos = tmp,
@@ -251,10 +252,10 @@ util.create_tick_handler(function()
 				curr = mc[k]
 			end
 
+			tmp += row_spacing
+
 			local s = util.stat_get_int64($'MATTOTALFORFACTORY{k}')
 			local p = util.stat_get_int64($'PRODTOTALFORFACTORY{k}')
-
-			tmp += row_spacing
 
 			table.insert(to_draw, {
 				x_pos = x + gap_0,
