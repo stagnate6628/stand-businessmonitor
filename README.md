@@ -1,16 +1,18 @@
 # stand-businessmonitor
-An alternative Business Monitor for Stand
+An alternative business monitor for Stand
 
-Differences from MusinessBanager Monitor:
-- more visible business monitoring
-- customization options
-- arcade/agency/acid lab views
+**How does this differ from the monitors found in MusinessBanager?**
+- better business monitor customizability and contrast
+    - some qol that might be expected from an overlay
+- views for arcade and agency safes, acid lab
 - does not include ceo warehouses
 
-# Installation
-You can download the repository as [zip](https://github.com/stagnate6628/stand-businessmonitor/archive/refs/heads/main.zip) or the latest lua file found [here](https://github.com/stagnate6628/stand-businessmonitor/releases).
+**If it is not clear enough already, this does not apply any modifications to your businesses**
 
-Either way, drag `BusinessMonitor.pluto` to `%appdata%\Stand\Lua Scripts` and run, no additional files required.
+# Installation
+You can download the latest version found [here](https://github.com/stagnate6628/stand-businessmonitor/releases) or download the repository [here](https://github.com/stagnate6628/stand-businessmonitor/archive/refs/heads/main.zip).
+
+Make sure `BusinessMonitor.pluto` can be found in `%appdata%\Stand\Lua Scripts` to be able to run it.
 
 # Preview
 [![](https://raw.githubusercontent.com/stagnate6628/stand-businessoverlay/main/preview.png)](https://raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/preview.png)
