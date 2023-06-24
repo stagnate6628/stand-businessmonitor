@@ -1,4 +1,4 @@
-local SCRIPT_VERSION = '0.0.6'
+local SCRIPT_VERSION = '0.0.4'
 local resp = false
 async_http.init(
 	'https://raw.githubusercontent.com/stagnate6628/stand-businessmonitor/0.0.6/version',
@@ -8,7 +8,7 @@ async_http.init(
 			menu.my_root():action(
 				'Update Script',
 				{},
-				$'Version "{body}" is out now, you are currently on "{SCRIPT_VERSION}".',
+				$'"{body}" is available, you are currently on "{SCRIPT_VERSION}".',
 				function()
 					async_http.init(
 					'https://raw.githubusercontent.com/stagnate6628/stand-businessmonitor/0.0.6/BusinessMonitor.pluto',
