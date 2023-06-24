@@ -71,23 +71,23 @@ local max_colour = { r = 0, g = 1, b = 0, a = 1 }
 
 local safe<const> = {
     {
-		label = 'Nightclub',
+	label = 'Nightclub',
         stat_1 = 'CLUB_POPULARITY',
         stat_2 = 'CLUB_SAFE_CASH_VALUE',
         max = 250000,
-		state = true
+	state = true
     },
     {
-		label = 'Arcade',
+	label = 'Arcade',
         stat_2 = 'ARCADE_SAFE_CASH_VALUE',
         max = 100000,
-		state = true
+	state = true
     },
     {
-		label = 'Agency',
+	label = 'Agency',
         stat_2 = 'FIXER_SAFE_CASH_VALUE',
         max = 250000,
-		state = true
+	state = true
     }
 }
 local mapping<const> = {
