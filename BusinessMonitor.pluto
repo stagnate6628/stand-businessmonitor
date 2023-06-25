@@ -242,6 +242,7 @@ util.create_tick_handler(function()
 				y_pos = tmp,
 				text = v.label,
 				align = align_0,
+				size = text_size,
 				colour = text_colour
 			})
 
@@ -249,6 +250,8 @@ util.create_tick_handler(function()
 				local out = util.stat_get_int64(v.stat_1)
 				if out then
 					out = math.floor(out / 10)
+				else
+					out = 100
 				end
 
 				table.insert(to_draw, {
@@ -268,6 +271,7 @@ util.create_tick_handler(function()
 				y_pos = tmp,
 				text = out,
 				align = align_2,
+				size = text_size,
 				colour = out == v.max ? max_colour : text_colour
 			})
 		end
@@ -299,6 +303,7 @@ util.create_tick_handler(function()
 				y_pos = tmp,
 				text = curr.label,
 				align = align_0,
+				size = text_size,
 				colour = text_colour
 			})
 			table.insert(to_draw, {
@@ -306,6 +311,7 @@ util.create_tick_handler(function()
 				y_pos = tmp,
 				text = $'{s}%',
 				align = align_1,
+				size = text_size,
 				colour = text_colour
 			})
 			table.insert(to_draw, {
@@ -313,6 +319,7 @@ util.create_tick_handler(function()
 				y_pos = tmp,
 				text = $'{p}/' .. curr.max,
 				align = align_2,
+				size = text_size,
 				colour = p == curr.max ? max_colour : text_colour
 			})
 		end
@@ -331,6 +338,7 @@ util.create_tick_handler(function()
 				y_pos = tmp,
 				text = v.label,
 				align = align_0,
+				size = text_size,
 				colour = text_colour
 			})
 			table.insert(to_draw, {
@@ -338,6 +346,7 @@ util.create_tick_handler(function()
 				y_pos = tmp,
 				text = $'{out}/' .. v.max,
 				align = align_2,
+				size = text_size,
 				colour = out == v.max ? max_colour : text_colour
 			})
 		end
@@ -348,7 +357,7 @@ util.create_tick_handler(function()
 				v.y_pos,
 				v.text,
 				v.align,
-				text_size,
+				v.size,
 				v.colour
 			)
 		end
