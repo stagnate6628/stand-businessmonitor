@@ -220,11 +220,7 @@ util.on_transition_finished(function()
 end)
 
 util.create_tick_handler(function()
-	while not util.is_session_started() or util.is_session_transition_active() do
-		util.yield_once()
-	end
-
-	if toggle.value then
+	if toggle.value and util.is_session_started() then
 		directx.draw_rect(x, y, width, height, background_colour)
 
 		tmp = y
@@ -242,7 +238,6 @@ util.create_tick_handler(function()
 				y_pos = tmp,
 				text = v.label,
 				align = align_0,
-				size = text_size,
 				colour = text_colour
 			})
 
@@ -271,7 +266,6 @@ util.create_tick_handler(function()
 				y_pos = tmp,
 				text = out,
 				align = align_2,
-				size = text_size,
 				colour = out == v.max ? max_colour : text_colour
 			})
 		end
@@ -303,7 +297,6 @@ util.create_tick_handler(function()
 				y_pos = tmp,
 				text = curr.label,
 				align = align_0,
-				size = text_size,
 				colour = text_colour
 			})
 			table.insert(to_draw, {
@@ -311,7 +304,6 @@ util.create_tick_handler(function()
 				y_pos = tmp,
 				text = $'{s}%',
 				align = align_1,
-				size = text_size,
 				colour = text_colour
 			})
 			table.insert(to_draw, {
@@ -319,7 +311,6 @@ util.create_tick_handler(function()
 				y_pos = tmp,
 				text = $'{p}/' .. curr.max,
 				align = align_2,
-				size = text_size,
 				colour = p == curr.max ? max_colour : text_colour
 			})
 		end
@@ -338,7 +329,6 @@ util.create_tick_handler(function()
 				y_pos = tmp,
 				text = v.label,
 				align = align_0,
-				size = text_size,
 				colour = text_colour
 			})
 			table.insert(to_draw, {
@@ -346,7 +336,6 @@ util.create_tick_handler(function()
 				y_pos = tmp,
 				text = $'{out}/' .. v.max,
 				align = align_2,
-				size = text_size,
 				colour = out == v.max ? max_colour : text_colour
 			})
 		end
@@ -357,7 +346,7 @@ util.create_tick_handler(function()
 				v.y_pos,
 				v.text,
 				v.align,
-				v.size,
+				text_size,
 				v.colour
 			)
 		end
