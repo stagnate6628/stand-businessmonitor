@@ -219,8 +219,6 @@ util.on_transition_finished(function()
 	char_slot = util.get_char_slot()
 end)
 
-util.yield()
-
 util.create_tick_handler(function()
 	if toggle.value and util.is_session_started() then
 		directx.draw_rect(x, y, width, height, background_colour)
