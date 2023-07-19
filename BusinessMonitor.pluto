@@ -3,7 +3,7 @@ if async_http.have_access() then
 	local SCRIPT_VERSION = '0.0.6'
 	local resp = false
 	async_http.init(
-		'https://raw.githubusercontent.com/stagnate6628/stand-businessmonitor/0.0.6/version',
+		'https://raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/version',
 		'',
 		function(body, headers, status_code)
 			if soup.version_compare(SCRIPT_VERSION, body) == -1 then
@@ -13,7 +13,7 @@ if async_http.have_access() then
 					$"\"{body}\" is available, you are currently on \"{SCRIPT_VERSION}\".",
 					function()
 						async_http.init(
-						'https://raw.githubusercontent.com/stagnate6628/stand-businessmonitor/0.0.6/BusinessMonitor.pluto',
+						'https://raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/BusinessMonitor.pluto',
 						'',
 						function(body_)
 							local f = io.open(filesystem.scripts_dir() .. SCRIPT_RELPATH, 'wb')
