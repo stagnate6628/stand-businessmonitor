@@ -1,3 +1,4 @@
+--stupid autoupdater
 if async_http.have_access() then
 	local SCRIPT_VERSION = '0.0.6'
 	local resp = false
