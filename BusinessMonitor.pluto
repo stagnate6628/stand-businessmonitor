@@ -254,7 +254,6 @@ util.create_tick_handler(function()
 					y_pos = tmp,
 					text = $"{out}%",
 					align = align_1,
-					size = text_size,
 					colour = text_colour
 				})
 			end
