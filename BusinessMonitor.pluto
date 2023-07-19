@@ -1,44 +1,46 @@
-local SCRIPT_VERSION = '0.0.6'
-local resp = false
-async_http.init(
-	'https://raw.githubusercontent.com/stagnate6628/stand-businessmonitor/0.0.6/version',
-	'',
-	function(body, headers, status_code)
-		if soup.version_compare(SCRIPT_VERSION, body) == -1 then
-			menu.my_root():action(
-				'Update Script',
-				{},
-				$'"{body}" is available, you are currently on "{SCRIPT_VERSION}".',
-				function()
-					async_http.init(
-					'https://raw.githubusercontent.com/stagnate6628/stand-businessmonitor/0.0.6/BusinessMonitor.pluto',
-					'',
-					function(body_)
-						local f = io.open(filesystem.scripts_dir() .. SCRIPT_RELPATH, 'wb')
-						f:write(body_)
-						f:close()
-						util.restart_script()
-					end)
-					async_http.dispatch()
-				end
-			)
-			menu.my_root():divider('')
+if async_http.have_access() then
+	local SCRIPT_VERSION = '0.0.6'
+	local resp = false
+	async_http.init(
+		'https://raw.githubusercontent.com/stagnate6628/stand-businessmonitor/0.0.6/version',
+		'',
+		function(body, headers, status_code)
+			if soup.version_compare(SCRIPT_VERSION, body) == -1 then
+				menu.my_root():action(
+					'Update Script',
+					{},
+					$"\"{body}\" is available, you are currently on \"{SCRIPT_VERSION}\".",
+					function()
+						async_http.init(
+						'https://raw.githubusercontent.com/stagnate6628/stand-businessmonitor/0.0.6/BusinessMonitor.pluto',
+						'',
+						function(body_)
+							local f = io.open(filesystem.scripts_dir() .. SCRIPT_RELPATH, 'wb')
+							f:write(body_)
+							f:close()
+							util.restart_script()
+						end)
+						async_http.dispatch()
+					end
+				)
+				menu.my_root():divider('')
+			end
+			resp = true
+		end,
+		function()
+			resp = true
 		end
-		resp = true
-	end,
-	function()
-		resp = true
-	end
-)
-async_http.dispatch()
-repeat
-	util.yield()
-until resp
+	)
+	async_http.dispatch()
+	repeat
+		util.yield()
+	until resp
+end
 
 local char_slot = util.get_char_slot()
 local og_util_stat_get_int64 = util.stat_get_int64
 util.stat_get_int64 = function(stat)
-	return og_util_stat_get_int64($'MP{char_slot}_{stat}')
+	return og_util_stat_get_int64($"MP{char_slot}_{stat}")
 end
 
 local x = 0.67
@@ -245,14 +247,12 @@ util.create_tick_handler(function()
 				local out = util.stat_get_int64(v.stat_1)
 				if out then
 					out = math.floor(out / 10)
-				else
-					out = 100
 				end
 
 				table.insert(to_draw, {
 					x_pos = x + gap_1,
 					y_pos = tmp,
-					text = $'{out}%',
+					text = $"{out}%",
 					align = align_1,
 					size = text_size,
 					colour = text_colour
@@ -273,7 +273,7 @@ util.create_tick_handler(function()
 		for k, v in mc do
 			local curr
 			if 0 <= k and k <= 4 then
-				local p = util.stat_get_int64($'factoryslot{k}')
+				local p = util.stat_get_int64($"factoryslot{k}")
 				local p_info = mapping[p]
 
 				if not p_info or not mc[p_info].state then
@@ -289,8 +289,8 @@ util.create_tick_handler(function()
 
 			tmp += row_spacing
 
-			local s = util.stat_get_int64($'MATTOTALFORFACTORY{k}')
-			local p = util.stat_get_int64($'PRODTOTALFORFACTORY{k}')
+			local s = util.stat_get_int64($"MATTOTALFORFACTORY{k}")
+			local p = util.stat_get_int64($"PRODTOTALFORFACTORY{k}")
 
 			table.insert(to_draw, {
 				x_pos = x + gap_0,
@@ -302,14 +302,14 @@ util.create_tick_handler(function()
 			table.insert(to_draw, {
 				x_pos = x + gap_1,
 				y_pos = tmp,
-				text = $'{s}%',
+				text = $"{s}%",
 				align = align_1,
 				colour = text_colour
 			})
 			table.insert(to_draw, {
 				x_pos = x + gap_2,
 				y_pos = tmp,
-				text = $'{p}/' .. curr.max,
+				text = $"{p}/" .. curr.max,
 				align = align_2,
 				colour = p == curr.max ? max_colour : text_colour
 			})
@@ -322,7 +322,7 @@ util.create_tick_handler(function()
 
 			tmp += row_spacing
 
-			local out = util.stat_get_int64('HUB_PROD_TOTAL_' .. k-1)
+			local out = util.stat_get_int64($"HUB_PROD_TOTAL_{k-1}")
 
 			table.insert(to_draw, {
 				x_pos = x + gap_0,
@@ -334,7 +334,7 @@ util.create_tick_handler(function()
 			table.insert(to_draw, {
 				x_pos = x + gap_2,
 				y_pos = tmp,
-				text = $'{out}/' .. v.max,
+				text = $"{out}/" .. v.max,
 				align = align_2,
 				colour = out == v.max ? max_colour : text_colour
 			})
