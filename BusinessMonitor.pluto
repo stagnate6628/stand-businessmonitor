@@ -61,6 +61,7 @@ local align_2 = ALIGN_TOP_RIGHT
 
 local row_spacing = 0.0165
 local text_size = 0.425
+local show_max = true
 
 local background_colour = { r = 0, g = 0, b = 0, a = 0.8 }
 local text_colour = { r = 1, g = 1, b = 1, a = 1 }
@@ -247,6 +248,9 @@ do
 	text:slider('Right Column', {}, 'The "Product" text alignment.', 0, 9, align_2, 1, function(idx)
 		align_2 = idx
 	end)
+	text:toggle('Show Capacity Values', {}, 'Displays the normal maximums (non-modded) for specific businesses.', function(s)
+		show_max = s
+	end, true)
 
 	local colours = r:list('Colours')
 	colours:colour('Background Colour', {}, '', background_colour, true, function(c)
@@ -354,7 +358,7 @@ util.create_tick_handler(function()
 			table.insert(to_draw, {
 				x_pos = x + gap_2,
 				y_pos = tmp,
-				text = $"{p}/" .. curr.max,
+				text = show_max ? $"{p}/{curr.max}" : p,
 				align = align_2,
 				colour = p == curr.max ? max_colour : text_colour
 			})
@@ -379,7 +383,7 @@ util.create_tick_handler(function()
 			table.insert(to_draw, {
 				x_pos = x + gap_2,
 				y_pos = tmp,
-				text = $"{out}/" .. v.max,
+				text = show_max ? $"{out}/{v.max}" : out,
 				align = align_2,
 				colour = out == v.max ? max_colour : text_colour
 			})
@@ -408,7 +412,7 @@ util.create_tick_handler(function()
 				table.insert(to_draw, {
 					x_pos = x + gap_2,
 					y_pos = tmp,
-					text = $"{out}/{max}",
+					text = show_max ? $"{out}/{max}" : out,
 					align = align_2,
 					colour = out > max ? max_colour : text_colour
 				})
