@@ -152,28 +152,28 @@ local ceo<const> = {
 	{ label = 'Warehouse 5', state = true }
 }
 local ceo_data<const> = {
-    [1]  = { name = "Pacific Bait Storage",      max = 16 },
-    [2]  = { name = "White Widow Garage",        max = 16 },
-    [3]  = { name = "Celltowa Unit",             max = 16 },
-    [4]  = { name = "Convenience Store Lockup",  max = 16 },
-    [5]  = { name = "Foreclosed Garage",         max = 16 },
-    [6]  = { name = "Xero Gas Factory",          max = 111 },
-    [7]  = { name = "Derriere Lingerie Backlot", max = 42 },
-    [8]  = { name = "Bilgeco Warehouse",         max = 111 },
-    [9]  = { name = "Pier 400 Utility Building", max = 16 },
-    [10] = { name = "GEE Warehouse",             max = 42 },
-    [11] = { name = "LS Marine Building 3",      max = 42 },
-    [12] = { name = "Railyard Warehouse",        max = 42 },
-    [13] = { name = "Fridgit Annexe",            max = 42 },
-    [14] = { name = "Disused Factory Outlet",    max = 42 },
-    [15] = { name = "Discount Retail Unit",      max = 42 },
-    [16] = { name = "Logistics Depot",           max = 111 },
-    [17] = { name = "Darnell Bros Warehouse",    max = 111 },
-    [18] = { name = "Wholesale Furniture",       max = 111 },
-    [19] = { name = "Cypress Warehouses",        max = 111 },
-    [20] = { name = "West Vinewood Backlot",     max = 111 },
-    [21] = { name = "Old Power Station",         max = 42 },
-    [22] = { name = "Walker & Sons Warehouse",   max = 111 }
+    { name = "Pacific Bait Storage",      max = 16 },
+    { name = "White Widow Garage",        max = 16 },
+    { name = "Celltowa Unit",             max = 16 },
+    { name = "Convenience Store Lockup",  max = 16 },
+    { name = "Foreclosed Garage",         max = 16 },
+    { name = "Xero Gas Factory",          max = 111 },
+    { name = "Derriere Lingerie Backlot", max = 42 },
+    { name = "Bilgeco Warehouse",         max = 111 },
+    { name = "Pier 400 Utility Building", max = 16 },
+    { name = "GEE Warehouse",             max = 42 },
+    { name = "LS Marine Building 3",      max = 42 },
+    { name = "Railyard Warehouse",        max = 42 },
+    { name = "Fridgit Annexe",            max = 42 },
+    { name = "Disused Factory Outlet",    max = 42 },
+    { name = "Discount Retail Unit",      max = 42 },
+    { name = "Logistics Depot",           max = 111 },
+    { name = "Darnell Bros Warehouse",    max = 111 },
+    { name = "Wholesale Furniture",       max = 111 },
+    { name = "Cypress Warehouses",        max = 111 },
+    { name = "West Vinewood Backlot",     max = 111 },
+    { name = "Old Power Station",         max = 42 },
+    { name = "Walker & Sons Warehouse",   max = 111 }
 }
 
 local r = menu.my_root()
@@ -209,7 +209,7 @@ do
 
 	r:divider('Configuration')
 
-	r:list_select('Rendering Method', {}, 'How the monitor should be drawn.',
+	r:list_select('Rendering Method', {}, 'How the monitor should be drawn. Note that the translation is not 1:1.',
 		{
 			{ 'DirectX', {}, 'The default, not really any text customisation.' },
 			{ 'Natives', {}, 'Uses rendering functions available to GTA, text is more customisable.' }
