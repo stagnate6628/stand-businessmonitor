@@ -152,28 +152,28 @@ local ceo<const> = {
 	{ label = 'Warehouse 5', state = false }
 }
 local ceo_data<const> = {
-    { name = "Pacific Bait Storage",      max = 16 },
-    { name = "White Widow Garage",        max = 16 },
-    { name = "Celltowa Unit",             max = 16 },
-    { name = "Convenience Store Lockup",  max = 16 },
-    { name = "Foreclosed Garage",         max = 16 },
-    { name = "Xero Gas Factory",          max = 111 },
-    { name = "Derriere Lingerie Backlot", max = 42 },
-    { name = "Bilgeco Warehouse",         max = 111 },
-    { name = "Pier 400 Utility Building", max = 16 },
-    { name = "GEE Warehouse",             max = 42 },
-    { name = "LS Marine Building 3",      max = 42 },
-    { name = "Railyard Warehouse",        max = 42 },
-    { name = "Fridgit Annexe",            max = 42 },
-    { name = "Disused Factory Outlet",    max = 42 },
-    { name = "Discount Retail Unit",      max = 42 },
-    { name = "Logistics Depot",           max = 111 },
-    { name = "Darnell Bros Warehouse",    max = 111 },
-    { name = "Wholesale Furniture",       max = 111 },
-    { name = "Cypress Warehouses",        max = 111 },
-    { name = "West Vinewood Backlot",     max = 111 },
-    { name = "Old Power Station",         max = 42 },
-    { name = "Walker & Sons Warehouse",   max = 111 }
+    { name = 'Pacific Bait Storage',      max = 16 },
+    { name = 'White Widow Garage',        max = 16 },
+    { name = 'Celltowa Unit',             max = 16 },
+    { name = 'Convenience Store Lockup',  max = 16 },
+    { name = 'Foreclosed Garage',         max = 16 },
+    { name = 'Xero Gas Factory',          max = 111 },
+    { name = 'Derriere Lingerie Backlot', max = 42 },
+    { name = 'Bilgeco Warehouse',         max = 111 },
+    { name = 'Pier 400 Utility Building', max = 16 },
+    { name = 'GEE Warehouse',             max = 42 },
+    { name = 'LS Marine Building 3',      max = 42 },
+    { name = 'Railyard Warehouse',        max = 42 },
+    { name = 'Fridgit Annexe',            max = 42 },
+    { name = 'Disused Factory Outlet',    max = 42 },
+    { name = 'Discount Retail Unit',      max = 42 },
+    { name = 'Logistics Depot',           max = 111 },
+    { name = 'Darnell Bros Warehouse',    max = 111 },
+    { name = 'Wholesale Furniture',       max = 111 },
+    { name = 'Cypress Warehouses',        max = 111 },
+    { name = 'West Vinewood Backlot',     max = 111 },
+    { name = 'Old Power Station',         max = 42 },
+    { name = 'Walker & Sons Warehouse',   max = 111 }
 }
 
 local r = menu.my_root()
@@ -183,28 +183,43 @@ do
 	local safes_ = views:list('Safes')
 	local mcs = views:list('MC Business')
 	local hubs = views:list('Nightclub')
-	local ceo_ = views:list('Special Cargo Warehouse(s)')
+	local ceo_ = views:list('Special Cargo Warehouse')
 
-	for safe as v do
-		safes_:toggle(v.label, {}, '', function(s)
-			v.state = s
-		end, v.state)
+	local function add_children_to_list(list, children)
+		for children as v do
+			list:toggle(v.label, {}, '', function(s)
+				v.state = s
+			end, v.state)
+		end
 	end
-	for mc as v do
-		mcs:toggle(v.label, {}, '', function(s)
-			v.state = s
-		end, v.state)
+	local function run_list(list, cb)
+		for list:getChildren() as v do
+			cb(v)
+		end
 	end
-	for nc as v do
-		hubs:toggle(v.label, {}, '', function(s)
-			v.state = s
-		end, v.state)
-	end
-	for ceo as v do
-		ceo_:toggle(v.label, {}, '', function(s)
-			v.state = s
-		end, v.state)
-	end
+
+	add_children_to_list(safes_, safe)
+	add_children_to_list(mcs, mc)
+	add_children_to_list(hubs, nc)
+	add_children_to_list(ceo_, ceo)
+
+	safes_:attachBefore(
+		menu.shadow_root():list_select('State', {}, '', { 'Disable All', 'Enable All' }, 1, function(idx)
+			local state = idx == 2
+			run_list(safes_, function(v)
+				v.value = state
+			end)
+			run_list(mcs, function(v)
+				v.value = state
+			end)
+			run_list(hubs, function(v)
+				v.value = state
+			end)
+			run_list(ceo_, function(v)
+				v.value = state
+			end)
+		end)
+	)
 
 	r:divider('Configuration')
 
