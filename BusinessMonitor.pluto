@@ -1,6 +1,6 @@
 --stupid autoupdater
 if async_http.have_access() then
-	local SCRIPT_VERSION = '0.0.6'
+	local SCRIPT_VERSION = '0.1'
 	local resp = false
 	async_http.init(
 		'https://raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/version',
@@ -177,7 +177,6 @@ local ceo_data<const> = {
 }
 
 local r = menu.my_root()
-local toggle = r:toggle('Enable', {}, '', function() end, false)
 local views = r:list('Views', {}, 'Configure what to monitor.')
 
 do
@@ -288,7 +287,7 @@ util.on_transition_finished(function()
 end)
 
 util.create_tick_handler(function()
-	if toggle.value and util.is_session_started() then
+	if util.is_session_started() then
 		directx.draw_rect(x, y, width, height, background_colour)
 
 		tmp = y
