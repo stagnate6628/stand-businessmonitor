@@ -67,12 +67,6 @@ local y = 0
 local width = 0.167
 local height = 0.39
 
-local alignments<const> = {
-	'ALIGN_TOP_LEFT', 'ALIGN_TOP_CENTRE', 'ALIGN_TOP_RIGHT',
-	'ALIGN_CENTRE_LEFT', 'ALIGN_CENTRE', 'ALIGN_CENTRE_RIGHT',
-	'ALIGN_BOTTOM_LEFT', 'ALIGN_BOTTOM_CENTRE', 'ALIGN_BOTTOM_RIGHT'
-}
-
 local gap_0 = 0.003
 local align_0 = ALIGN_TOP_LEFT
 
@@ -236,7 +230,7 @@ do
 	window:slider_float('Width', {'bmwidth'}, '', 0, 10000, 167, 1, function(v)
 		width = v / 1000
 	end)
-	window:slider_float('Height', {'bmheight'}, '', 0, 10000, 31, 1, function(v)
+	window:slider_float('Height', {'bmheight'}, '', 0, 10000, 39, 1, function(v)
 		height = v / 100
 	end)
 
@@ -264,13 +258,13 @@ do
 	text:slider_float('Row Spacing', {'bmrowspacing'}, '', 0, 1000, 165, 1, function(v)
 		row_spacing = v / 10000
 	end).precision = 4
-	text:list_select('Label', {}, 'The "Property" text alignment.', alignments, 1, function(idx)
+	text:slider('Label', {}, 'The "Property" text alignment.', 0, 9, align_0, 1, function(idx)
 		align_0 = idx
 	end)
-	text:list_select('Left Column', {}, 'The "Supplies" text alignment.', alignments, 3, function(idx)
+	text:slider('Left Column', {}, 'The "Supplies" text alignment.', 0, 9, align_1, 1, function(idx)
 		align_1 = idx
 	end)
-	text:list_select('Right Column', {}, 'The "Product" text alignment.', alignments, 3, function(idx)
+	text:slider('Right Column', {}, 'The "Product" text alignment.', 0, 9, align_2, 1, function(idx)
 		align_2 = idx
 	end)
 
