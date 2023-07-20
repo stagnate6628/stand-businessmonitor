@@ -89,19 +89,19 @@ local safe<const> = {
 		stat_1 = 'CLUB_POPULARITY',
 		stat_2 = 'CLUB_SAFE_CASH_VALUE',
 		max = 250_000,
-		state = true
+		state = false
 	},
 	{
 		label = 'Arcade',
 		stat_2 = 'ARCADE_SAFE_CASH_VALUE',
 		max = 100_000,
-		state = true
+		state = false
 	},
 	{
 		label = 'Agency',
 		stat_2 = 'FIXER_SAFE_CASH_VALUE',
 		max = 250_000,
-		state = true
+		state = false
 	}
 }
 local mapping<const> = {
@@ -127,29 +127,29 @@ local mapping<const> = {
     [20] = 0
 }
 local mc<const> = {
-	[0] = { label = 'Forgery', max = 60, state = true },
-	[1] = { label = 'Weed', max = 80, state = true },
-	[2] = { label = 'Cash', max = 40, state = true },
-	[3] = { label = 'Meth', max = 20, state = true },
-	[4] = { label = 'Cocaine', max = 10, state = true },
-	[5] = { label = 'Bunker', max = 100, state = true },
-	[6] = { label = 'Acid Lab', max = 160, state = true }
+	[0] = { label = 'Forgery', max = 60, state = false },
+	[1] = { label = 'Weed', max = 80, state = false },
+	[2] = { label = 'Cash', max = 40, state = false },
+	[3] = { label = 'Meth', max = 20, state = false },
+	[4] = { label = 'Cocaine', max = 10, state = false },
+	[5] = { label = 'Bunker', max = 100, state = false },
+	[6] = { label = 'Acid Lab', max = 160, state = false }
 }
 local nc<const> = {
-	{ label = 'Hub Cargo', max = 50, state = true },
-	{ label = 'Hub Weapons', max = 100, state = true },
-	{ label = 'Hub Cocaine', max = 10, state = true },
-	{ label = 'Hub Meth', max = 20, state = true },
-	{ label = 'Hub Weed', max = 80, state = true },
-	{ label = 'Hub Forgery', max = 60, state = true },
-	{ label = 'Hub Cash', max = 40, state = true }
+	{ label = 'Hub Cargo', max = 50, state = false },
+	{ label = 'Hub Weapons', max = 100, state = false },
+	{ label = 'Hub Cocaine', max = 10, state = false },
+	{ label = 'Hub Meth', max = 20, state = false },
+	{ label = 'Hub Weed', max = 80, state = false },
+	{ label = 'Hub Forgery', max = 60, state = false },
+	{ label = 'Hub Cash', max = 40, state = false }
 }
 local ceo<const> = {
-	{ label = 'Warehouse 1', state = true },
-	{ label = 'Warehouse 2', state = true },
-	{ label = 'Warehouse 3', state = true },
-	{ label = 'Warehouse 4', state = true },
-	{ label = 'Warehouse 5', state = true }
+	{ label = 'Warehouse 1', state = false },
+	{ label = 'Warehouse 2', state = false },
+	{ label = 'Warehouse 3', state = false },
+	{ label = 'Warehouse 4', state = false },
+	{ label = 'Warehouse 5', state = false }
 }
 local ceo_data<const> = {
     { name = "Pacific Bait Storage",      max = 16 },
@@ -177,7 +177,7 @@ local ceo_data<const> = {
 }
 
 local r = menu.my_root()
-local toggle = r:toggle('Enable', {}, '', function() end, true)
+local toggle = r:toggle('Enable', {}, '', function() end, false)
 local views = r:list('Views', {}, 'Configure what to monitor.')
 
 do
@@ -294,7 +294,6 @@ util.create_tick_handler(function()
 		tmp = y
 		to_draw = {}
 
-		-- #region safes
 		for k, v in safe do
 			if not v.state then
 				continue
@@ -335,41 +334,7 @@ util.create_tick_handler(function()
 				colour = out == v.max ? max_colour : text_colour
 			})
 		end
-		-- #endregion
 
-		-- #region ceo
-		for k, v in ceo do
-			if not ceo[k].state then
-				continue
-			end
-
-			local slot = util.stat_get_int64($"PROP_WHOUSE_SLOT{k-1}")
-			if slot ~= 0 then
-				tmp += row_spacing
-
-				table.insert(to_draw, {
-					x_pos = x + gap_0,
-					y_pos = tmp,
-					text = ceo_data[slot].name,
-					align = align_0,
-					colour = text_colour
-				})
-
-				local out = util.stat_get_int64($"contotalforwhouse{k-1}")
-				local max = ceo_data[slot].max
-
-				table.insert(to_draw, {
-					x_pos = x + gap_2,
-					y_pos = tmp,
-					text = $"{out}/{max}",
-					align = align_2,
-					colour = out > max ? max_colour : text_colour
-				})
-			end
-		end
-		-- #endregion
-
-		-- #region mc
 		for k, v in mc do
 			local curr
 			if 0 <= k and k <= 4 then
@@ -414,9 +379,7 @@ util.create_tick_handler(function()
 				colour = p == curr.max ? max_colour : text_colour
 			})
 		end
-		-- #endregion
 
-		-- #region nc
 		for k, v in nc do
 			if not v.state then
 				continue
@@ -441,7 +404,36 @@ util.create_tick_handler(function()
 				colour = out == v.max ? max_colour : text_colour
 			})
 		end
-		-- #endregion
+
+		for k, v in ceo do
+			if not ceo[k].state then
+				continue
+			end
+
+			local slot = util.stat_get_int64($"PROP_WHOUSE_SLOT{k-1}")
+			if slot ~= 0 then
+				tmp += row_spacing
+
+				table.insert(to_draw, {
+					x_pos = x + gap_0,
+					y_pos = tmp,
+					text = ceo_data[slot].name,
+					align = align_0,
+					colour = text_colour
+				})
+
+				local out = util.stat_get_int64($"contotalforwhouse{k-1}")
+				local max = ceo_data[slot].max
+
+				table.insert(to_draw, {
+					x_pos = x + gap_2,
+					y_pos = tmp,
+					text = $"{out}/{max}",
+					align = align_2,
+					colour = out > max ? max_colour : text_colour
+				})
+			end
+		end
 
 		for to_draw as v do
 			directx.draw_text(
