@@ -151,35 +151,35 @@ local nc<const> = {
 	{ label = 'Hub Cash', max = 40, state = true }
 }
 local ceo<const> = {
-	{ label = '', max = 0, state = true },
-	{ label = '', max = 0, state = true },
-	{ label = '', max = 0, state = true },
-	{ label = '', max = 0, state = true },
-	{ label = '', max = 0, state = true }
+	{ label = 'Warehouse 1', state = true },
+	{ label = 'Warehouse 2', state = true },
+	{ label = 'Warehouse 3', state = true },
+	{ label = 'Warehouse 4', state = true },
+	{ label = 'Warehouse 5', state = true }
 }
 local ceo_data<const> = {
-    [1]  = {name = "Pacific Bait Storage",      capacity = 16,      coords = {x = 54.191,    y = -2569.248,  z = 6.0046 }}, -- "MP_WHOUSE_0",
-    [2]  = {name = "White Widow Garage",        capacity = 16,      coords = {x = -1083.054, y = -1261.893,  z = 5.534  }}, -- "MP_WHOUSE_1",
-    [3]  = {name = "Celltowa Unit",             capacity = 16,      coords = {x = 896.3665,  y = -1035.749,  z = 35.1096}}, -- "MP_WHOUSE_2",
-    [4]  = {name = "Convenience Store Lockup",  capacity = 16,      coords = {x = 247.473,   y = -1956.943,  z = 23.1908}}, -- "MP_WHOUSE_3",
-    [5]  = {name = "Foreclosed Garage",         capacity = 16,      coords = {x = -424.828,  y = 185.825,    z = 80.775 }}, -- "MP_WHOUSE_4",
-    [6]  = {name = "Xero Gas Factory",          capacity = 111,     coords = {x = -1042.482, y = -2023.516,  z = 13.1616}}, -- "MP_WHOUSE_5",
-    [7]  = {name = "Derriere Lingerie Backlot", capacity = 42,      coords = {x = -1268.119, y = -812.2741,  z = 17.1075}}, -- "MP_WHOUSE_6",
-    [8]  = {name = "Bilgeco Warehouse",         capacity = 111,     coords = {x = -873.65,   y = -2735.948,  z = 13.9438}}, -- "MP_WHOUSE_7",
-    [9]  = {name = "Pier 400 Utility Building", capacity = 16,      coords = {x = 274.5224,  y = -3015.413,  z = 5.6993 }}, -- "MP_WHOUSE_8",
-    [10] = {name = "GEE Warehouse",             capacity = 42,      coords = {x = 1569.69,   y = -2129.792,  z = 78.3351}}, -- "MP_WHOUSE_9",
-    [11] = {name = "LS Marine Building 3",      capacity = 42,      coords = {x = -315.551,  y = -2698.654,  z = 7.5495 }}, -- "MP_WHOUSE_10",
-    [12] = {name = "Railyard Warehouse",        capacity = 42,      coords = {x = 499.81,    y = -651.982,   z = 24.909 }}, -- "MP_WHOUSE_11",
-    [13] = {name = "Fridgit Annexe",            capacity = 42,      coords = {x = -528.5296, y = -1784.573,  z = 21.5853}}, -- "MP_WHOUSE_12",
-    [14] = {name = "Disused Factory Outlet",    capacity = 42,      coords = {x = -295.8596, y = -1353.238,  z = 31.3138}}, -- "MP_WHOUSE_13",
-    [15] = {name = "Discount Retail Unit",      capacity = 42,      coords = {x = 349.839,   y = 328.889,    z = 104.272}}, -- "MP_WHOUSE_14",
-    [16] = {name = "Logistics Depot",           capacity = 111,     coords = {x = 926.2818,  y = -1560.311,  z = 30.7404}}, -- "MP_WHOUSE_15",
-    [17] = {name = "Darnell Bros Warehouse",    capacity = 111,     coords = {x = 759.566,   y = -909.466,   z = 25.244 }}, -- "MP_WHOUSE_16",
-    [18] = {name = "Wholesale Furniture",       capacity = 111,     coords = {x = 1037.813,  y = -2173.062,  z = 31.5334}}, -- "MP_WHOUSE_17",
-    [19] = {name = "Cypress Warehouses",        capacity = 111,     coords = {x = 1019.116,  y = -2511.69,   z = 28.302 }}, -- "MP_WHOUSE_18",
-    [20] = {name = "West Vinewood Backlot",     capacity = 111,     coords = {x = -245.3405, y = 203.3286,   z = 83.818 }}, -- "MP_WHOUSE_19",
-    [21] = {name = "Old Power Station",         capacity = 42,      coords = {x = 539.346,   y = -1945.682,  z = 24.984 }}, -- "MP_WHOUSE_20",
-    [22] = {name = "Walker & Sons Warehouse",   capacity = 111,     coords = {x = 96.1538,   y = -2216.4,    z = 6.1712 }}, -- "MP_WHOUSE_21",
+    [1]  = { name = "Pacific Bait Storage",      max = 16 },
+    [2]  = { name = "White Widow Garage",        max = 16 },
+    [3]  = { name = "Celltowa Unit",             max = 16 },
+    [4]  = { name = "Convenience Store Lockup",  max = 16 },
+    [5]  = { name = "Foreclosed Garage",         max = 16 },
+    [6]  = { name = "Xero Gas Factory",          max = 111 },
+    [7]  = { name = "Derriere Lingerie Backlot", max = 42 },
+    [8]  = { name = "Bilgeco Warehouse",         max = 111 },
+    [9]  = { name = "Pier 400 Utility Building", max = 16 },
+    [10] = { name = "GEE Warehouse",             max = 42 },
+    [11] = { name = "LS Marine Building 3",      max = 42 },
+    [12] = { name = "Railyard Warehouse",        max = 42 },
+    [13] = { name = "Fridgit Annexe",            max = 42 },
+    [14] = { name = "Disused Factory Outlet",    max = 42 },
+    [15] = { name = "Discount Retail Unit",      max = 42 },
+    [16] = { name = "Logistics Depot",           max = 111 },
+    [17] = { name = "Darnell Bros Warehouse",    max = 111 },
+    [18] = { name = "Wholesale Furniture",       max = 111 },
+    [19] = { name = "Cypress Warehouses",        max = 111 },
+    [20] = { name = "West Vinewood Backlot",     max = 111 },
+    [21] = { name = "Old Power Station",         max = 42 },
+    [22] = { name = "Walker & Sons Warehouse",   max = 111 }
 }
 
 local r = menu.my_root()
@@ -190,7 +190,7 @@ do
 	local safes_ = views:list('Safes')
 	local mcs = views:list('MC Business')
 	local hubs = views:list('Nightclub')
-	local ceo = views:list('Special Cargo')
+	local ceo_ = views:list('Special Cargo Warehouse(s)')
 
 	for safe as v do
 		safes_:toggle(v.label, {}, '', function(s)
@@ -204,6 +204,11 @@ do
 	end
 	for nc as v do
 		hubs:toggle(v.label, {}, '', function(s)
+			v.state = s
+		end, v.state)
+	end
+	for ceo as v do
+		ceo_:toggle(v.label, {}, '', function(s)
 			v.state = s
 		end, v.state)
 	end
@@ -340,10 +345,32 @@ util.create_tick_handler(function()
 
 		-- #region ceo
 		for k, v in ceo do
+			if not ceo[k].state then
+				continue
+			end
+
 			local slot = util.stat_get_int64($"PROP_WHOUSE_SLOT{k-1}")
 			if slot ~= 0 then
-				util.draw_debug_text(ceo_data[slot].name .. ' ' .. util.stat_get_int64($"contotalforwhouse{k-1}") .. '/' .. ceo_data[slot].capacity)
-			else
+				tmp += row_spacing
+
+				table.insert(to_draw, {
+					x_pos = x + gap_0,
+					y_pos = tmp,
+					text = ceo_data[slot].name,
+					align = align_0,
+					colour = text_colour
+				})
+
+				local out = util.stat_get_int64($"contotalforwhouse{k-1}")
+				local max = ceo_data[slot].max
+
+				table.insert(to_draw, {
+					x_pos = x + gap_2,
+					y_pos = tmp,
+					text = $"{out}/{max}",
+					align = align_2,
+					colour = out > max ? max_colour : text_colour
+				})
 			end
 		end
 		-- #endregion
