@@ -61,11 +61,11 @@ util.stat_get_int64 = function(stat)
 	return og_util_stat_get_int64($"MP{char_slot}_{stat}")
 end
 
-local x = 0.67
+local x = 0
 local y = 0
 
 local width = 0.167
-local height = 0.31
+local height = 0.39
 
 local alignments<const> = {
 	'ALIGN_TOP_LEFT', 'ALIGN_TOP_CENTRE', 'ALIGN_TOP_RIGHT',
