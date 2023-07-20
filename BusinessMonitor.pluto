@@ -38,23 +38,6 @@ if async_http.have_access() then
 	until resp
 end
 
-local function HUD_SET_TEXT_SCALE(scale, size) native_invoker.begin_call()native_invoker.push_arg_float(scale)native_invoker.push_arg_float(size)native_invoker.end_call_2(0x07C837F9A01C34C9)end
-local function HUD_SET_TEXT_COLOUR(red, green, blue, alpha)native_invoker.begin_call()native_invoker.push_arg_int(red)native_invoker.push_arg_int(green)native_invoker.push_arg_int(blue)native_invoker.push_arg_int(alpha)native_invoker.end_call_2(0xBE6B23FFA53FB442)end
-local function HUD_SET_TEXT_FONT(fontType)native_invoker.begin_call()native_invoker.push_arg_int(fontType)native_invoker.end_call_2(0x66E0276CC5F6B9DA)end
-local function HUD_SET_TEXT_JUSTIFICATION(justifyType)native_invoker.begin_call()native_invoker.push_arg_int(justifyType)native_invoker.end_call_2(0x4E096588B13FFECA)end
-local function HUD_SET_TEXT_WRAP(start, _end)native_invoker.begin_call()native_invoker.push_arg_float(start)native_invoker.push_arg_float(_end)native_invoker.end_call_2(0x63145D9C883A1A70)end
-local function HUD_SET_TEXT_DROPSHADOW()native_invoker.begin_call()native_invoker.end_call_2(0x1CA3E9EAC9D93E5E)end
-local function HUD_SET_TEXT_OUTLINE()native_invoker.begin_call()native_invoker.end_call_2(0x2513DFB0FB8400FE)end
-
-enum class RendererMethod begin
-	DirectX = 1,
-	Native = 2
-end
-pluto_class Renderer
-	method = RendererMethod.DirectX
-end
-local renderer = pluto_new Renderer()
-
 local char_slot = util.get_char_slot()
 local og_util_stat_get_int64 = util.stat_get_int64
 util.stat_get_int64 = function(stat)
@@ -222,23 +205,6 @@ do
 	):setTemporary()
 
 	r:divider('Configuration')
-
-	r:list_select('Rendering Method', {}, 'How the monitor should be drawn. Note that the translation is not 1:1.',
-		{
-			{ 'DirectX', {}, 'The default, not really any text customisation.' },
-			{ 'Natives', {}, 'Uses rendering functions available to GTA, text is more customisable.' }
-		},
-		1,
-		function(idx)
-			switch idx do
-				case RendererMethod.DirectX:
-					renderer.method = RendererMethod.DirectX
-				break
-				case RendererMethod.Native:
-					renderer.method = RendererMethod.Native
-				break
-		end
-	end)
 
 	local window = r:list('Window')
 	window:slider_float('Width', {'bmwidth'}, '', 0, 10000, 167, 1, function(v)
