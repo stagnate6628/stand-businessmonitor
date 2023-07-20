@@ -219,7 +219,7 @@ do
 				v.value = state
 			end)
 		end)
-	)
+	):setTemporary()
 
 	r:divider('Configuration')
 
