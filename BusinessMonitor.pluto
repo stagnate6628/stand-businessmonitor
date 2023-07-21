@@ -234,7 +234,7 @@ do
 	end)
 
 	local position = r:list('Position')
-	position:slider_float('X Position', {'bmxpos'}, '', 0, 83, 67, 1, function(v)
+	position:slider_float('X Position', {'bmxpos'}, '', 0, 83, 0, 1, function(v)
 		x = v / 100
 	end)
 	position:slider_float('Y Position', {'bmypos'}, '', 0, 71, 0, 1, function(v)
