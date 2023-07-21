@@ -140,28 +140,28 @@ local ceo<const> = {
 	{ label = 'Warehouse 5' }
 }
 local ceo_data<const> = {
-    { name = 'Pacific Bait Storage',      max = 16 },
-    { name = 'White Widow Garage',        max = 16 },
-    { name = 'Celltowa Unit',             max = 16 },
-    { name = 'Convenience Store Lockup',  max = 16 },
-    { name = 'Foreclosed Garage',         max = 16 },
-    { name = 'Xero Gas Factory',          max = 111 },
-    { name = 'Derriere Lingerie Backlot', max = 42 },
-    { name = 'Bilgeco Warehouse',         max = 111 },
-    { name = 'Pier 400 Utility Building', max = 16 },
-    { name = 'GEE Warehouse',             max = 42 },
-    { name = 'LS Marine Building 3',      max = 42 },
-    { name = 'Railyard Warehouse',        max = 42 },
-    { name = 'Fridgit Annexe',            max = 42 },
-    { name = 'Disused Factory Outlet',    max = 42 },
-    { name = 'Discount Retail Unit',      max = 42 },
-    { name = 'Logistics Depot',           max = 111 },
-    { name = 'Darnell Bros Warehouse',    max = 111 },
-    { name = 'Wholesale Furniture',       max = 111 },
-    { name = 'Cypress Warehouses',        max = 111 },
-    { name = 'West Vinewood Backlot',     max = 111 },
-    { name = 'Old Power Station',         max = 42 },
-    { name = 'Walker & Sons Warehouse',   max = 111 }
+    { label = 'Pacific Bait Storage', max = 16 },
+    { label = 'White Widow Garage', max = 16 },
+    { label = 'Celltowa Unit', max = 16 },
+    { label = 'Convenience Store Lockup', max = 16 },
+    { label = 'Foreclosed Garage', max = 16 },
+    { label = 'Xero Gas Factory', max = 111 },
+    { label = 'Derriere Lingerie Backlot', max = 42 },
+    { label = 'Bilgeco Warehouse', max = 111 },
+    { label = 'Pier 400 Utility Building', max = 16 },
+    { label = 'GEE Warehouse', max = 42 },
+    { label = 'LS Marine Building 3', max = 42 },
+    { label = 'Railyard Warehouse', max = 42 },
+    { label = 'Fridgit Annexe', max = 42 },
+    { label = 'Disused Factory Outlet', max = 42 },
+    { label = 'Discount Retail Unit', max = 42 },
+    { label = 'Logistics Depot', max = 111 },
+    { label = 'Darnell Bros Warehouse', max = 111 },
+    { label = 'Wholesale Furniture', max = 111 },
+    { label = 'Cypress Warehouses', max = 111 },
+    { label = 'West Vinewood Backlot', max = 111 },
+    { label = 'Old Power Station', max = 42 },
+    { label = 'Walker & Sons Warehouse', max = 111 }
 }
 
 local r = menu.my_root()
@@ -420,13 +420,13 @@ util.create_tick_handler(function()
 			end
 
 			local slot = util.stat_get_int64($"prop_whouse_slot{k-1}")
-			if slot ~= 0 then
+			if slot != 0 then
 				tmp += row_spacing
 
 				table.insert(to_draw, {
 					x_pos = x + gap_0,
 					y_pos = tmp,
-					text = ceo_data[slot].name,
+					text = ceo_data[slot].label,
 					align = align_0,
 					colour = text_colour
 				})
