@@ -313,6 +313,8 @@ do
 			util.toast('Max colour might be difficult to read...')
 		end
 	end)
+
+	menu.apply_command_states()
 end
 
 local tmp
