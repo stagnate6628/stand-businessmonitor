@@ -3,8 +3,8 @@ if async_http.have_access() then
 	local SCRIPT_VERSION = '0.1'
 	local resp = false
 	async_http.init(
-		'https://raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/version',
-		'',
+		'raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/version',
+		nil,
 		function(body, headers, status_code)
 			if soup.version_compare(SCRIPT_VERSION, body) == -1 then
 				menu.my_root():action(
@@ -13,8 +13,8 @@ if async_http.have_access() then
 					$"\"{body}\" is available, you are currently on \"{SCRIPT_VERSION}\".",
 					function()
 						async_http.init(
-						'https://raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/BusinessMonitor.pluto',
-						'',
+						'raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/BusinessMonitor.pluto',
+						nil,
 						function(body_)
 							local f = io.open(filesystem.scripts_dir() .. SCRIPT_RELPATH, 'wb')
 							f:write(body_)
@@ -41,7 +41,7 @@ end
 local char_slot = util.get_char_slot()
 local og_util_stat_get_int64 = util.stat_get_int64
 util.stat_get_int64 = function(stat)
-	return og_util_stat_get_int64($"MP{char_slot}_{stat}")
+	return og_util_stat_get_int64($'mp{char_slot}_{stat}')
 end
 
 local x = 0
@@ -266,7 +266,7 @@ do
 	text:slider('Right Column', {}, 'The "Product" text alignment.', 0, 9, align_2, 1, function(idx)
 		align_2 = idx
 	end)
-	text:toggle('Show Capacity Values', {}, 'Displays the normal maximums (non-modded) for specific businesses.', function(s)
+	text:toggle('Show Capacity Values', {}, 'Displays the normal maximums for specific businesses.', function(s)
 		show_max = s
 	end, true)
 
