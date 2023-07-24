@@ -257,6 +257,7 @@ do
 	text:slider_float('Row Spacing', {'bmrowspacing'}, '', 0, 1000, 165, 1, function(v)
 		row_spacing = v / 10000
 	end).precision = 4
+	text:divider('Alignments')
 	text:slider('Label', {}, 'The "Property" text alignment.', 0, 9, align_0, 1, function(idx)
 		align_0 = idx
 	end)
@@ -266,19 +267,51 @@ do
 	text:slider('Right Column', {}, 'The "Product" text alignment.', 0, 9, align_2, 1, function(idx)
 		align_2 = idx
 	end)
+	text:divider('Other')
 	text:toggle('Show Capacity Values', {}, 'Displays the default maximum capacity for specific businesses.', function(s)
 		show_max = s
 	end, true)
 
 	local colours = r:list('Colours')
-	colours:colour('Background Colour', {}, '', background_colour, true, function(c)
+	local contrast_warnings = true
+
+	local function is_contrast_sufficient(color_a, color_b)
+		--prevent toasts when on stop
+		if not SCRIPT_CAN_CONTINUE then
+			return true
+		end
+		if not contrast_warnings then
+			return false
+		end
+		return util.is_contrast_sufficient(color_a.r, color_a.g, color_a.b, color_b.r, color_b.g, color_b.b)
+	end
+
+	colours:toggle('Show Contrast Warnings', {}, 'Raises warnings if colors are not contrast sufficient for each other.', function(s)
+		contrast_warnings = s
+	end, contrast_warnings)
+	colours:colour('Background Colour', {}, '', background_colour, true, function(c, click_type)
 		background_colour = c
+
+		if not is_contrast_sufficient(background_colour, text_colour) then
+			util.toast('Text colour might be difficult to read...')
+		end
+		if not is_contrast_sufficient(background_colour, max_colour) then
+			util.toast('Max colour might be difficult to read...')
+		end
 	end)
 	colours:colour('Text Colour', {}, '', text_colour, false, function(c)
 		text_colour = c
+
+		if not is_contrast_sufficient(text_colour, background_colour) then
+			util.toast('Text colour might be difficult to read...')
+		end
 	end)
 	colours:colour('Max Colour', {}, '', max_colour, false, function(c)
 		max_colour = c
+
+		if not is_contrast_sufficient(max_colour, background_colour) then
+			util.toast('Max colour might be difficult to read...')
+		end
 	end)
 end
 
