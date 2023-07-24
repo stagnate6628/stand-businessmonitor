@@ -16,8 +16,8 @@ if async_http.have_access() then
 						'raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/BusinessMonitor.pluto',
 						nil,
 						function(body_)
-							local f = io.open(filesystem.scripts_dir() .. SCRIPT_RELPATH, 'wb')
-							f:write(body_)
+							local f = assert(io.open($'{filesystem.scripts_dir()}{SCRIPT_RELPATH}', 'wb'))
+							assert(f:write(body_))
 							f:close()
 							util.restart_script()
 						end)
@@ -280,8 +280,6 @@ do
 	colours:colour('Max Colour', {}, '', max_colour, false, function(c)
 		max_colour = c
 	end)
-
-	menu.apply_command_states()
 end
 
 local tmp
