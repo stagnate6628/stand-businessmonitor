@@ -341,7 +341,7 @@ util.create_tick_handler(function()
 			local curr
 			local should_exit
 			if 0 <= k and k <= 4 then
-				local p = util.stat_get_int64($"factoryslot{k}")
+				local p = util.stat_get_int64($'factoryslot{k}')
 				local p_info = mapping[p]
 				curr = mc[p_info]
 
@@ -363,8 +363,8 @@ util.create_tick_handler(function()
 
 			tmp += row_spacing
 
-			local s = util.stat_get_int64($"mattotalforfactory{k}")
-			local p = util.stat_get_int64($"prodtotalforfactory{k}")
+			local s = util.stat_get_int64($'mattotalforfactory{k}')
+			local p = util.stat_get_int64($'prodtotalforfactory{k}')
 
 			table.insert(to_draw, {
 				x_pos = x + gap_0,
@@ -376,14 +376,14 @@ util.create_tick_handler(function()
 			table.insert(to_draw, {
 				x_pos = x + gap_1,
 				y_pos = tmp,
-				text = $"{s}%",
+				text = $'{s}%',
 				align = align_1,
 				colour = text_colour
 			})
 			table.insert(to_draw, {
 				x_pos = x + gap_2,
 				y_pos = tmp,
-				text = show_max ? $"{p}/{curr.max}" : p,
+				text = show_max ? $'{p}/{curr.max}' : p,
 				align = align_2,
 				colour = p == curr.max ? max_colour : text_colour
 			})
@@ -396,7 +396,7 @@ util.create_tick_handler(function()
 
 			tmp += row_spacing
 
-			local out = util.stat_get_int64($"hub_prod_total_{k-1}")
+			local out = util.stat_get_int64($'hub_prod_total_{k-1}')
 
 			table.insert(to_draw, {
 				x_pos = x + gap_0,
@@ -408,7 +408,7 @@ util.create_tick_handler(function()
 			table.insert(to_draw, {
 				x_pos = x + gap_2,
 				y_pos = tmp,
-				text = show_max ? $"{out}/{v.max}" : out,
+				text = show_max ? $'{out}/{v.max}' : out,
 				align = align_2,
 				colour = out == v.max ? max_colour : text_colour
 			})
@@ -419,7 +419,7 @@ util.create_tick_handler(function()
 				continue
 			end
 
-			local slot = util.stat_get_int64($"prop_whouse_slot{k-1}")
+			local slot = util.stat_get_int64($'prop_whouse_slot{k-1}')
 			if slot != 0 then
 				tmp += row_spacing
 
@@ -431,13 +431,13 @@ util.create_tick_handler(function()
 					colour = text_colour
 				})
 
-				local out = util.stat_get_int64($"contotalforwhouse{k-1}")
+				local out = util.stat_get_int64($'contotalforwhouse{k-1}')
 				local max = ceo_data[slot].max
 
 				table.insert(to_draw, {
 					x_pos = x + gap_2,
 					y_pos = tmp,
-					text = show_max ? $"{out}/{max}" : out,
+					text = show_max ? $'{out}/{max}' : out,
 					align = align_2,
 					colour = out > max ? max_colour : text_colour
 				})
