@@ -376,6 +376,10 @@ util.create_tick_handler(function()
 				local p_info = mapping[p]
 				curr = mc[p_info]
 
+				if not curr then
+					continue
+				end
+
 				--i hate this
 				for mc_list_children as v_ do
 					if curr.label == v_.menu_name and not v_.value then
