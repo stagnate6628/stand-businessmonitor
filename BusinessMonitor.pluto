@@ -184,7 +184,7 @@ do
 		for children as v do
 			list:toggle(v.label, {}, '', function(s)
 				v.value = s
-			end)
+			end, true)
 		end
 	end
 	local function run_list(children, cb)
@@ -206,7 +206,7 @@ do
 	ceo_list_children = ceo_list:getChildren()
 
 	safe_list:attachBefore(
-		menu.shadow_root():list_select('State', {}, '', { 'Disable All', 'Enable All' }, 1, function(idx)
+		menu.shadow_root():list_select('State', {}, '', { 'Disable All', 'Enable All' }, 2, function(idx)
 			local state = idx == 2
 			run_list(safe_list_children, function(v)
 				v.value = state
@@ -313,7 +313,6 @@ do
 			util.toast('Max colour might be difficult to read...')
 		end
 	end)
-
 	menu.apply_command_states()
 end
 
