@@ -266,7 +266,7 @@ do
 	text:slider('Right Column', {}, 'The "Product" text alignment.', 0, 9, align_2, 1, function(idx)
 		align_2 = idx
 	end)
-	text:toggle('Show Capacity Values', {}, 'Displays the normal maximums for specific businesses.', function(s)
+	text:toggle('Show Capacity Values', {}, 'Displays the default maximum capacity for specific businesses.', function(s)
 		show_max = s
 	end, true)
 
