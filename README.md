@@ -1,13 +1,5 @@
 # stand-businessmonitor
-An alternative business monitor for Stand
-
-**How does this differ from the monitors found in MusinessBanager?**
-- better business monitor customizability and contrast
-    - some qol that might be expected from an overlay
-- views for arcade and agency safes, acid lab
-- does not include ceo warehouses
-
-**If it is not clear enough already, this does not apply any modifications to your businesses**
+Customisable passive business monitoring
 
 # Installation
 You can download the latest version found [here](https://github.com/stagnate6628/stand-businessmonitor/releases) or download the repository [here](https://github.com/stagnate6628/stand-businessmonitor/archive/refs/heads/main.zip).
