@@ -1,30 +1,29 @@
 --stupid autoupdater
 if async_http.have_access() then
-	local SCRIPT_VERSION = '0.1.1'
+	local localVersion = '0.1.1'
 	local resp = false
 	async_http.init(
 		'raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/version',
 		nil,
-		function(body, headers, status_code)
-			if soup.version_compare(SCRIPT_VERSION, body) == -1 then
+		function(remoteVersion)
+			if soup.version_compare(localVersion, remoteVersion) == -1 then
 				menu.my_root():action(
 					'Update Script',
 					{},
-					$"\"{body}\" is available, you are currently on \"{SCRIPT_VERSION}\".",
+					$'Version {remoteVersion} is now available.',
 					function()
 						async_http.init(
-						'raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/BusinessMonitor.pluto',
-						nil,
-						function(body_)
-							local f = assert(io.open($'{filesystem.scripts_dir()}{SCRIPT_RELPATH}', 'wb'))
-							assert(f:write(body_))
-							f:close()
-							util.restart_script()
+							'raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/BusinessMonitor.pluto',
+							nil,
+							function(scriptBody)
+								local f = assert(io.open($'{filesystem.scripts_dir()}{SCRIPT_RELPATH}', 'wb'))
+								assert(f:write(scriptBody))
+								f:close()
+								util.restart_script()
 						end)
 						async_http.dispatch()
 					end
 				)
-				menu.my_root():divider('')
 			end
 			resp = true
 		end,
@@ -38,61 +37,42 @@ if async_http.have_access() then
 	until resp
 end
 
-local char_slot = util.get_char_slot()
-local og_util_stat_get_int64 = util.stat_get_int64
-util.stat_get_int64 = function(stat)
-	return og_util_stat_get_int64($'mp{char_slot}_{stat}')
+local util, directx = util, directx
+
+local charSlot = util.get_char_slot()
+local function readStat(stat)
+	return util.stat_get_int64($'mp{charSlot}_{stat}')
 end
 
-local x = 0
-local y = 0
-
-local width = 0.167
-local height = 0.39
-
-local gap_0 = 0.003
-local align_0 = ALIGN_TOP_LEFT
-
-local gap_1 = 0.11
-local align_1 = ALIGN_TOP_RIGHT
-
-local gap_2 = 0.16
-local align_2 = ALIGN_TOP_RIGHT
-
-local row_spacing = 0.0165
-local text_size = 0.425
-local show_max = true
-
-local background_colour = { r = 0, g = 0, b = 0, a = 0.8 }
-local text_colour = { r = 1, g = 1, b = 1, a = 1 }
-local max_colour = { r = 0, g = 1, b = 0, a = 1 }
-
-local safe<const> = {
+local safeData<const> = {
 	{
 		label = 'Nightclub',
-		stat_1 = 'CLUB_POPULARITY',
-		stat_2 = 'CLUB_SAFE_CASH_VALUE',
-		max = 250_000
+		supplyStat = 'club_popularity',
+		productStat = 'club_safe_cash_value',
+		max = 250_000,
 	},
 	{
 		label = 'Arcade',
-		stat_2 = 'ARCADE_SAFE_CASH_VALUE',
-		max = 100_000
+		productStat = 'arcade_safe_cash_value',
+		max = 100_000,
 	},
 	{
 		label = 'Agency',
-		stat_2 = 'FIXER_SAFE_CASH_VALUE',
-		max = 250_000
+		productStat = 'fixer_safe_cash_value',
+		max = 250_000,
 	}
 }
---[[
-	0: forgery
-	1: weed
-	2: cash
-	3: meth,
-	4: cocaine
-]]
-local mapping<const> = {
+local mcData<const> = {
+	[0] = { label = 'Forgery', max = 60 },
+	[1] = { label = 'Weed', max = 80 },
+	[2] = { label = 'Cash', max = 40 },
+	[3] = { label = 'Meth', max = 20 },
+	[4] = { label = 'Cocaine', max = 10 },
+	[5] = { label = 'Bunker', max = 100 },
+	[6] = { label = 'Acid Lab', max = 160 }
+}
+--0: forgery 1:weed 2:cash 3:meth 4:cocaine
+local mc_property_map<const> = {
     [1]  = 3,
     [2]  = 1,
     [3]  = 4,
@@ -114,32 +94,23 @@ local mapping<const> = {
     [19] = 2,
     [20] = 0
 }
-local mc<const> = {
-	[0] = { label = 'Forgery', max = 60 },
-	[1] = { label = 'Weed', max = 80 },
-	[2] = { label = 'Cash', max = 40 },
-	[3] = { label = 'Meth', max = 20 },
-	[4] = { label = 'Cocaine', max = 10 },
-	[5] = { label = 'Bunker', max = 100 },
-	[6] = { label = 'Acid Lab', max = 160 }
+local ncData<const> = {
+	[0] = { label = 'Hub Cargo', max = 50 },
+	[1] = { label = 'Hub Weapons', max = 100 },
+	[2] = { label = 'Hub Cocaine', max = 10 },
+	[3] = { label = 'Hub Meth', max = 20 },
+	[4] = { label = 'Hub Weed', max = 80 },
+	[5] = { label = 'Hub Forgery', max = 60 },
+	[6] = { label = 'Hub Cash', max = 40 }
 }
-local nc<const> = {
-	{ label = 'Hub Cargo', max = 50 },
-	{ label = 'Hub Weapons', max = 100 },
-	{ label = 'Hub Cocaine', max = 10 },
-	{ label = 'Hub Meth', max = 20 },
-	{ label = 'Hub Weed', max = 80 },
-	{ label = 'Hub Forgery', max = 60 },
-	{ label = 'Hub Cash', max = 40 }
-}
-local ceo<const> = {
+local ceoData<const> = {
 	{ label = 'Warehouse 1' },
 	{ label = 'Warehouse 2' },
 	{ label = 'Warehouse 3' },
 	{ label = 'Warehouse 4' },
 	{ label = 'Warehouse 5' }
 }
-local ceo_data<const> = {
+local sc_warehouse_data<const> = {
     { label = 'Pacific Bait Storage', max = 16 },
     { label = 'White Widow Garage', max = 16 },
     { label = 'Celltowa Unit', max = 16 },
@@ -164,332 +135,173 @@ local ceo_data<const> = {
     { label = 'Walker & Sons Warehouse', max = 111 }
 }
 
-local r = menu.my_root()
-local views = r:list('Views', {}, 'Configure what to monitor.')
+local xPos = 0.0
+local yPos = 0.0
+local textSize = 0.5
+local showMax = true
 
-local safe_list = views:list('Safes')
-local safe_list_children
-
-local mc_list = views:list('MC Business')
-local mc_list_children
-
-local nc_list = views:list('Nightclub')
-local nc_list_children
-
-local ceo_list = views:list('Special Cargo Warehouse')
-local ceo_list_children
-
-do
-	local function add_children_to_list(list, children)
-		for children as v do
-			list:toggle(v.label, {}, '', function(s)
-				v.value = s
-			end, true)
-		end
+local function createList(parent, name, data)
+	local list = parent:list(name)
+	for data as entry do
+		list:toggle(entry.label, {}, '', function() end, true)
 	end
-	local function run_list(children, cb)
-		for children as v do
-			cb(v)
-		end
-	end
-
-	add_children_to_list(safe_list, safe)
-	safe_list_children = safe_list:getChildren()
-
-	add_children_to_list(mc_list, mc)
-	mc_list_children = mc_list:getChildren()
-
-	add_children_to_list(nc_list, nc)
-	nc_list_children = nc_list:getChildren()
-
-	add_children_to_list(ceo_list, ceo)
-	ceo_list_children = ceo_list:getChildren()
-
-	safe_list:attachBefore(
-		menu.shadow_root():list_select('State', {}, '', { 'Disable All', 'Enable All' }, 2, function(idx)
-			local state = idx == 2
-			run_list(safe_list_children, function(v)
-				v.value = state
-			end)
-			run_list(mc_list_children, function(v)
-				v.value = state
-			end)
-			run_list(nc_list_children, function(v)
-				v.value = state
-			end)
-			run_list(ceo_list_children, function(v)
-				v.value = state
-			end)
-		end)
-	):setTemporary()
-
-	r:divider('Configuration')
-
-	local window = r:list('Window')
-	window:slider_float('Width', {'bmwidth'}, '', 0, 10000, 167, 1, function(v)
-		width = v / 1000
-	end)
-	window:slider_float('Height', {'bmheight'}, '', 0, 10000, 39, 1, function(v)
-		height = v / 100
-	end)
-
-	local position = r:list('Position')
-	position:slider_float('X Position', {'bmxpos'}, '', 0, 83, 0, 1, function(v)
-		x = v / 100
-	end)
-	position:slider_float('Y Position', {'bmypos'}, '', 0, 71, 0, 1, function(v)
-		y = v / 100
-	end)
-	position:slider_float('Label', {'bmlblpos'}, 'Aka. the "Property".', -1000, 1000, 3, 1, function(v)
-		gap_0 = v / 1000
-	end).precision = 4
-	position:slider_float('Left Column', {'bmllblpos'}, 'Aka. "Supplies".', -66, 32, 11, 1, function(v)
-		gap_1 = v / 100
-	end).precision = 4
-	position:slider_float('Right Column', {'bmrlblpos'}, 'Aka. "Product".', -68, 32, 16, 1, function(v)
-		gap_2 = v / 100
-	end).precision = 4
-
-	local text = r:list('Text')
-	text:slider_float('Scale', {'bmtxtscale'}, '', 0, 1000, 425, 1, function(v)
-		text_size = v / 1000
-	end).precision = 4
-	text:slider_float('Row Spacing', {'bmrowspacing'}, '', 0, 1000, 165, 1, function(v)
-		row_spacing = v / 10000
-	end).precision = 4
-	text:divider('Alignments')
-	text:slider('Label', {}, 'The "Property" text alignment.', 0, 9, align_0, 1, function(idx)
-		align_0 = idx
-	end)
-	text:slider('Left Column', {}, 'The "Supplies" text alignment.', 0, 9, align_1, 1, function(idx)
-		align_1 = idx
-	end)
-	text:slider('Right Column', {}, 'The "Product" text alignment.', 0, 9, align_2, 1, function(idx)
-		align_2 = idx
-	end)
-	text:divider('Other')
-	text:toggle('Show Capacity Values', {}, 'Displays the default maximum capacity for specific businesses.', function(s)
-		show_max = s
-	end, true)
-
-	local colours = r:list('Colours')
-	local contrast_warnings = true
-
-	local function is_contrast_sufficient(color_a, color_b)
-		--prevent toasts when on stop
-		if not SCRIPT_CAN_CONTINUE then
-			return true
-		end
-		if not contrast_warnings then
-			return false
-		end
-		return util.is_contrast_sufficient(color_a.r, color_a.g, color_a.b, color_b.r, color_b.g, color_b.b)
-	end
-
-	colours:toggle('Show Contrast Warnings', {}, 'Raises warnings if colors are not contrast sufficient for each other.', function(s)
-		contrast_warnings = s
-	end, contrast_warnings)
-	colours:colour('Background Colour', {}, '', background_colour, true, function(c, click_type)
-		background_colour = c
-
-		if not is_contrast_sufficient(background_colour, text_colour) then
-			util.toast('Text colour might be difficult to read...')
-		end
-		if not is_contrast_sufficient(background_colour, max_colour) then
-			util.toast('Max colour might be difficult to read...')
-		end
-	end)
-	colours:colour('Text Colour', {}, '', text_colour, false, function(c)
-		text_colour = c
-
-		if not is_contrast_sufficient(text_colour, background_colour) then
-			util.toast('Text colour might be difficult to read...')
-		end
-	end)
-	colours:colour('Max Colour', {}, '', max_colour, false, function(c)
-		max_colour = c
-
-		if not is_contrast_sufficient(max_colour, background_colour) then
-			util.toast('Max colour might be difficult to read...')
-		end
-	end)
-	menu.apply_command_states()
+	return list
 end
 
-local tmp
-local to_draw = {}
+local root = menu.my_root()
 
-util.on_transition_finished(function()
-	char_slot = util.get_char_slot()
-end)
+local backgroundColour = { r = 0, g = 0, b = 0, a = 0.8 }
+local textColour = { r = 1, g = 1, b = 1, a = 1 }
+
+pluto_class Renderer
+	function drawText(text, x_pos, y_pos, align, text_size)
+		directx.draw_text(x_pos, y_pos, text, align, text_size, textColour.r, textColour.g, textColour.b, textColour.a, true)
+	end
+end
+local renderer = pluto_new Renderer()
+
+
+local viewList = menu.my_root():list('Views')
+local safeListChildren = createList(viewList, 'Safes', safeData):getChildren()
+local mcListChildren = createList(viewList, 'MC Businesses', mcData):getChildren()
+local ncListChildren = createList(viewList, 'Nightclub', ncData):getChildren()
+local scListChildren = createList(viewList, 'Special Cargo Warehouse', ceoData):getChildren()
+
+root:divider('Configuration')
+
+do
+	local positionList = root:list('Position')
+	positionList:slider_float('X Position', {}, '', 0, 10000, 0, 1, function(value)
+		xPos = value / 100
+	end)
+	positionList:slider_float('Y Position', {}, '', 0, 10000, 0, 1, function(value)
+		yPos = value / 100
+	end)
+end
+
+do
+	local textList = root:list('Text')
+	textList:slider_float('Scale', {}, '', 0, 10000, 50, 1, function(value)
+		textSize = value / 100
+	end)
+	textList:toggle('Show Capacity Values', {}, '', function(s)
+		showMax = s
+	end, true)
+end
+
+do
+	local colourList = root:list('Colour')
+	local warnings = colourList:toggle('Contrast Warnings', {}, 'Shown in the help text for a colour.', function() end, true)
+	
+	local bgRef
+	bgRef = colourList:colour('Background Colour', {}, '', backgroundColour.r, backgroundColour.g, backgroundColour.b, backgroundColour.a, true, function(colour, clickType)
+		if clickType != CLICK_BULK and warnings.value then
+			if not util.is_contrast_sufficient(
+				backgroundColour.r, backgroundColour.g, backgroundColour.b,
+				textColour.r, textColour.g, textColour.b
+			) then
+				bgRef.help_text = 'Text might be difficult to read with this colour.'
+			else
+				bgRef.help_text = ''
+			end
+		end
+		backgroundColour = colour
+	end)
+	
+	local txtRef
+	txtRef = colourList:colour('Text Colour', {}, '', textColour.r, textColour.g, textColour.b, textColour.a, false, function(colour, clickType)
+		if clickType != CLICK_BULK and warnings.value then
+			if not util.is_contrast_sufficient(
+				textColour.r, textColour.g, textColour.b,
+				backgroundColour.r, backgroundColour.g, backgroundColour.b
+			) then
+				txtRef.help_text = 'Text might be difficult to read with this colour.'
+			else
+				txtRef.help_text = ''
+			end
+		end
+		textColour = colour
+	end)
+end
 
 util.create_tick_handler(function()
-	if util.is_session_started() then
-		directx.draw_rect(x, y, width, height, background_colour)
-
-		tmp = y
-		to_draw = {}
-
-		for k, v in safe do
-			if not safe_list_children[k].value then
-				continue
-			end
-
-			tmp += row_spacing
-
-			table.insert(to_draw, {
-				x_pos = x + gap_0,
-				y_pos = tmp,
-				text = v.label,
-				align = align_0,
-				colour = text_colour
-			})
-
-			if v.stat_1 then
-				if out := util.stat_get_int64(v.stat_1) then
-					out = math.floor(out / 10)
-				end
-
-				table.insert(to_draw, {
-					x_pos = x + gap_1,
-					y_pos = tmp,
-					text = $"{out}%",
-					align = align_1,
-					colour = text_colour
-				})
-			end
-
-			local out = util.stat_get_int64(v.stat_2)
-			table.insert(to_draw, {
-				x_pos = x + gap_2,
-				y_pos = tmp,
-				text = out,
-				align = align_2,
-				colour = out == v.max ? max_colour : text_colour
-			})
-		end
-
-		for k, v in mc do
-			local curr
-			local should_exit
-			if 0 <= k and k <= 4 then
-				local p = util.stat_get_int64($'factoryslot{k}')
-				local p_info = mapping[p]
-				curr = mc[p_info]
-
-				if not curr then
-					continue
-				end
-
-				--i hate this
-				for mc_list_children as v_ do
-					if curr.label == v_.menu_name and not v_.value then
-						should_exit = true
-					end
-				end
-				if should_exit then
-					continue
-				end
+	local labels = {}
+	local supplies = {}
+	local product = {}
+	for k, entry in safeData do
+		if safeListChildren[k].value then
+			table.insert(labels, entry.label)
+			if entry.supplyStat then
+				local value = readStat(entry.supplyStat)
+				value = math.floor(value / 10)
+				table.insert(supplies, $'{value}%')
 			else
-				if not mc_list_children[k+1].value then
-					continue
-				end
-				curr = mc[k]
+				table.insert(supplies, '')
 			end
-
-			tmp += row_spacing
-
-			local s = util.stat_get_int64($'mattotalforfactory{k}')
-			local p = util.stat_get_int64($'prodtotalforfactory{k}')
-
-			table.insert(to_draw, {
-				x_pos = x + gap_0,
-				y_pos = tmp,
-				text = curr.label,
-				align = align_0,
-				colour = text_colour
-			})
-			table.insert(to_draw, {
-				x_pos = x + gap_1,
-				y_pos = tmp,
-				text = $'{s}%',
-				align = align_1,
-				colour = text_colour
-			})
-			table.insert(to_draw, {
-				x_pos = x + gap_2,
-				y_pos = tmp,
-				text = show_max ? $'{p}/{curr.max}' : p,
-				align = align_2,
-				colour = p == curr.max ? max_colour : text_colour
-			})
+			table.insert(product, readStat(entry.productStat))
 		end
+	end
+	for k, entry in mcData do
+		local current
+		if 0 <= k and k <= 4 then
+			local slot = readStat($'factoryslot{k}')
+			local propertyIdx = mc_property_map[slot]
+			current = mcData[propertyIdx]
 
-		for k, v in nc do
-			if not nc_list_children[k].value then
+			if not mcListChildren[propertyIdx + 1].value then
 				continue
 			end
-
-			tmp += row_spacing
-
-			local out = util.stat_get_int64($'hub_prod_total_{k-1}')
-
-			table.insert(to_draw, {
-				x_pos = x + gap_0,
-				y_pos = tmp,
-				text = v.label,
-				align = align_0,
-				colour = text_colour
-			})
-			table.insert(to_draw, {
-				x_pos = x + gap_2,
-				y_pos = tmp,
-				text = show_max ? $'{out}/{v.max}' : out,
-				align = align_2,
-				colour = out == v.max ? max_colour : text_colour
-			})
-		end
-
-		for k, v in ceo do
-			if not ceo_list_children[k].value then
+		else
+			if not mcListChildren[k + 1].value then
 				continue
 			end
-
-			local slot = util.stat_get_int64($'prop_whouse_slot{k-1}')
-			if slot != 0 then
-				tmp += row_spacing
-
-				table.insert(to_draw, {
-					x_pos = x + gap_0,
-					y_pos = tmp,
-					text = ceo_data[slot].label,
-					align = align_0,
-					colour = text_colour
-				})
-
-				local out = util.stat_get_int64($'contotalforwhouse{k-1}')
-				local max = ceo_data[slot].max
-
-				table.insert(to_draw, {
-					x_pos = x + gap_2,
-					y_pos = tmp,
-					text = show_max ? $'{out}/{max}' : out,
-					align = align_2,
-					colour = out > max ? max_colour : text_colour
-				})
-			end
+			current = mcData[k]
 		end
-
-		for to_draw as v do
-			directx.draw_text(
-				v.x_pos,
-				v.y_pos,
-				v.text,
-				v.align,
-				text_size,
-				v.colour
-			)
+		if current then
+			table.insert(labels, current.label)
+			table.insert(supplies, $'{readStat($'mattotalforfactory{k}')}%')
+			table.insert(product, $'{readStat($'prodtotalforfactory{k}')}'.. (showMax ? '/' .. current.max : ''))
 		end
+	end
+	for k, entry in ncData do
+		if ncListChildren[k + 1].value then
+			table.insert(labels, entry.label)
+			table.insert(product, $'{readStat($'hub_prod_total_{k}')}' .. (showMax ? '/' .. entry.max : ''))
+		end
+	end
+	for i = 0, 4 do
+		local propertySlot = readStat($'prop_whouse_slot{i}')
+		if propertySlot != 0 and scListChildren[i + 1].value then
+			local entry = sc_warehouse_data[propertySlot]
+			table.insert(labels, entry.label)
+			table.insert(product, $'{readStat($'contotalforwhouse{i}')}' .. (showMax ? '/' .. entry.max : ''))
+		end
+	end
+
+	do
+		local labelText = table.concat(labels, '\n')
+		local supplyText = table.concat(supplies, '\n')
+		local productText = table.concat(product, '\n')
+
+		local labelWidth, labelHeight = directx.get_text_size(labelText, textSize)
+		local supplyWidth, supplyHeight = directx.get_text_size(supplyText, textSize)
+		local productWidth, productHeight = directx.get_text_size(productText, textSize)
+
+		directx.draw_rect(
+			xPos,
+			yPos,
+			labelWidth + supplyWidth + productWidth + 0.02,
+			math.max(labelHeight, supplyHeight, productHeight) + 0.02, --label/product height is guaranteed max?
+			backgroundColour.r,
+			backgroundColour.g,
+			backgroundColour.b,
+			backgroundColour.a
+		)
+
+		local yPad = yPos + 0.01
+		renderer:drawText(labelText, xPos + 0.003, yPad, ALIGN_TOP_LEFT, textSize)
+		renderer:drawText(supplyText, xPos + labelWidth + supplyWidth + 0.005, yPad, ALIGN_TOP_RIGHT, textSize)
+		renderer:drawText(productText, xPos + labelWidth + supplyWidth + productWidth + 0.013, yPad, ALIGN_TOP_RIGHT, textSize)
 	end
 	return true
 end)
