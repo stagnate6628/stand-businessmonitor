@@ -48,18 +48,15 @@ local safeData<const> = {
 	{
 		label = 'Nightclub',
 		supplyStat = 'club_popularity',
-		productStat = 'club_safe_cash_value',
-		max = 250_000,
+		productStat = 'club_safe_cash_value'
 	},
 	{
 		label = 'Arcade',
-		productStat = 'arcade_safe_cash_value',
-		max = 100_000,
+		productStat = 'arcade_safe_cash_value'
 	},
 	{
 		label = 'Agency',
-		productStat = 'fixer_safe_cash_value',
-		max = 250_000,
+		productStat = 'fixer_safe_cash_value'
 	}
 }
 local mcData<const> = {
@@ -143,7 +140,7 @@ local showMax = true
 local function createList(parent, name, data)
 	local list = parent:list(name)
 	for data as entry do
-		list:toggle(entry.label, {}, '', function() end, true)
+		list:toggle(entry.label, {}, '', function() end, false)
 	end
 	return list
 end
@@ -152,14 +149,6 @@ local root = menu.my_root()
 
 local backgroundColour = { r = 0, g = 0, b = 0, a = 0.8 }
 local textColour = { r = 1, g = 1, b = 1, a = 1 }
-
-pluto_class Renderer
-	function drawText(text, x_pos, y_pos, align, text_size)
-		directx.draw_text(x_pos, y_pos, text, align, text_size, textColour.r, textColour.g, textColour.b, textColour.a, true)
-	end
-end
-local renderer = pluto_new Renderer()
-
 
 local viewList = menu.my_root():list('Views')
 local safeListChildren = createList(viewList, 'Safes', safeData):getChildren()
@@ -192,7 +181,7 @@ end
 do
 	local colourList = root:list('Colour')
 	local warnings = colourList:toggle('Contrast Warnings', {}, 'Shown in the help text for a colour.', function() end, true)
-	
+
 	local bgRef
 	bgRef = colourList:colour('Background Colour', {}, '', backgroundColour.r, backgroundColour.g, backgroundColour.b, backgroundColour.a, true, function(colour, clickType)
 		if clickType != CLICK_BULK and warnings.value then
@@ -207,7 +196,7 @@ do
 		end
 		backgroundColour = colour
 	end)
-	
+
 	local txtRef
 	txtRef = colourList:colour('Text Colour', {}, '', textColour.r, textColour.g, textColour.b, textColour.a, false, function(colour, clickType)
 		if clickType != CLICK_BULK and warnings.value then
@@ -299,9 +288,39 @@ util.create_tick_handler(function()
 		)
 
 		local yPad = yPos + 0.01
-		renderer:drawText(labelText, xPos + 0.003, yPad, ALIGN_TOP_LEFT, textSize)
-		renderer:drawText(supplyText, xPos + labelWidth + supplyWidth + 0.005, yPad, ALIGN_TOP_RIGHT, textSize)
-		renderer:drawText(productText, xPos + labelWidth + supplyWidth + productWidth + 0.013, yPad, ALIGN_TOP_RIGHT, textSize)
+		directx.draw_text(
+			xPos + 0.003,
+			yPad,
+			labelText,
+			ALIGN_TOP_LEFT,
+			textSize,
+			textColour.r,
+			textColour.g,
+			textColour.b,
+			textColour.a
+		)
+		directx.draw_text(
+			xPos + labelWidth + supplyWidth + 0.005,
+			yPad,
+			supplyText,
+			ALIGN_TOP_RIGHT,
+			textSize,
+			textColour.r,
+			textColour.g,
+			textColour.b,
+			textColour.a
+		)
+		directx.draw_text(
+			xPos + labelWidth + supplyWidth + productWidth + 0.013,
+			yPad,
+			productText,
+			ALIGN_TOP_RIGHT,
+			textSize,
+			textColour.r,
+			textColour.g,
+			textColour.b,
+			textColour.a
+		)
 	end
 	return true
 end)
