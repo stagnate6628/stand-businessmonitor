@@ -240,7 +240,7 @@ util.create_tick_handler(function()
 				local propertyIdx = mc_property_map[slot]
 				current = mcData[propertyIdx]
 
-				if not mcListChildren[propertyIdx + 1].value then
+				if not current or not mcListChildren[propertyIdx + 1].value then
 					continue
 				end
 			else
