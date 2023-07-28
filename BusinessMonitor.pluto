@@ -245,6 +245,11 @@ util.on_transition_finished(function()
 	charSlot = util.get_char_slot()
 end)
 
+-- local diff = 0.0
+-- root:slider_float('diff', {}, '', -10000, 10000, 0, 1, function(value)
+-- 	diff = value
+-- end).precision = 4
+
 util.create_tick_handler(function()
 	if util.is_session_started() then
 		labels = {}
@@ -315,6 +320,10 @@ util.create_tick_handler(function()
 
 			local supplyPos = labelWidth + supplyWidth
 			local productPos = supplyPos + productWidth
+			
+			--scaling messes up if labels are not "wide" enough
+			supplyPos = math.max(supplyPos, 0.1235)
+			productPos = math.max(productPos, 0.15675)
 
 			directx.draw_rect(
 				xPos,
@@ -326,7 +335,6 @@ util.create_tick_handler(function()
 				backgroundColour.b,
 				backgroundColour.a
 			)
-
 			directx.draw_text(
 				xPos + labelOffset,
 				yPos + 0.01,
@@ -353,13 +361,27 @@ util.create_tick_handler(function()
 				xPos + productPos + productOffset,
 				yPos + 0.01,
 				productText,
-				productAlignment,
+				supplyAlignment,
 				textSize,
 				textColour.r,
 				textColour.g,
 				textColour.b,
 				textColour.a
 			)
+			-- for k, v in product do
+			-- 	directx.draw_text(
+			-- 		xPos + productPos + productOffset,
+			-- 		yPos + 0.01 + diff,
+			-- 		v,
+			-- 		productAlignment,
+			-- 		textSize,
+			-- 		textColour.r,
+			-- 		textColour.g,
+			-- 		textColour.b,
+			-- 		textColour.a,
+			-- 		true
+			-- 	)
+			-- end
 		end
 	end
 	return true
