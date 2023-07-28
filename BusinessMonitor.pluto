@@ -141,7 +141,15 @@ local xPos = 0.0
 local yPos = 0.0
 
 local textSize = 0.48
-local showMax = true
+
+local labelAlignment = ALIGN_TOP_LEFT
+local labelOffset = 0.003
+
+local supplyAlignment = ALIGN_TOP_RIGHT
+local supplyOffset = 0.004
+
+local productAlignment = ALIGN_TOP_RIGHT
+local productOffset = 0.013
 
 local backgroundColour = { r = 0, g = 0, b = 0, a = 0.8 }
 local textColour = { r = 1, g = 1, b = 1, a = 1 }
@@ -158,7 +166,7 @@ local function createList(parent, name, data)
 	return list
 end
 
-local viewList = menu.my_root():list('Views')
+local viewList = root:list('Views')
 local safeListChildren = createList(viewList, 'Safes', safeData):getChildren()
 local mcListChildren = createList(viewList, 'MC Business', mcData):getChildren()
 local ncListChildren = createList(viewList, 'Nightclub', ncData):getChildren()
@@ -204,6 +212,30 @@ do
 	textList:slider_float('Scale', {}, '', 0, 100, 46, 1, function(value)
 		textSize = value / 100
 	end)
+
+	local labelList = textList:list('Labels', {}, 'Aka. the "property".')
+	labelList:slider('Alignment', {}, '', 0, 9, ALIGN_TOP_LEFT, 1, function(value)
+		labelAlignment = value
+	end)
+	labelList:slider_float('X Offset', {}, '', -10000, 10000, 3, 1, function(value)
+		labelOffset = value / 1000
+	end).precision = 4
+
+	local supplyList = textList:list('Supplies')
+	supplyList:slider('Alignment', {}, '', 0, 9, ALIGN_TOP_RIGHT, 1, function(value)
+		supplyAlignment = value
+	end)
+	supplyList:slider_float('X Offset', {}, '', -10000, 10000, 4, 1, function(value)
+		supplyOffset = value / 1000
+	end).precision = 4
+
+	local productList = textList:list('Product')
+	productList:slider('Alignment', {}, '', 0, 9, ALIGN_TOP_RIGHT, 1, function(value)
+		productAlignment = value
+	end)
+	productList:slider_float('X Offset', {}, '',  -10000, 10000, 13, 1, function(value)
+		productOffset = value / 1000
+	end).precision = 4
 end
 
 do
@@ -302,10 +334,10 @@ util.create_tick_handler(function()
 			)
 
 			directx.draw_text(
-				xPos + 0.003,
+				xPos + labelOffset,
 				yPos + 0.01,
 				labelText,
-				ALIGN_TOP_LEFT,
+				labelAlignment,
 				textSize,
 				textColour.r,
 				textColour.g,
@@ -313,10 +345,10 @@ util.create_tick_handler(function()
 				textColour.a
 			)
 			directx.draw_text(
-				xPos + supplyPos - 0.02,
+				xPos + supplyPos + supplyOffset,
 				yPos + 0.01,
 				supplyText,
-				ALIGN_TOP_LEFT,
+				supplyAlignment,
 				textSize,
 				textColour.r,
 				textColour.g,
@@ -324,10 +356,10 @@ util.create_tick_handler(function()
 				textColour.a
 			)
 			directx.draw_text(
-				xPos + productPos - 0.02,
+				xPos + productPos + productOffset,
 				yPos + 0.01,
 				productText,
-				ALIGN_TOP_LEFT,
+				productAlignment,
 				textSize,
 				textColour.r,
 				textColour.g,
