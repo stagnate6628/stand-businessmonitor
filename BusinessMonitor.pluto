@@ -62,7 +62,7 @@ local safeData<const> = {
 local mcData<const> = {
 	[0] = { label = 'Forgery', max = 60 },
 	[1] = { label = 'Weed', max = 80 },
-	[2] = { label = 'Cash', max = 40 },
+	[2] = { label = 'Counterfeit Cash', max = 40 },
 	[3] = { label = 'Meth', max = 20 },
 	[4] = { label = 'Cocaine', max = 10 },
 	[5] = { label = 'Bunker', max = 100 },
@@ -180,28 +180,10 @@ end
 
 do
 	local colourList = root:list('Colour')
-	local warnings = colourList:toggle('Contrast Warnings', {}, 'Shown in the help text for a colour.', function() end, true)
-
-	colourList:colour('Background Colour', {}, '', backgroundColour.r, backgroundColour.g, backgroundColour.b, backgroundColour.a, true, function(colour, clickType)
-		if clickType != CLICK_BULK and warnings.value then
-			if not util.is_contrast_sufficient(
-				backgroundColour.r, backgroundColour.g, backgroundColour.b,
-				textColour.r, textColour.g, textColour.b
-			) then
-				util.toast('Text might be difficult to read with this colour. (1)')
-			end
-		end
+	colourList:colour('Background Colour', {}, '', backgroundColour.r, backgroundColour.g, backgroundColour.b, backgroundColour.a, true, function(colour)
 		backgroundColour = colour
 	end)
-	colourList:colour('Text Colour', {}, '', textColour.r, textColour.g, textColour.b, textColour.a, false, function(colour, clickType)
-		if clickType != CLICK_BULK and warnings.value then
-			if not util.is_contrast_sufficient(
-				textColour.r, textColour.g, textColour.b,
-				backgroundColour.r, backgroundColour.g, backgroundColour.b
-			) then
-				util.toast('Text might be difficult to read with this colour. (2)')
-			end
-		end
+	colourList:colour('Text Colour', {}, '', textColour.r, textColour.g, textColour.b, textColour.a, false, function(colour)
 		textColour = colour
 	end)
 end
@@ -252,7 +234,7 @@ util.create_tick_handler(function()
 			if current then
 				table.insert(labels, current.label)
 				table.insert(supplies, $'{readStat($'mattotalforfactory{k}')}%')
-				table.insert(product, $'{readStat($'prodtotalforfactory{k}')}'.. (showMax ? '/' .. current.max : ''))
+				table.insert(product, $'{readStat($'prodtotalforfactory{k}')}' .. (showMax ? '/' .. current.max : ''))
 			end
 		end
 
