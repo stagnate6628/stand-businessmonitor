@@ -182,31 +182,24 @@ do
 	local colourList = root:list('Colour')
 	local warnings = colourList:toggle('Contrast Warnings', {}, 'Shown in the help text for a colour.', function() end, true)
 
-	local bgRef
-	bgRef = colourList:colour('Background Colour', {}, '', backgroundColour.r, backgroundColour.g, backgroundColour.b, backgroundColour.a, true, function(colour, clickType)
+	colourList:colour('Background Colour', {}, '', backgroundColour.r, backgroundColour.g, backgroundColour.b, backgroundColour.a, true, function(colour, clickType)
 		if clickType != CLICK_BULK and warnings.value then
 			if not util.is_contrast_sufficient(
 				backgroundColour.r, backgroundColour.g, backgroundColour.b,
 				textColour.r, textColour.g, textColour.b
 			) then
-				bgRef.help_text = 'Text might be difficult to read with this colour.'
-			else
-				bgRef.help_text = ''
+				util.toast('Text might be difficult to read with this colour. (1)')
 			end
 		end
 		backgroundColour = colour
 	end)
-
-	local txtRef
-	txtRef = colourList:colour('Text Colour', {}, '', textColour.r, textColour.g, textColour.b, textColour.a, false, function(colour, clickType)
+	colourList:colour('Text Colour', {}, '', textColour.r, textColour.g, textColour.b, textColour.a, false, function(colour, clickType)
 		if clickType != CLICK_BULK and warnings.value then
 			if not util.is_contrast_sufficient(
 				textColour.r, textColour.g, textColour.b,
 				backgroundColour.r, backgroundColour.g, backgroundColour.b
 			) then
-				txtRef.help_text = 'Text might be difficult to read with this colour.'
-			else
-				txtRef.help_text = ''
+				util.toast('Text might be difficult to read with this colour. (2)')
 			end
 		end
 		textColour = colour
@@ -216,6 +209,10 @@ end
 local labels = {}
 local supplies = {}
 local product = {}
+
+util.on_transition_finished(function()
+	charSlot = util.get_char_slot()
+end)
 
 util.create_tick_handler(function()
 	if util.is_session_started() then
@@ -235,6 +232,7 @@ util.create_tick_handler(function()
 				table.insert(product, readStat(entry.productStat))
 			end
 		end
+
 		for k, entry in mcData do
 			local current
 			if 0 <= k and k <= 4 then
@@ -257,6 +255,7 @@ util.create_tick_handler(function()
 				table.insert(product, $'{readStat($'prodtotalforfactory{k}')}'.. (showMax ? '/' .. current.max : ''))
 			end
 		end
+
 		for k, entry in ncData do
 			if ncListChildren[k + 1].value then
 				table.insert(labels, entry.label)
@@ -292,10 +291,9 @@ util.create_tick_handler(function()
 				backgroundColour.a
 			)
 
-			local yPad = yPos + 0.01
 			directx.draw_text(
 				xPos + 0.003,
-				yPad,
+				yPos + 0.01,
 				labelText,
 				ALIGN_TOP_LEFT,
 				textSize,
@@ -306,7 +304,7 @@ util.create_tick_handler(function()
 			)
 			directx.draw_text(
 				xPos + labelWidth + supplyWidth + 0.005,
-				yPad,
+				yPos + 0.01,
 				supplyText,
 				ALIGN_TOP_RIGHT,
 				textSize,
@@ -317,7 +315,7 @@ util.create_tick_handler(function()
 			)
 			directx.draw_text(
 				xPos + labelWidth + supplyWidth + productWidth + 0.013,
-				yPad,
+				yPos + 0.01,
 				productText,
 				ALIGN_TOP_RIGHT,
 				textSize,
