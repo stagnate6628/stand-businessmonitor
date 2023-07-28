@@ -37,7 +37,7 @@ if async_http.have_access() then
 	until resp
 end
 
-local util, directx = util, directx
+local directx, table, util = directx, table, util
 
 local charSlot = util.get_char_slot()
 local function readStat(stat)
@@ -140,7 +140,7 @@ local showMax = true
 local function createList(parent, name, data)
 	local list = parent:list(name)
 	for data as entry do
-		list:toggle(entry.label, {}, '', function() end, false)
+		list:toggle(entry.label, {}, '', function() end, true)
 	end
 	return list
 end
@@ -213,114 +213,120 @@ do
 	end)
 end
 
+local labels = {}
+local supplies = {}
+local product = {}
+
 util.create_tick_handler(function()
-	local labels = {}
-	local supplies = {}
-	local product = {}
-	for k, entry in safeData do
-		if safeListChildren[k].value then
-			table.insert(labels, entry.label)
-			if entry.supplyStat then
-				local value = readStat(entry.supplyStat)
-				value = math.floor(value / 10)
-				table.insert(supplies, $'{value}%')
+	if util.is_session_started() then
+		labels = {}
+		supplies = {}
+		product = {}
+		for k, entry in safeData do
+			if safeListChildren[k].value then
+				table.insert(labels, entry.label)
+				if entry.supplyStat then
+					local value = readStat(entry.supplyStat)
+					value = math.floor(value / 10)
+					table.insert(supplies, $'{value}%')
+				else
+					table.insert(supplies, '')
+				end
+				table.insert(product, readStat(entry.productStat))
+			end
+		end
+		for k, entry in mcData do
+			local current
+			if 0 <= k and k <= 4 then
+				local slot = readStat($'factoryslot{k}')
+				local propertyIdx = mc_property_map[slot]
+				current = mcData[propertyIdx]
+
+				if not mcListChildren[propertyIdx + 1].value then
+					continue
+				end
 			else
-				table.insert(supplies, '')
+				if not mcListChildren[k + 1].value then
+					continue
+				end
+				current = mcData[k]
 			end
-			table.insert(product, readStat(entry.productStat))
-		end
-	end
-	for k, entry in mcData do
-		local current
-		if 0 <= k and k <= 4 then
-			local slot = readStat($'factoryslot{k}')
-			local propertyIdx = mc_property_map[slot]
-			current = mcData[propertyIdx]
-
-			if not mcListChildren[propertyIdx + 1].value then
-				continue
+			if current then
+				table.insert(labels, current.label)
+				table.insert(supplies, $'{readStat($'mattotalforfactory{k}')}%')
+				table.insert(product, $'{readStat($'prodtotalforfactory{k}')}'.. (showMax ? '/' .. current.max : ''))
 			end
-		else
-			if not mcListChildren[k + 1].value then
-				continue
+		end
+		for k, entry in ncData do
+			if ncListChildren[k + 1].value then
+				table.insert(labels, entry.label)
+				table.insert(product, $'{readStat($'hub_prod_total_{k}')}' .. (showMax ? '/' .. entry.max : ''))
 			end
-			current = mcData[k]
 		end
-		if current then
-			table.insert(labels, current.label)
-			table.insert(supplies, $'{readStat($'mattotalforfactory{k}')}%')
-			table.insert(product, $'{readStat($'prodtotalforfactory{k}')}'.. (showMax ? '/' .. current.max : ''))
+		for i = 0, 4 do
+			local propertySlot = readStat($'prop_whouse_slot{i}')
+			if propertySlot != 0 and scListChildren[i + 1].value then
+				local entry = sc_warehouse_data[propertySlot]
+				table.insert(labels, entry.label)
+				table.insert(product, $'{readStat($'contotalforwhouse{i}')}' .. (showMax ? '/' .. entry.max : ''))
+			end
 		end
-	end
-	for k, entry in ncData do
-		if ncListChildren[k + 1].value then
-			table.insert(labels, entry.label)
-			table.insert(product, $'{readStat($'hub_prod_total_{k}')}' .. (showMax ? '/' .. entry.max : ''))
+
+		do
+			local labelText = table.concat(labels, '\n')
+			local supplyText = table.concat(supplies, '\n')
+			local productText = table.concat(product, '\n')
+
+			local labelWidth, labelHeight = directx.get_text_size(labelText, textSize)
+			local supplyWidth, supplyHeight = directx.get_text_size(supplyText, textSize)
+			local productWidth, productHeight = directx.get_text_size(productText, textSize)
+
+			directx.draw_rect(
+				xPos,
+				yPos,
+				labelWidth + supplyWidth + productWidth + 0.02,
+				math.max(labelHeight, supplyHeight, productHeight) + 0.02, --label/product height is guaranteed max?
+				backgroundColour.r,
+				backgroundColour.g,
+				backgroundColour.b,
+				backgroundColour.a
+			)
+
+			local yPad = yPos + 0.01
+			directx.draw_text(
+				xPos + 0.003,
+				yPad,
+				labelText,
+				ALIGN_TOP_LEFT,
+				textSize,
+				textColour.r,
+				textColour.g,
+				textColour.b,
+				textColour.a
+			)
+			directx.draw_text(
+				xPos + labelWidth + supplyWidth + 0.005,
+				yPad,
+				supplyText,
+				ALIGN_TOP_RIGHT,
+				textSize,
+				textColour.r,
+				textColour.g,
+				textColour.b,
+				textColour.a
+			)
+			directx.draw_text(
+				xPos + labelWidth + supplyWidth + productWidth + 0.013,
+				yPad,
+				productText,
+				ALIGN_TOP_RIGHT,
+				textSize,
+				textColour.r,
+				textColour.g,
+				textColour.b,
+				textColour.a
+			)
 		end
-	end
-	for i = 0, 4 do
-		local propertySlot = readStat($'prop_whouse_slot{i}')
-		if propertySlot != 0 and scListChildren[i + 1].value then
-			local entry = sc_warehouse_data[propertySlot]
-			table.insert(labels, entry.label)
-			table.insert(product, $'{readStat($'contotalforwhouse{i}')}' .. (showMax ? '/' .. entry.max : ''))
-		end
-	end
-
-	do
-		local labelText = table.concat(labels, '\n')
-		local supplyText = table.concat(supplies, '\n')
-		local productText = table.concat(product, '\n')
-
-		local labelWidth, labelHeight = directx.get_text_size(labelText, textSize)
-		local supplyWidth, supplyHeight = directx.get_text_size(supplyText, textSize)
-		local productWidth, productHeight = directx.get_text_size(productText, textSize)
-
-		directx.draw_rect(
-			xPos,
-			yPos,
-			labelWidth + supplyWidth + productWidth + 0.02,
-			math.max(labelHeight, supplyHeight, productHeight) + 0.02, --label/product height is guaranteed max?
-			backgroundColour.r,
-			backgroundColour.g,
-			backgroundColour.b,
-			backgroundColour.a
-		)
-
-		local yPad = yPos + 0.01
-		directx.draw_text(
-			xPos + 0.003,
-			yPad,
-			labelText,
-			ALIGN_TOP_LEFT,
-			textSize,
-			textColour.r,
-			textColour.g,
-			textColour.b,
-			textColour.a
-		)
-		directx.draw_text(
-			xPos + labelWidth + supplyWidth + 0.005,
-			yPad,
-			supplyText,
-			ALIGN_TOP_RIGHT,
-			textSize,
-			textColour.r,
-			textColour.g,
-			textColour.b,
-			textColour.a
-		)
-		directx.draw_text(
-			xPos + labelWidth + supplyWidth + productWidth + 0.013,
-			yPad,
-			productText,
-			ALIGN_TOP_RIGHT,
-			textSize,
-			textColour.r,
-			textColour.g,
-			textColour.b,
-			textColour.a
-		)
 	end
 	return true
 end)
