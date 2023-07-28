@@ -134,7 +134,6 @@ local sc_warehouse_data<const> = {
     { label = 'Walker & Sons Warehouse', max = 111 }
 }
 
-
 local root = menu.my_root()
 
 local xPos = 0.0
