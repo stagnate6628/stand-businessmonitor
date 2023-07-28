@@ -332,7 +332,7 @@ util.create_tick_handler(function()
 				xPos,
 				yPos,
 				productPos + 0.02,
-				math.max(labelHeight, supplyHeight, productHeight) + 0.02, --label/product height is guaranteed max?
+				labelHeight + 0.02, -- math.max(labelHeight, supplyHeight, productHeight) + 0.02
 				backgroundColour.r,
 				backgroundColour.g,
 				backgroundColour.b,
