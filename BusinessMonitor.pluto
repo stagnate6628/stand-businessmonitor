@@ -175,16 +175,21 @@ local scListChildren = createList(viewList, 'Special Cargo Warehouse', ceoData):
 do
 	local refs = {}
 
-	local function runListChildren(list)
-		for list as child do
-			table.insert(refs, child)
-		end
-	end
+	for safeListChildren as child do table.insert(refs, child) end
+	for mcListChildren as child do table.insert(refs, child) end
+	for ncListChildren as child do table.insert(refs, child) end
+	for scListChildren as child do table.insert(refs, child) end
 
-	runListChildren(safeListChildren)
-	runListChildren(mcListChildren)
-	runListChildren(ncListChildren)
-	runListChildren(scListChildren)
+	-- local function runListChildren(list)
+	-- 	for list as child do
+	-- 		table.insert(refs, child)
+	-- 	end
+	-- end
+
+	-- runListChildren(safeListChildren)
+	-- runListChildren(mcListChildren)
+	-- runListChildren(ncListChildren)
+	-- runListChildren(scListChildren)
 
 	viewList:getChildren()[1]:attachBefore(
 		menu.shadow_root():textslider_stateful('State', {}, '', { 'Disable All', 'Enable All' }, function(idx)
@@ -209,31 +214,31 @@ end
 
 do
 	local textList = root:list('Text')
-	textList:slider_float('Scale', {}, '', 0, 100, 46, 1, function(value)
+	textList:slider_float('Scale', {}, 'Adjusts the window size too.', 0, 100, 46, 1, function(value)
 		textSize = value / 100
 	end)
 
-	local labelList = textList:list('Labels', {}, 'Aka. the "property".')
-	labelList:slider('Alignment', {}, '', 0, 9, ALIGN_TOP_LEFT, 1, function(value)
+	textList:divider('Label')
+	textList:slider('Alignment', {}, '', ALIGN_TOP_LEFT, ALIGN_BOTTOM_RIGHT, ALIGN_TOP_LEFT, 1, function(value)
 		labelAlignment = value
 	end)
-	labelList:slider_float('X Offset', {}, '', -10000, 10000, 3, 1, function(value)
+	textList:slider_float('X Offset', {}, '', -10000, 10000, 3, 1, function(value)
 		labelOffset = value / 1000
 	end).precision = 4
 
-	local supplyList = textList:list('Supplies')
-	supplyList:slider('Alignment', {}, '', 0, 9, ALIGN_TOP_RIGHT, 1, function(value)
+	textList:divider('Supplies')
+	textList:slider('Alignment', {}, '', ALIGN_TOP_LEFT, ALIGN_BOTTOM_RIGHT, ALIGN_TOP_RIGHT, 1, function(value)
 		supplyAlignment = value
 	end)
-	supplyList:slider_float('X Offset', {}, '', -10000, 10000, 4, 1, function(value)
+	textList:slider_float('X Offset', {}, '', -10000, 10000, 4, 1, function(value)
 		supplyOffset = value / 1000
 	end).precision = 4
 
-	local productList = textList:list('Product')
-	productList:slider('Alignment', {}, '', 0, 9, ALIGN_TOP_RIGHT, 1, function(value)
+	textList:divider('Product')
+	textList:slider('Alignment', {}, '', ALIGN_TOP_LEFT, ALIGN_BOTTOM_RIGHT, ALIGN_TOP_RIGHT, 1, function(value)
 		productAlignment = value
 	end)
-	productList:slider_float('X Offset', {}, '',  -10000, 10000, 13, 1, function(value)
+	textList:slider_float('X Offset', {}, '',  -10000, 10000, 13, 1, function(value)
 		productOffset = value / 1000
 	end).precision = 4
 end
@@ -301,6 +306,7 @@ util.create_tick_handler(function()
 				table.insert(product, $'{readStat($'hub_prod_total_{k}')}/{entry.max}')
 			end
 		end
+
 		for i = 0, 4 do
 			local propertySlot = readStat($'prop_whouse_slot{i}')
 			if propertySlot != 0 and scListChildren[i + 1].value then
