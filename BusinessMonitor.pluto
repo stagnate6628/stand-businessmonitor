@@ -180,17 +180,6 @@ do
 	for ncListChildren as child do table.insert(refs, child) end
 	for scListChildren as child do table.insert(refs, child) end
 
-	-- local function runListChildren(list)
-	-- 	for list as child do
-	-- 		table.insert(refs, child)
-	-- 	end
-	-- end
-
-	-- runListChildren(safeListChildren)
-	-- runListChildren(mcListChildren)
-	-- runListChildren(ncListChildren)
-	-- runListChildren(scListChildren)
-
 	viewList:getChildren()[1]:attachBefore(
 		menu.shadow_root():textslider_stateful('State', {}, '', { 'Disable All', 'Enable All' }, function(idx)
 			for refs as ref do
