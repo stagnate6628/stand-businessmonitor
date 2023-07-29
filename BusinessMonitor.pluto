@@ -72,26 +72,26 @@ local mcData<const> = {
 }
 --0: forgery 1:weed 2:cash 3:meth 4:cocaine
 local mcProperties<const> = {
-    [1]  = 3,
-    [2]  = 1,
-    [3]  = 4,
-    [4]  = 2,
-    [5]  = 0,
-    [6]  = 3,
-    [7]  = 1,
-    [8]  = 4,
-    [9]  = 2,
-    [10] = 0,
-    [11] = 3,
-    [12] = 1,
-    [13] = 4,
-    [14] = 2,
-    [15] = 0,
-    [16] = 3,
-    [17] = 1,
-    [18] = 4,
-    [19] = 2,
-    [20] = 0
+    3,
+    1,
+    4,
+    2,
+    0,
+    3,
+    1,
+    4,
+    2,
+    0,
+    3,
+    1,
+    4,
+    2,
+    0,
+    3,
+    1,
+    4,
+    2,
+    0
 }
 local ncData<const> = {
 	[0] = { label = 'Hub Cargo', max = 50 },
@@ -303,7 +303,7 @@ util.create_tick_handler(function()
 			directx.draw_rect(
 				xPos,
 				yPos,
-				columnThreeOffset * 1.13,
+				columnThreeOffset * 1.17,
 				labelHeight + 0.02, -- math.max(labelHeight, supplyHeight, productHeight) + 0.02
 				backgroundColour.r,
 				backgroundColour.g,
@@ -322,7 +322,7 @@ util.create_tick_handler(function()
 				textColour.a
 			)
 			directx.draw_text(
-				xPos + columnTwoOffset * 1.05,
+				xPos + (labelWidth * 1.1 + supplyWidth),
 				yPos + 0.01,
 				supplyText,
 				supplyAlignment,
@@ -333,7 +333,7 @@ util.create_tick_handler(function()
 				textColour.a
 			)
 			directx.draw_text(
-				xPos + columnThreeOffset * 1.09,
+				xPos + (labelWidth * 1.2 + supplyWidth + productWidth),
 				yPos + 0.01,
 				productText,
 				supplyAlignment,
