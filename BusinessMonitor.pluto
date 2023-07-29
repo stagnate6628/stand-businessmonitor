@@ -297,13 +297,10 @@ util.create_tick_handler(function()
 			local supplyWidth, supplyHeight = directx.get_text_size(supplyText, textSize)
 			local productWidth, productHeight = directx.get_text_size(productText, textSize)
 
-			local columnTwoOffset = labelWidth + supplyWidth
-			local columnThreeOffset = columnTwoOffset + productWidth
-
 			directx.draw_rect(
 				xPos,
 				yPos,
-				columnThreeOffset * 1.17,
+				(labelWidth + supplyWidth + productWidth) * 1.17,
 				labelHeight + 0.02, -- math.max(labelHeight, supplyHeight, productHeight) + 0.02
 				backgroundColour.r,
 				backgroundColour.g,
@@ -322,7 +319,7 @@ util.create_tick_handler(function()
 				textColour.a
 			)
 			directx.draw_text(
-				xPos + (labelWidth * 1.1 + supplyWidth),
+				xPos + (labelWidth * 1.123 + supplyWidth),
 				yPos + 0.01,
 				supplyText,
 				supplyAlignment,
