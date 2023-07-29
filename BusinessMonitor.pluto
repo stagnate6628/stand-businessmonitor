@@ -174,10 +174,18 @@ local scListChildren = createList(viewList, 'Special Cargo Warehouse', ceoData):
 do
 	local refs = {}
 
-	for safeListChildren as child do table.insert(refs, child) end
-	for mcListChildren as child do table.insert(refs, child) end
-	for ncListChildren as child do table.insert(refs, child) end
-	for scListChildren as child do table.insert(refs, child) end
+	for safeListChildren as child do
+		table.insert(refs, child)
+	end
+	for mcListChildren as child do
+		table.insert(refs, child)
+	end
+	for ncListChildren as child do
+		table.insert(refs, child)
+	end
+	for scListChildren as child do
+		table.insert(refs, child)
+	end
 
 	viewList:getChildren()[1]:attachBefore(
 		menu.shadow_root():textslider_stateful('State', {}, '', { 'Disable All', 'Enable All' }, function(idx)
@@ -205,30 +213,6 @@ do
 	textList:slider_float('Scale', {}, 'Adjusts the window size too.', 0, 100, 46, 1, function(value)
 		textSize = value / 100
 	end)
-
-	textList:divider('Label')
-	textList:slider('Alignment', {}, '', ALIGN_TOP_LEFT, ALIGN_BOTTOM_RIGHT, ALIGN_TOP_LEFT, 1, function(value)
-		labelAlignment = value
-	end)
-	textList:slider_float('X Offset', {}, '', -10000, 10000, 3, 1, function(value)
-		labelOffset = value / 1000
-	end).precision = 4
-
-	textList:divider('Supplies')
-	textList:slider('Alignment', {}, '', ALIGN_TOP_LEFT, ALIGN_BOTTOM_RIGHT, ALIGN_TOP_RIGHT, 1, function(value)
-		supplyAlignment = value
-	end)
-	textList:slider_float('X Offset', {}, '', -10000, 10000, 4, 1, function(value)
-		supplyOffset = value / 1000
-	end).precision = 4
-
-	textList:divider('Product')
-	textList:slider('Alignment', {}, '', ALIGN_TOP_LEFT, ALIGN_BOTTOM_RIGHT, ALIGN_TOP_RIGHT, 1, function(value)
-		productAlignment = value
-	end)
-	textList:slider_float('X Offset', {}, '',  -10000, 10000, 13, 1, function(value)
-		productOffset = value / 1000
-	end).precision = 4
 end
 
 do
@@ -244,11 +228,6 @@ end
 util.on_transition_finished(function()
 	charSlot = util.get_char_slot()
 end)
-
--- local diff = 0.0
--- root:slider_float('diff', {}, '', -10000, 10000, 0, 1, function(value)
--- 	diff = value
--- end).precision = 4
 
 util.create_tick_handler(function()
 	if util.is_session_started() then
@@ -318,17 +297,13 @@ util.create_tick_handler(function()
 			local supplyWidth, supplyHeight = directx.get_text_size(supplyText, textSize)
 			local productWidth, productHeight = directx.get_text_size(productText, textSize)
 
-			local supplyPos = labelWidth + supplyWidth
-			local productPos = supplyPos + productWidth
-			
-			--scaling messes up if labels are not "wide" enough
-			supplyPos = math.max(supplyPos, 0.1235)
-			productPos = math.max(productPos, 0.15675)
+			local columnTwoOffset = labelWidth + supplyWidth
+			local columnThreeOffset = columnTwoOffset + productWidth
 
 			directx.draw_rect(
 				xPos,
 				yPos,
-				productPos + 0.02,
+				columnThreeOffset * 1.13,
 				labelHeight + 0.02, -- math.max(labelHeight, supplyHeight, productHeight) + 0.02
 				backgroundColour.r,
 				backgroundColour.g,
@@ -336,7 +311,7 @@ util.create_tick_handler(function()
 				backgroundColour.a
 			)
 			directx.draw_text(
-				xPos + labelOffset,
+				xPos + 0.002,
 				yPos + 0.01,
 				labelText,
 				labelAlignment,
@@ -347,7 +322,7 @@ util.create_tick_handler(function()
 				textColour.a
 			)
 			directx.draw_text(
-				xPos + supplyPos + supplyOffset,
+				xPos + columnTwoOffset * 1.05,
 				yPos + 0.01,
 				supplyText,
 				supplyAlignment,
@@ -358,7 +333,7 @@ util.create_tick_handler(function()
 				textColour.a
 			)
 			directx.draw_text(
-				xPos + productPos + productOffset,
+				xPos + columnThreeOffset * 1.09,
 				yPos + 0.01,
 				productText,
 				supplyAlignment,
@@ -368,20 +343,6 @@ util.create_tick_handler(function()
 				textColour.b,
 				textColour.a
 			)
-			-- for k, v in product do
-			-- 	directx.draw_text(
-			-- 		xPos + productPos + productOffset,
-			-- 		yPos + 0.01 + diff,
-			-- 		v,
-			-- 		productAlignment,
-			-- 		textSize,
-			-- 		textColour.r,
-			-- 		textColour.g,
-			-- 		textColour.b,
-			-- 		textColour.a,
-			-- 		true
-			-- 	)
-			-- end
 		end
 	end
 	return true
