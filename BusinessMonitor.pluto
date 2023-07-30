@@ -17,7 +17,7 @@ if async_http.have_access() then
 							nil,
 							function(scriptBody)
 								local f = assert(io.open($'{filesystem.scripts_dir()}{SCRIPT_RELPATH}', 'wb'))
-								assert(f:write(scriptBody))
+								f:write(scriptBody)
 								f:close()
 								util.restart_script()
 						end)
@@ -32,11 +32,9 @@ if async_http.have_access() then
 		end
 	)
 	async_http.dispatch()
-	util.set_busy(true)
 	repeat
 		util.yield()
 	until resp
-	util.set_busy(false)
 end
 
 local directx, table, util = directx, table, util
