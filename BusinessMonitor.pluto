@@ -199,7 +199,7 @@ end
 
 do
 	local textList = root:list('Text')
-	textList:slider_float('Scale', {}, 'All aspects of the overlay will adjust appropriately as needed. Note that width respects this value.', 0, 100, 46, 1, function(value)
+	textList:slider_float('Scale', {}, 'All aspects of the overlay will adjust appropriately as needed. This is basically how you would adjust width and height.', 0, 100, 46, 1, function(value)
 		textSize = value / 100
 	end)
 end
