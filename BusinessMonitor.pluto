@@ -141,15 +141,6 @@ local yPos = 0.0
 
 local textSize = 0.48
 
-local labelAlignment = ALIGN_TOP_LEFT
-local labelOffset = 0.003
-
-local supplyAlignment = ALIGN_TOP_RIGHT
-local supplyOffset = 0.004
-
-local productAlignment = ALIGN_TOP_RIGHT
-local productOffset = 0.013
-
 local backgroundColour = { r = 0, g = 0, b = 0, a = 0.8 }
 local textColour = { r = 1, g = 1, b = 1, a = 1 }
 
@@ -162,6 +153,7 @@ local function createList(parent, name, data)
 	for data as entry do
 		list:toggle(entry.label, {}, '', function() end)
 	end
+
 	return list
 end
 
@@ -170,7 +162,6 @@ local safeListChildren = createList(viewList, 'Safes', safeData):getChildren()
 local mcListChildren = createList(viewList, 'MC Business', mcData):getChildren()
 local ncListChildren = createList(viewList, 'Nightclub', ncData):getChildren()
 local scListChildren = createList(viewList, 'Special Cargo Warehouse', ceoData):getChildren()
-
 do
 	local refs = {}
 
@@ -210,7 +201,7 @@ end
 
 do
 	local textList = root:list('Text')
-	textList:slider_float('Scale', {}, 'Adjusts the window size too.', 0, 100, 46, 1, function(value)
+	textList:slider_float('Scale', {}, 'Respects the active view count. The window will adjust appropriately as needed.', 0, 100, 46, 1, function(value)
 		textSize = value / 100
 	end)
 end
@@ -311,7 +302,7 @@ util.create_tick_handler(function()
 				xPos + 0.002,
 				yPos + 0.01,
 				labelText,
-				labelAlignment,
+				ALIGN_TOP_LEFT,
 				textSize,
 				textColour.r,
 				textColour.g,
@@ -319,10 +310,10 @@ util.create_tick_handler(function()
 				textColour.a
 			)
 			directx.draw_text(
-				xPos + (labelWidth * 1.123 + supplyWidth),
+				xPos + (labelWidth * 1.123),
 				yPos + 0.01,
 				supplyText,
-				supplyAlignment,
+				ALIGN_TOP_LEFT,
 				textSize,
 				textColour.r,
 				textColour.g,
@@ -330,10 +321,10 @@ util.create_tick_handler(function()
 				textColour.a
 			)
 			directx.draw_text(
-				xPos + (labelWidth * 1.2 + supplyWidth + productWidth),
+				xPos + (labelWidth * 1.2 + supplyWidth),
 				yPos + 0.01,
 				productText,
-				supplyAlignment,
+				ALIGN_TOP_LEFT,
 				textSize,
 				textColour.r,
 				textColour.g,
