@@ -185,31 +185,21 @@ do
 	):setTemporary()
 end
 
-root:divider('Configuration')
-
 do
-	local positionList = root:list('Position')
-	positionList:slider_float('X Position', {}, '', 0, 100, 0, 1, function(value)
+	root:divider('Configuration')
+	root:slider_float('X Position', {}, '', 0, 100, 0, 1, function(value)
 		xPos = value / 100
 	end)
-	positionList:slider_float('Y Position', {}, '', 0, 100, 0, 1, function(value)
+	root:slider_float('Y Position', {}, '', 0, 100, 0, 1, function(value)
 		yPos = value / 100
 	end)
-end
-
-do
-	local textList = root:list('Text')
-	textList:slider_float('Scale', {}, 'All aspects of the overlay will adjust appropriately as needed. This is basically how you would adjust width and height.', 0, 100, 46, 1, function(value)
+	root:slider_float('Scale', {}, 'All aspects of the overlay will adjust appropriately as needed. This is basically how you would adjust width and height.', 0, 100, 46, 1, function(value)
 		textSize = value / 100
 	end)
-end
-
-do
-	local colourList = root:list('Colour')
-	colourList:colour('Background Colour', {}, '', backgroundColour.r, backgroundColour.g, backgroundColour.b, backgroundColour.a, true, function(colour)
+	root:colour('Background Colour', {}, '', backgroundColour.r, backgroundColour.g, backgroundColour.b, backgroundColour.a, true, function(colour)
 		backgroundColour = colour
 	end)
-	colourList:colour('Text Colour', {}, '', textColour.r, textColour.g, textColour.b, textColour.a, false, function(colour)
+	root:colour('Text Colour', {}, '', textColour.r, textColour.g, textColour.b, textColour.a, false, function(colour)
 		textColour = colour
 	end)
 end
