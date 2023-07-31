@@ -48,15 +48,18 @@ local safeData<const> = {
 	{
 		label = 'Nightclub',
 		supplyStat = 'club_popularity',
-		productStat = 'club_safe_cash_value'
+		productStat = 'club_safe_cash_value',
+		max = 250_000
 	},
 	{
 		label = 'Arcade',
-		productStat = 'arcade_safe_cash_value'
+		productStat = 'arcade_safe_cash_value',
+		max = 100_000
 	},
 	{
 		label = 'Agency',
-		productStat = 'fixer_safe_cash_value'
+		productStat = 'fixer_safe_cash_value',
+		max = 250_000
 	}
 }
 local mcData<const> = {
@@ -140,7 +143,8 @@ local yPos = 0.0
 local textSize = 0.48
 
 local backgroundColour = { r = 0, g = 0, b = 0, a = 0.8 }
-local textColour = { r = 1, g = 1, b = 1, a = 1 }
+local textColour = { r = 1, g = 1, b = 1 }
+local maxColour = { r = 0, g = 1, b = 0 }
 
 local labels = {}
 local supplies = {}
@@ -199,8 +203,11 @@ do
 	root:colour('Background Colour', {}, '', backgroundColour.r, backgroundColour.g, backgroundColour.b, backgroundColour.a, true, function(colour)
 		backgroundColour = colour
 	end)
-	root:colour('Text Colour', {}, '', textColour.r, textColour.g, textColour.b, textColour.a, false, function(colour)
+	root:colour('Text Colour', {}, '', textColour.r, textColour.g, textColour.b, 1.0, false, function(colour)
 		textColour = colour
+	end)
+	root:colour('Max Colour', {}, '', maxColour.r, maxColour.g, maxColour.b, 1.0, false, function(colour)
+		maxColour = colour
 	end)
 end
 
@@ -276,6 +283,8 @@ util.create_tick_handler(function()
 			local supplyWidth, supplyHeight = directx.get_text_size(supplyText, textSize)
 			local productWidth, productHeight = directx.get_text_size(productText, textSize)
 
+			local _, rowHeight = directx.get_text_size('', textSize) -- ideally we wouldn't have to calculate this each tick
+
 			directx.draw_rect(
 				xPos,
 				yPos,
@@ -295,7 +304,7 @@ util.create_tick_handler(function()
 				textColour.r,
 				textColour.g,
 				textColour.b,
-				textColour.a
+				1.0
 			)
 			directx.draw_text(
 				xPos + (labelWidth * 1.123),
@@ -306,19 +315,34 @@ util.create_tick_handler(function()
 				textColour.r,
 				textColour.g,
 				textColour.b,
-				textColour.a
+				1.0
 			)
-			directx.draw_text(
-				xPos + (labelWidth * 1.2 + supplyWidth),
-				yPos + 0.01,
-				productText,
-				ALIGN_TOP_LEFT,
-				textSize,
-				textColour.r,
-				textColour.g,
-				textColour.b,
-				textColour.a
-			)
+			for k, entry in product do
+				entry = tostring(entry)
+
+				local isMax = false
+				-- assume entry is a "safe" value
+				if not entry:contains('/') then
+					isMax = safeData[k].max == entry
+				else
+					local [current, max] = entry:split('/')
+					isMax = current == max
+				end
+
+				local _, localHeight = directx.get_text_size(entry, textSize)
+
+				directx.draw_text(
+					xPos + (labelWidth * 1.2 + supplyWidth),
+					yPos + (k * rowHeight) + localHeight / 2,
+					entry,
+					ALIGN_TOP_LEFT,
+					textSize,
+					isMax ? maxColour.r : textColour.r,
+					isMax ? maxColour.g : textColour.g,
+					isMax ? maxColour.b : textColour.b,
+					1.0
+				)
+			end
 		end
 	end
 	return true
