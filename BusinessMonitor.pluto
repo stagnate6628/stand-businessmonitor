@@ -330,7 +330,7 @@ util.create_tick_handler(function()
 				end
 				directx.draw_text(
 					xPos + (labelWidth * 1.2 + supplyWidth),
-					yPos + ((k - 1) * rowHeight) + 0.009,
+					yPos + ((k - 1) * rowHeight) + 0.01,
 					entry,
 					ALIGN_TOP_LEFT,
 					textSize,
