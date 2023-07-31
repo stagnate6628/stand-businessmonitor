@@ -193,7 +193,7 @@ do
 	root:slider_float('Y Position', {}, '', 0, 100, 0, 1, function(value)
 		yPos = value / 100
 	end)
-	root:slider_float('Scale', {}, 'All aspects of the overlay will adjust appropriately as needed. This is basically how width and height are changed, in addition to the active views.', 0, 100, 46, 1, function(value)
+	root:slider_float('Scale', {}, 'All aspects of the overlay will adjust appropriately as needed. This is basically how width and height are changed, which respects the active views.', 0, 100, 46, 1, function(value)
 		textSize = value / 100
 	end)
 	root:colour('Background Colour', {}, '', backgroundColour.r, backgroundColour.g, backgroundColour.b, backgroundColour.a, true, function(colour)
