@@ -283,7 +283,7 @@ util.create_tick_handler(function()
 			local supplyWidth, supplyHeight = directx.get_text_size(supplyText, textSize)
 			local productWidth, productHeight = directx.get_text_size(productText, textSize)
 
-			local _, rowHeight = directx.get_text_size('', textSize) -- ideally we wouldn't have to calculate this each tick
+			local _, rowHeight = directx.get_text_size('hello', textSize) -- ideally we wouldn't have to calculate this each tick
 
 			directx.draw_rect(
 				xPos,
@@ -328,19 +328,17 @@ util.create_tick_handler(function()
 					local [current, max] = entry:split('/')
 					isMax = current == max
 				end
-
-				local _, localHeight = directx.get_text_size(entry, textSize)
-
 				directx.draw_text(
 					xPos + (labelWidth * 1.2 + supplyWidth),
-					yPos + (k * rowHeight) + localHeight / 2,
+					yPos + ((k - 1) * rowHeight) + 0.009,
 					entry,
 					ALIGN_TOP_LEFT,
 					textSize,
 					isMax ? maxColour.r : textColour.r,
 					isMax ? maxColour.g : textColour.g,
 					isMax ? maxColour.b : textColour.b,
-					1.0
+					1.0,
+					true
 				)
 			end
 		end
