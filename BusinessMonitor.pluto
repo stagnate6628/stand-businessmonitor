@@ -142,9 +142,9 @@ local yPos = 0.0
 
 local textSize = 0.48
 
-local backgroundColour = { r = 0, g = 0, b = 0, a = 0.8 }
-local textColour = { r = 1, g = 1, b = 1 }
-local maxColour = { r = 0, g = 1, b = 0 }
+local backgroundColour = { r = 0.0, g = 0.0, b = 0.0, a = 0.8 }
+local textColour = { r = 1.0, g = 1.0, b = 1.0, a = 1.0 }
+local maxColour = { r = 0.0, g = 1.0, b = 0.0, a = 1.0 }
 
 local labels = {}
 local supplies = {}
@@ -203,10 +203,10 @@ do
 	root:colour('Background Colour', {}, '', backgroundColour.r, backgroundColour.g, backgroundColour.b, backgroundColour.a, true, function(colour)
 		backgroundColour = colour
 	end)
-	root:colour('Text Colour', {}, '', textColour.r, textColour.g, textColour.b, 1.0, false, function(colour)
+	root:colour('Text Colour', {}, '', textColour.r, textColour.g, textColour.b, textColour.a, true, function(colour)
 		textColour = colour
 	end)
-	root:colour('Max Colour', {}, '', maxColour.r, maxColour.g, maxColour.b, 1.0, false, function(colour)
+	root:colour('Max Colour', {}, '', maxColour.r, maxColour.g, maxColour.b, maxColour.a, true, function(colour)
 		maxColour = colour
 	end)
 end
@@ -304,7 +304,7 @@ util.create_tick_handler(function()
 				textColour.r,
 				textColour.g,
 				textColour.b,
-				1.0
+				textColour.a
 			)
 			directx.draw_text(
 				xPos + (labelWidth * 1.123),
@@ -315,7 +315,7 @@ util.create_tick_handler(function()
 				textColour.r,
 				textColour.g,
 				textColour.b,
-				1.0
+				textColour.a
 			)
 			for k, entry in product do
 				entry = tostring(entry)
@@ -337,8 +337,7 @@ util.create_tick_handler(function()
 					isMax ? maxColour.r : textColour.r,
 					isMax ? maxColour.g : textColour.g,
 					isMax ? maxColour.b : textColour.b,
-					1.0,
-					true
+					isMax ? maxColour.a : textColour.a
 				)
 			end
 		end
