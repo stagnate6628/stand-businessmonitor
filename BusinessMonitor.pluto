@@ -37,7 +37,7 @@ if async_http.have_access() then
 	until resp
 end
 
-local directx, table, util = directx, table, util
+local directx, util = directx, util
 
 local charSlot = util.get_char_slot()
 local function readStat(stat)
