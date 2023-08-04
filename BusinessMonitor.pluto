@@ -308,7 +308,6 @@ util.create_tick_handler(function()
 			)
 			directx.draw_text(
 				xPos + labelWidth * 1.3,
-				-- xPos + (labelWidth * 1.123),
 				yPos + 0.01,
 				supplyText,
 				ALIGN_TOP_RIGHT,
@@ -319,23 +318,21 @@ util.create_tick_handler(function()
 				textColour.a
 			)
 			for k, entry in product do
-				entry = tostring(entry)
-
 				local isMax = false
+
 				-- assume entry is a "safe" value
-				if not entry:contains('/') then
-					isMax = entry == tostring(safeData[k].max)
+				if type(entry) == 'number' then
+					isMax = entry == safeData[k].max
 				else
 					local [current, max] = entry:split('/')
 					isMax = current == max
 				end
+
 				directx.draw_text(
 					xPos + (labelWidth * 1.45 + supplyWidth),
-					-- xPos + (labelWidth * 1.2 + supplyWidth),
 					yPos + ((k - 1) * rowHeight) + 0.01,
 					entry,
 					ALIGN_TOP_RIGHT,
-					-- ALIGN_TOP_LEFT,
 					textSize,
 					isMax ? maxColour.r : textColour.r,
 					isMax ? maxColour.g : textColour.g,
