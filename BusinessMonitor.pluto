@@ -208,7 +208,7 @@ do
 		invertAlignment = state
 	end)
 
-	local colourRoot = root:list('Colour')
+	local colourRoot = root:list('Colours')
 	colourRoot:colour('Background Colour', {}, '', backgroundColour.r, backgroundColour.g, backgroundColour.b, backgroundColour.a, true, function(colour)
 		backgroundColour = colour
 	end)
