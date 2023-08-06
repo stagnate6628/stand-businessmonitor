@@ -266,11 +266,9 @@ util.create_tick_handler(function()
 				end
 				current = mcData[k]
 			end
-			if current then
-				labels[#labels + 1] = current.label
-				supplies[#supplies + 1] = $'{readStat($'mattotalforfactory{k}')}%'
-				product[#product + 1] = $'{readStat($'prodtotalforfactory{k}')}/{current.max}'
-			end
+			labels[#labels + 1] = current.label
+			supplies[#supplies + 1] = $'{readStat($'mattotalforfactory{k}')}%'
+			product[#product + 1] = $'{readStat($'prodtotalforfactory{k}')}/{current.max}'
 		end
 
 		for k, entry in ncData do
