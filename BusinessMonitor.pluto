@@ -201,7 +201,7 @@ do
 	end)
 
 	local textRoot = root:list('Text')
-	textRoot:slider_float('Scale', {}, 'All aspects of the overlay will adjust appropriately as needed. This is basically how width and height are changed, which respects the active views.', 0, 100, 46, 1, function(value)
+	textRoot:slider_float('Scale', {}, 'This is how the overlay width and height are changed, which respects the active views.', 0, 100, 46, 1, function(value)
 		textSize = value / 100
 	end)
 	textRoot:toggle('Invert Alignment', {}, '', function(state)
