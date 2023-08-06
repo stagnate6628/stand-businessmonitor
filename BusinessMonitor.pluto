@@ -1,40 +1,44 @@
 --stupid autoupdater
 if async_http.have_access() then
-	local localVersion = '0.2'
+	local localVersion = '0.0'
 	local resp = false
-	async_http.init(
-		'raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/version',
-		nil,
-		function(remoteVersion)
-			if soup.version_compare(localVersion, remoteVersion) == -1 then
-				menu.my_root():action(
-					'Update Script',
-					{},
-					$'Version {remoteVersion} is now available.',
-					function()
-						async_http.init(
-							'raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/BusinessMonitor.pluto',
-							nil,
-							function(scriptBody)
-								local f = assert(io.open($'{filesystem.scripts_dir()}{SCRIPT_RELPATH}', 'wb'))
-								f:write(scriptBody)
-								f:close()
-								util.restart_script()
-						end)
-						async_http.dispatch()
-					end
-				)
+	util.create_thread(function()
+		async_http.init(
+			'raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/version',
+			nil,
+			function(remoteVersion)
+				if soup.version_compare(localVersion, remoteVersion) == -1 then
+					menu.my_root():getChildren()[2]:attachBefore(
+						menu.shadow_root():action('Update Script',
+							{},
+							$'Version {remoteVersion} is now available.',
+							function()
+								async_http.init(
+									'raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/BusinessMonitor.pluto',
+									nil,
+									function(scriptBody)
+										local f = assert(io.open($'{filesystem.scripts_dir()}{SCRIPT_RELPATH}', 'wb'))
+										f:write(scriptBody)
+										f:close()
+										util.restart_script()
+								end)
+								async_http.dispatch()
+							end
+						)
+					)
+				end
+				resp = true
+			end,
+			function()
+				resp = true
 			end
-			resp = true
-		end,
-		function()
-			resp = true
-		end
-	)
-	async_http.dispatch()
-	repeat
-		util.yield()
-	until resp
+		)
+		async_http.dispatch()
+		repeat
+			util.yield()
+		until resp
+		util.stop_thread()
+	end)
 end
 
 local directx, util = directx, util
