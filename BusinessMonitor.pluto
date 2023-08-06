@@ -356,3 +356,5 @@ util.create_tick_handler(function()
 	end
 	return true
 end)
+
+menu.apply_command_states()
