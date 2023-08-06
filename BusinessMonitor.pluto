@@ -1,6 +1,6 @@
 --stupid autoupdater
 if async_http.have_access() then
-	local localVersion = '0.0'
+	local localVersion = '0.2'
 	local resp = false
 	util.create_thread(function()
 		async_http.init(
