@@ -21,19 +21,17 @@ if async_http.have_access() then
 										f:write(scriptBody)
 										f:close()
 										util.restart_script()
-									end
-								)
+									end)
 								async_http.dispatch()
-							end
+							end)
 						)
-					)
+					end
+					resp = true
+				end,
+				function()
+					resp = true
 				end
-				resp = true
-			end,
-			function()
-				resp = true
-			end
-		)
+			)
 		async_http.dispatch()
 		repeat
 			util.yield()
