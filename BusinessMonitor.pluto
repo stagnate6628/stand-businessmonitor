@@ -6,8 +6,8 @@ if async_http.have_access() then
 		async_http.init(
 			'raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/version',
 			nil,
-			function(remoteVersion)
-				if soup.version_compare(localVersion, remoteVersion) == -1 then
+			function(remoteVersion, headers, statusCode)
+				if statusCode == 200 and soup.version_compare(localVersion, remoteVersion) == -1 then
 					menu.my_root():getChildren()[2]:attachBefore(
 						menu.shadow_root():action('Update Script',
 							{},
@@ -173,16 +173,16 @@ do
 	local refs = {}
 
 	for safeListChildren as child do
-		table.insert(refs, child)
+		refs[#refs + 1] = child
 	end
 	for mcListChildren as child do
-		table.insert(refs, child)
+		refs[#refs + 1] = child
 	end
 	for ncListChildren as child do
-		table.insert(refs, child)
+		refs[#refs + 1] = child
 	end
 	for scListChildren as child do
-		table.insert(refs, child)
+		refs[#refs + 1] = child
 	end
 
 	viewList:getChildren()[1]:attachBefore(
@@ -222,6 +222,8 @@ do
 	colourRoot:colour('Max Colour', {}, '', maxColour.r, maxColour.g, maxColour.b, maxColour.a, true, function(colour)
 		maxColour = colour
 	end)
+
+	menu.apply_command_states()
 end
 
 util.on_transition_finished(function()
@@ -236,15 +238,15 @@ util.create_tick_handler(function()
 
 		for k, entry in safeData do
 			if safeListChildren[k].value then
-				table.insert(labels, entry.label)
+				labels[#labels + 1] = entry.label
 				if entry.supplyStat then
 					local value = readStat(entry.supplyStat)
 					value = math.floor(value / 10)
-					table.insert(supplies, $'{value}%')
+					supplies[#supplies + 1] = $'{value}%'
 				else
-					table.insert(supplies, '')
+					supplies[#supplies + 1] = ''
 				end
-				table.insert(product, readStat(entry.productStat))
+				product[#product + 1] = readStat(entry.productStat)
 			end
 		end
 
@@ -265,16 +267,16 @@ util.create_tick_handler(function()
 				current = mcData[k]
 			end
 			if current then
-				table.insert(labels, current.label)
-				table.insert(supplies, $'{readStat($'mattotalforfactory{k}')}%')
-				table.insert(product, $'{readStat($'prodtotalforfactory{k}')}/{current.max}')
+				labels[#labels + 1] = current.label
+				supplies[#supplies + 1] = $'{readStat($'mattotalforfactory{k}')}%'
+				product[#product + 1] = $'{readStat($'prodtotalforfactory{k}')}/{current.max}'
 			end
 		end
 
 		for k, entry in ncData do
 			if ncListChildren[k + 1].value then
-				table.insert(labels, entry.label)
-				table.insert(product, $'{readStat($'hub_prod_total_{k}')}/{entry.max}')
+				labels[#labels + 1] = entry.label
+				product[#product + 1] = $'{readStat($'hub_prod_total_{k}')}/{entry.max}'
 			end
 		end
 
@@ -282,8 +284,8 @@ util.create_tick_handler(function()
 			local propertySlot = readStat($'prop_whouse_slot{i}')
 			if propertySlot != 0 and scListChildren[i + 1].value then
 				local entry = ceoWarehouses[propertySlot]
-				table.insert(labels, entry.label)
-				table.insert(product, $'{readStat($'contotalforwhouse{i}')}/{entry.max}')
+				labels[#labels + 1] = entry.label
+				product[#product + 1] = $'{readStat($'contotalforwhouse{i}')}/{entry.max}'
 			end
 		end
 
@@ -360,5 +362,3 @@ util.create_tick_handler(function()
 	end
 	return true
 end)
-
-menu.apply_command_states()
