@@ -345,7 +345,7 @@ util.create_tick_handler(function()
 					isMax = current == max
 				end
 				directx.draw_text(
-					invertAlignment ? labelPos : xPos + (labelWidth * 1.45 + supplyWidth), -- productPos does not work
+					invertAlignment ? labelPos : xPos + labelWidth * 1.45 + supplyWidth, -- equivalent to productPos but its oos
 					yPos + ((k - 1) * rowHeight) + 0.01,
 					entry,
 					invertAlignment ? ALIGN_TOP_LEFT : ALIGN_TOP_RIGHT,
