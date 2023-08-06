@@ -16,22 +16,23 @@ if async_http.have_access() then
 								async_http.init(
 									'raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/BusinessMonitor.pluto',
 									nil,
-									function(scriptBody)
+										function(scriptBody)
 										local f = assert(io.open($'{filesystem.scripts_dir()}{SCRIPT_RELPATH}', 'wb'))
 										f:write(scriptBody)
 										f:close()
 										util.restart_script()
 									end)
 								async_http.dispatch()
-							end)
+							end
 						)
-					end
-					resp = true
-				end,
-				function()
-					resp = true
+					)
 				end
-			)
+				resp = true
+			end,
+			function()
+				resp = true
+			end
+		)
 		async_http.dispatch()
 		repeat
 			util.yield()
