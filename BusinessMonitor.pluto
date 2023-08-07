@@ -298,15 +298,15 @@ util.create_tick_handler(function()
 
 			local _, rowHeight = directx.get_text_size('hello', textSize) -- ideally we wouldn't have to calculate this each tick
 
-			local labelPos = xPos + 0.002
-			local supplyPos = xPos + labelWidth * 1.3
-			local productPos = xPos + (labelWidth * 1.45 + supplyWidth)
+			labelPos = xPos + 0.002
+			supplyPos = xPos + labelWidth * 1.3
+			productPos = xPos + (labelWidth * 1.45 + supplyWidth)
 
 			directx.draw_rect(
 				xPos,
 				yPos,
 				(labelWidth + supplyWidth + productWidth) * 1.17,
-				labelHeight + 0.02, -- math.max(labelHeight, supplyHeight, productHeight) + 0.02
+				labelHeight + 0.02,
 				backgroundColour.r,
 				backgroundColour.g,
 				backgroundColour.b,
@@ -345,7 +345,7 @@ util.create_tick_handler(function()
 					isMax = current == max
 				end
 				directx.draw_text(
-					invertAlignment ? labelPos : xPos + labelWidth * 1.45 + supplyWidth, -- equivalent to productPos but its oos
+					invertAlignment ? labelPos : productPos,
 					yPos + ((k - 1) * rowHeight) + 0.01,
 					entry,
 					invertAlignment ? ALIGN_TOP_LEFT : ALIGN_TOP_RIGHT,
