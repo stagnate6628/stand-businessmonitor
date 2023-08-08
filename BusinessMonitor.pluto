@@ -145,6 +145,7 @@ local xPos = 0.0
 local yPos = 0.0
 
 local textSize = 0.46
+local _, textRowHeight = directx.get_text_size('hello', textSize)
 
 local backgroundColour = { r = 0.0, g = 0.0, b = 0.0, a = 0.8 }
 local textColour = { r = 1.0, g = 1.0, b = 1.0, a = 1.0 }
@@ -202,6 +203,7 @@ do
 	local textRoot = root:list('Text')
 	textRoot:slider_float('Scale', {}, 'This is how the overlay width and height are changed, which respects the active views.', 0, 100, 46, 1, function(value)
 		textSize = value / 100
+		_, textRowHeight = directx.get_text_size('hello', textSize)
 	end)
 
 	local colourRoot = root:list('Colours')
@@ -288,8 +290,6 @@ util.create_tick_handler(function()
 			local supplyWidth = directx.get_text_size(supplyText, textSize)
 			local productWidth = directx.get_text_size(productText, textSize)
 
-			local _, rowHeight = directx.get_text_size('hello', textSize) -- ideally we wouldn't have to calculate this each tick
-
 			directx.draw_rect(
 				xPos,
 				yPos,
@@ -337,7 +337,7 @@ util.create_tick_handler(function()
 				end
 				directx.draw_text(
 					xPos + (labelWidth + supplyWidth + productWidth) * 1.12,
-					yPos + ((k - 1) * rowHeight) + 0.01,
+					yPos + ((k - 1) * textRowHeight) + 0.01,
 					entry,
 					ALIGN_TOP_RIGHT,
 					textSize,
