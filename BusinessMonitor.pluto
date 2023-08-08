@@ -150,10 +150,6 @@ local backgroundColour = { r = 0.0, g = 0.0, b = 0.0, a = 0.8 }
 local textColour = { r = 1.0, g = 1.0, b = 1.0, a = 1.0 }
 local maxColour = { r = 0.0, g = 1.0, b = 0.0, a = 1.0 }
 
-local labels = {}
-local supplies = {}
-local product = {}
-
 local function createList(parent, name, data)
 	local list = parent:list(name)
 	for data as entry do
@@ -228,9 +224,9 @@ end)
 
 util.create_tick_handler(function()
 	if util.is_session_started() then
-		labels = {}
-		supplies = {}
-		product = {}
+		local labels = {}
+		local supplies = {}
+		local product = {}
 
 		for k, entry in safeData do
 			if safeListChildren[k].value then
