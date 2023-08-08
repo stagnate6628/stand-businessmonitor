@@ -145,7 +145,6 @@ local xPos = 0.0
 local yPos = 0.0
 
 local textSize = 0.48
-local invertAlignment = false
 
 local backgroundColour = { r = 0.0, g = 0.0, b = 0.0, a = 0.8 }
 local textColour = { r = 1.0, g = 1.0, b = 1.0, a = 1.0 }
@@ -207,9 +206,6 @@ do
 	local textRoot = root:list('Text')
 	textRoot:slider_float('Scale', {}, 'This is how the overlay width and height are changed, which respects the active views.', 0, 100, 46, 1, function(value)
 		textSize = value / 100
-	end)
-	textRoot:toggle('Invert', {}, '', function(state)
-		invertAlignment = state
 	end)
 
 	local colourRoot = root:list('Colours')
@@ -298,42 +294,41 @@ util.create_tick_handler(function()
 
 			local _, rowHeight = directx.get_text_size('hello', textSize) -- ideally we wouldn't have to calculate this each tick
 
-			local labelPos = xPos + 0.002
-			local supplyPos = xPos + labelWidth * 1.3
-			local productPos = xPos + (labelWidth * 1.45 + supplyWidth)
-
 			directx.draw_rect(
 				xPos,
 				yPos,
-				(labelWidth + supplyWidth + productWidth) * 1.17,
+				(labelWidth + supplyWidth + productWidth) * 1.175,
 				labelHeight + 0.02,
 				backgroundColour.r,
 				backgroundColour.g,
 				backgroundColour.b,
 				backgroundColour.a
 			)
+			--view
 			directx.draw_text(
-				invertAlignment ? productPos : labelPos,
+				xPos + 0.002,
 				yPos + 0.01,
 				labelText,
-				invertAlignment ? ALIGN_TOP_RIGHT : ALIGN_TOP_LEFT,
+				ALIGN_TOP_LEFT,
 				textSize,
 				textColour.r,
 				textColour.g,
 				textColour.b,
 				textColour.a
 			)
+			--supplies
 			directx.draw_text(
-				invertAlignment ? supplyPos * 0.33 : supplyPos,
+				xPos + (labelWidth + supplyWidth * 1.5),
 				yPos + 0.01,
 				supplyText,
-				invertAlignment ? ALIGN_TOP_LEFT : ALIGN_TOP_RIGHT,
+				ALIGN_TOP_RIGHT,
 				textSize,
 				textColour.r,
 				textColour.g,
 				textColour.b,
 				textColour.a
 			)
+			--product
 			for k, entry in product do
 				local isMax = false
 
@@ -345,11 +340,10 @@ util.create_tick_handler(function()
 					isMax = current == max
 				end
 				directx.draw_text(
-					--productPos is out of scope?
-					invertAlignment ? labelPos : xPos + (labelWidth * 1.45 + supplyWidth),
+					xPos + (labelWidth + supplyWidth + productWidth) * 1.12,
 					yPos + ((k - 1) * rowHeight) + 0.01,
 					entry,
-					invertAlignment ? ALIGN_TOP_LEFT : ALIGN_TOP_RIGHT,
+					ALIGN_TOP_RIGHT,
 					textSize,
 					isMax ? maxColour.r : textColour.r,
 					isMax ? maxColour.g : textColour.g,
