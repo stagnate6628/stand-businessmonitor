@@ -144,7 +144,7 @@ local root = menu.my_root()
 local xPos = 0.0
 local yPos = 0.0
 
-local textSize = 0.48
+local textSize = 0.46
 
 local backgroundColour = { r = 0.0, g = 0.0, b = 0.0, a = 0.8 }
 local textColour = { r = 1.0, g = 1.0, b = 1.0, a = 1.0 }
