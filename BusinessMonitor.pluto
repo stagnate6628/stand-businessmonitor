@@ -278,12 +278,12 @@ util.create_tick_handler(function()
 			end
 		end
 
-		for i = 0, 4 do
-			local propertySlot = readStat($'prop_whouse_slot{i}')
-			if propertySlot != 0 and scListChildren[i + 1].value then
+		for k, v in ceoData do
+			local propertySlot = readStat($'prop_whouse_slot{k-1}')
+			if propertySlot != 0 and scListChildren[k].value then
 				local entry = ceoWarehouses[propertySlot]
 				labels[#labels + 1] = entry.label
-				product[#product + 1] = $'{readStat($'contotalforwhouse{i}')}/{entry.max}'
+				product[#product + 1] = $'{readStat($'contotalforwhouse{k - 1}')}/{entry.max}'
 			end
 		end
 
