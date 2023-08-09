@@ -302,7 +302,7 @@ util.create_tick_handler(function()
 			)
 			--view
 			directx.draw_text(
-				xPos + 0.002,
+				xPos + 0.003,
 				yPos + 0.01,
 				labelText,
 				ALIGN_TOP_LEFT,
