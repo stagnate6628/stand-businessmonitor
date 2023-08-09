@@ -310,8 +310,7 @@ util.create_tick_handler(function()
 				textColour.r,
 				textColour.g,
 				textColour.b,
-				textColour.a,
-				true
+				textColour.a
 			)
 			--supplies
 			directx.draw_text(
@@ -323,8 +322,7 @@ util.create_tick_handler(function()
 				textColour.r,
 				textColour.g,
 				textColour.b,
-				textColour.a,
-				true
+				textColour.a
 			)
 			--product
 			for k, entry in product do
@@ -346,8 +344,7 @@ util.create_tick_handler(function()
 					isMax ? maxColour.r : textColour.r,
 					isMax ? maxColour.g : textColour.g,
 					isMax ? maxColour.b : textColour.b,
-					isMax ? maxColour.a : textColour.a,
-					true
+					isMax ? maxColour.a : textColour.a
 				)
 			end
 		end
