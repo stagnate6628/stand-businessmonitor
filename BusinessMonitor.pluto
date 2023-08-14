@@ -144,8 +144,23 @@ local root = menu.my_root()
 local xPos = 0.0
 local yPos = 0.0
 
+local font
 local textSize = 0.46
-local _, textRowHeight = directx.get_text_size('hello', textSize)
+local _, textRowHeight
+
+local function calculateSize()
+	_, textRowHeight = directx.get_text_size('hello', textSize, font)
+end
+local function registerFont()
+	local path = $'{filesystem.resources_dir()}BusinessMonitor\\Font.spritefont'
+	if filesystem.is_regular_file(path) then
+		font = directx.create_font(path)
+		calculateSize()
+	end
+end
+
+registerFont()
+calculateSize()
 
 local backgroundColour = { r = 0.0, g = 0.0, b = 0.0, a = 0.8 }
 local textColour = { r = 1.0, g = 1.0, b = 1.0, a = 1.0 }
@@ -203,7 +218,10 @@ do
 	local textRoot = root:list('Text')
 	textRoot:slider_float('Scale', {}, 'This is how the overlay width and height are changed, which respects the active views.', 0, 100, 46, 1, function(value)
 		textSize = value / 100
-		_, textRowHeight = directx.get_text_size('hello', textSize)
+		calculateSize()
+	end)
+	textRoot:action('Register Font', {}, 'Install path: ' .. filesystem.resources_dir():gsub(filesystem.appdata_dir(), '') .. 'BusinessMonitor\\Font.spritefont.', function()
+		registerFont()
 	end)
 
 	local colourRoot = root:list('Colours')
@@ -286,14 +304,14 @@ util.create_tick_handler(function()
 			local supplyText = table.concat(supplies, '\n')
 			local productText = table.concat(product, '\n')
 
-			local labelWidth, labelHeight = directx.get_text_size(labelText, textSize)
-			local supplyWidth = directx.get_text_size(supplyText, textSize)
-			local productWidth = directx.get_text_size(productText, textSize)
+			local labelWidth, labelHeight = directx.get_text_size(labelText, textSize, font)
+			local supplyWidth = directx.get_text_size(supplyText, textSize, font)
+			local productWidth = directx.get_text_size(productText, textSize, font)
 
 			directx.draw_rect(
 				xPos,
 				yPos,
-				(labelWidth + supplyWidth + productWidth) * 1.175,
+				(labelWidth + supplyWidth + productWidth) * 1.16,
 				labelHeight + 0.02,
 				backgroundColour.r,
 				backgroundColour.g,
@@ -310,7 +328,9 @@ util.create_tick_handler(function()
 				textColour.r,
 				textColour.g,
 				textColour.b,
-				textColour.a
+				textColour.a,
+				false,
+				font
 			)
 			--supplies
 			directx.draw_text(
@@ -322,7 +342,9 @@ util.create_tick_handler(function()
 				textColour.r,
 				textColour.g,
 				textColour.b,
-				textColour.a
+				textColour.a,
+				false,
+				font
 			)
 			--product
 			for k, entry in product do
@@ -344,7 +366,9 @@ util.create_tick_handler(function()
 					isMax ? maxColour.r : textColour.r,
 					isMax ? maxColour.g : textColour.g,
 					isMax ? maxColour.b : textColour.b,
-					isMax ? maxColour.a : textColour.a
+					isMax ? maxColour.a : textColour.a,
+					false,
+					font
 				)
 			end
 		end
