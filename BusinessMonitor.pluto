@@ -8,7 +8,8 @@ if async_http.have_access() then
 			function(remoteVersion, headers, statusCode)
 				if statusCode == 200 and soup.version_compare(localVersion, remoteVersion) == -1 then
 					menu.my_root():getChildren()[2]:attachBefore(
-						menu.shadow_root():action('Update Script',
+						menu.shadow_root():action(
+							'Update Script',
 							{},
 							$'Version {remoteVersion} is now available.',
 							function()
