@@ -1,7 +1,6 @@
 --stupid autoupdater
 if async_http.have_access() then
 	local localVersion = '0.2'
-	local resp = false
 	util.create_thread(function()
 		async_http.init(
 			'raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/version',
@@ -27,16 +26,9 @@ if async_http.have_access() then
 						)
 					)
 				end
-				resp = true
-			end,
-			function()
-				resp = true
 			end
 		)
 		async_http.dispatch()
-		repeat
-			util.yield()
-		until resp
 		util.stop_thread()
 	end)
 end
