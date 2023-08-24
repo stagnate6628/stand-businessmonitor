@@ -174,12 +174,19 @@ local mcListChildren = createList(viewList, "MC Business", mcData):getChildren()
 local ncListChildren = createList(viewList, "Nightclub", ncData):getChildren()
 local scListChildren = createList(viewList, "Special Cargo Warehouse", ceoData):getChildren()
 do
-	local refs = {
-		table.unpack(safeListChildren),
-		table.unpack(mcListChildren),
-		table.unpack(ncListChildren),
-		table.unpack(scListChildren)
-	}
+	local refs = {}
+	for safeListChildren as child do
+		refs[#refs + 1] = child
+	end
+	for mcListChildren as child do
+		refs[#refs + 1] = child
+	end
+	for ncListChildren as child do
+		refs[#refs + 1] = child
+	end
+	for scListChildren as child do
+		refs[#refs + 1] = child
+	end
 
 	viewList:getChildren()[1]:attachBefore(
 		menu.shadow_root():textslider_stateful("State", {}, "", { "Disable All", "Enable All" }, function(idx)
