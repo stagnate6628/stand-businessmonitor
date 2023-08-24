@@ -174,20 +174,12 @@ local mcListChildren = createList(viewList, "MC Business", mcData):getChildren()
 local ncListChildren = createList(viewList, "Nightclub", ncData):getChildren()
 local scListChildren = createList(viewList, "Special Cargo Warehouse", ceoData):getChildren()
 do
-	local refs = {}
-
-	for safeListChildren as child do
-		refs[#refs + 1] = child
-	end
-	for mcListChildren as child do
-		refs[#refs + 1] = child
-	end
-	for ncListChildren as child do
-		refs[#refs + 1] = child
-	end
-	for scListChildren as child do
-		refs[#refs + 1] = child
-	end
+	local refs = {
+		table.unpack(safeListChildren),
+		table.unpack(mcListChildren),
+		table.unpack(ncListChildren),
+		table.unpack(scListChildren)
+	}
 
 	viewList:getChildren()[1]:attachBefore(
 		menu.shadow_root():textslider_stateful("State", {}, "", { "Disable All", "Enable All" }, function(idx)
@@ -219,17 +211,17 @@ do
 
 	local colourRoot = root:list("Colours")
 
-	local bgRef = colourRoot:colour("Background Colour", {}, "", backgroundColour.r, backgroundColour.g, backgroundColour.b, backgroundColour.a, true, function(colour)
+	local bgRef = colourRoot:colour("Background Colour", {"bmbackgroundcolour"}, "", backgroundColour.r, backgroundColour.g, backgroundColour.b, backgroundColour.a, true, function(colour)
 		backgroundColour = colour
 	end)
 	bgRef:action("Copy Stand Background Colour", {}, "", function()
 		bgRef:setState(menu.ref_by_path("Stand>Settings>Appearance>Colours>Background Colour"):getState())
 	end)
-	colourRoot:colour("Text Colour", {}, "", textColour.r, textColour.g, textColour.b, textColour.a, true, function(colour)
+	colourRoot:colour("Text Colour", {"bmtextcolour"}, "", textColour.r, textColour.g, textColour.b, textColour.a, true, function(colour)
 		textColour = colour
 	end)
 
- 	local maxColourRef = colourRoot:colour("Max Colour", {}, "", maxColour.r, maxColour.g, maxColour.b, maxColour.a, true, function(colour)
+ 	local maxColourRef = colourRoot:colour("Max Colour", {"bmmaxcolour"}, "", maxColour.r, maxColour.g, maxColour.b, maxColour.a, true, function(colour)
 		maxColour = colour
 	end)
 	maxColourRef:action("Copy Stand HUD Colour", {}, "", function()
