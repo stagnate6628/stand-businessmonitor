@@ -1,23 +1,23 @@
 --stupid autoupdater
 if async_http.have_access() then
-	local localVersion = '0.2'
+	local localVersion = "0.2"
 	util.create_thread(function()
 		async_http.init(
-			'raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/version',
+			"raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/version",
 			nil,
 			function(remoteVersion, headers, statusCode)
 				if statusCode == 200 and soup.version_compare(localVersion, remoteVersion) == -1 then
 					menu.my_root():getChildren()[2]:attachBefore(
 						menu.shadow_root():action(
-							'Update Script',
+							"Update Script",
 							{},
-							$'Version {remoteVersion} is now available.',
+							$"Version {remoteVersion} is now available.",
 							function()
 								async_http.init(
-									'raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/BusinessMonitor.pluto',
+									"raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/BusinessMonitor.pluto",
 									nil,
 									function(scriptBody)
-										local f = assert(io.open($'{filesystem.scripts_dir()}{SCRIPT_RELPATH}', 'wb'))
+										local f = assert(io.open($"{filesystem.scripts_dir()}{SCRIPT_RELPATH}", "wb"))
 										f:write(scriptBody)
 										f:close()
 										util.restart_script()
@@ -38,35 +38,35 @@ local directx, util = directx, util
 
 local charSlot = util.get_char_slot()
 local function readStat(stat)
-	return util.stat_get_int64($'mp{charSlot}_{stat}')
+	return util.stat_get_int64($"mp{charSlot}_{stat}")
 end
 
 local safeData<const> = {
 	{
-		label = 'Nightclub',
-		supplyStat = 'club_popularity',
-		productStat = 'club_safe_cash_value',
+		label = "Nightclub",
+		supplyStat = "club_popularity",
+		productStat = "club_safe_cash_value",
 		max = 250_000
 	},
 	{
-		label = 'Arcade',
-		productStat = 'arcade_safe_cash_value',
+		label = "Arcade",
+		productStat = "arcade_safe_cash_value",
 		max = 100_000
 	},
 	{
-		label = 'Agency',
-		productStat = 'fixer_safe_cash_value',
+		label = "Agency",
+		productStat = "fixer_safe_cash_value",
 		max = 250_000
 	}
 }
 local mcData<const> = {
-	[0] = { label = 'Forgery', max = 60 },
-	[1] = { label = 'Weed', max = 80 },
-	[2] = { label = 'Counterfeit Cash', max = 40 },
-	[3] = { label = 'Meth', max = 20 },
-	[4] = { label = 'Cocaine', max = 10 },
-	[5] = { label = 'Bunker', max = 100 },
-	[6] = { label = 'Acid Lab', max = 160 }
+	[0] = { label = "Forgery", max = 60 },
+	[1] = { label = "Weed", max = 80 },
+	[2] = { label = "Counterfeit Cash", max = 40 },
+	[3] = { label = "Meth", max = 20 },
+	[4] = { label = "Cocaine", max = 10 },
+	[5] = { label = "Bunker", max = 100 },
+	[6] = { label = "Acid Lab", max = 160 }
 }
 --0: forgery 1:weed 2:cash 3:meth 4:cocaine
 local mcProperties<const> = {
@@ -92,44 +92,44 @@ local mcProperties<const> = {
     0
 }
 local ncData<const> = {
-	[0] = { label = 'Hub Cargo', max = 50 },
-	[1] = { label = 'Hub Weapons', max = 100 },
-	[2] = { label = 'Hub Cocaine', max = 10 },
-	[3] = { label = 'Hub Meth', max = 20 },
-	[4] = { label = 'Hub Weed', max = 80 },
-	[5] = { label = 'Hub Forgery', max = 60 },
-	[6] = { label = 'Hub Cash', max = 40 }
+	[0] = { label = "Hub Cargo", max = 50 },
+	[1] = { label = "Hub Weapons", max = 100 },
+	[2] = { label = "Hub Cocaine", max = 10 },
+	[3] = { label = "Hub Meth", max = 20 },
+	[4] = { label = "Hub Weed", max = 80 },
+	[5] = { label = "Hub Forgery", max = 60 },
+	[6] = { label = "Hub Cash", max = 40 }
 }
 local ceoData<const> = {
-	{ label = 'Warehouse 1' },
-	{ label = 'Warehouse 2' },
-	{ label = 'Warehouse 3' },
-	{ label = 'Warehouse 4' },
-	{ label = 'Warehouse 5' }
+	{ label = "Warehouse 1" },
+	{ label = "Warehouse 2" },
+	{ label = "Warehouse 3" },
+	{ label = "Warehouse 4" },
+	{ label = "Warehouse 5" }
 }
 local ceoWarehouses<const> = {
-    { label = 'Pacific Bait Storage', max = 16 },
-    { label = 'White Widow Garage', max = 16 },
-    { label = 'Celltowa Unit', max = 16 },
-    { label = 'Convenience Store Lockup', max = 16 },
-    { label = 'Foreclosed Garage', max = 16 },
-    { label = 'Xero Gas Factory', max = 111 },
-    { label = 'Derriere Lingerie Backlot', max = 42 },
-    { label = 'Bilgeco Warehouse', max = 111 },
-    { label = 'Pier 400 Utility Building', max = 16 },
-    { label = 'GEE Warehouse', max = 42 },
-    { label = 'LS Marine Building 3', max = 42 },
-    { label = 'Railyard Warehouse', max = 42 },
-    { label = 'Fridgit Annexe', max = 42 },
-    { label = 'Disused Factory Outlet', max = 42 },
-    { label = 'Discount Retail Unit', max = 42 },
-    { label = 'Logistics Depot', max = 111 },
-    { label = 'Darnell Bros Warehouse', max = 111 },
-    { label = 'Wholesale Furniture', max = 111 },
-    { label = 'Cypress Warehouses', max = 111 },
-    { label = 'West Vinewood Backlot', max = 111 },
-    { label = 'Old Power Station', max = 42 },
-    { label = 'Walker & Sons Warehouse', max = 111 }
+    { label = "Pacific Bait Storage", max = 16 },
+    { label = "White Widow Garage", max = 16 },
+    { label = "Celltowa Unit", max = 16 },
+    { label = "Convenience Store Lockup", max = 16 },
+    { label = "Foreclosed Garage", max = 16 },
+    { label = "Xero Gas Factory", max = 111 },
+    { label = "Derriere Lingerie Backlot", max = 42 },
+    { label = "Bilgeco Warehouse", max = 111 },
+    { label = "Pier 400 Utility Building", max = 16 },
+    { label = "GEE Warehouse", max = 42 },
+    { label = "LS Marine Building 3", max = 42 },
+    { label = "Railyard Warehouse", max = 42 },
+    { label = "Fridgit Annexe", max = 42 },
+    { label = "Disused Factory Outlet", max = 42 },
+    { label = "Discount Retail Unit", max = 42 },
+    { label = "Logistics Depot", max = 111 },
+    { label = "Darnell Bros Warehouse", max = 111 },
+    { label = "Wholesale Furniture", max = 111 },
+    { label = "Cypress Warehouses", max = 111 },
+    { label = "West Vinewood Backlot", max = 111 },
+    { label = "Old Power Station", max = 42 },
+    { label = "Walker & Sons Warehouse", max = 111 }
 }
 
 local root = menu.my_root()
@@ -142,10 +142,10 @@ local textSize = 0.46
 local _, textRowHeight
 
 local function calculateSize()
-	_, textRowHeight = directx.get_text_size('hello', textSize, font)
+	_, textRowHeight = directx.get_text_size("hello", textSize, font)
 end
 local function registerFont()
-	local path = $'{filesystem.resources_dir()}BusinessMonitor\\Font.spritefont'
+	local path = $"{filesystem.resources_dir()}BusinessMonitor\\Font.spritefont"
 	if filesystem.is_regular_file(path) then
 		font = directx.create_font(path)
 		calculateSize()
@@ -162,17 +162,17 @@ local maxColour = { r = 0.0, g = 1.0, b = 0.0, a = 1.0 }
 local function createList(parent, name, data)
 	local list = parent:list(name)
 	for data as entry do
-		list:toggle(entry.label, {}, '', function() end)
+		list:toggle(entry.label, {}, "", function() end)
 	end
 
 	return list
 end
 
-local viewList = root:list('Views')
-local safeListChildren = createList(viewList, 'Safes', safeData):getChildren()
-local mcListChildren = createList(viewList, 'MC Business', mcData):getChildren()
-local ncListChildren = createList(viewList, 'Nightclub', ncData):getChildren()
-local scListChildren = createList(viewList, 'Special Cargo Warehouse', ceoData):getChildren()
+local viewList = root:list("Views")
+local safeListChildren = createList(viewList, "Safes", safeData):getChildren()
+local mcListChildren = createList(viewList, "MC Business", mcData):getChildren()
+local ncListChildren = createList(viewList, "Nightclub", ncData):getChildren()
+local scListChildren = createList(viewList, "Special Cargo Warehouse", ceoData):getChildren()
 do
 	local refs = {}
 
@@ -190,7 +190,7 @@ do
 	end
 
 	viewList:getChildren()[1]:attachBefore(
-		menu.shadow_root():textslider_stateful('State', {}, '', { 'Disable All', 'Enable All' }, function(idx)
+		menu.shadow_root():textslider_stateful("State", {}, "", { "Disable All", "Enable All" }, function(idx)
 			for refs as ref do
 				ref.value = idx == 2
 			end
@@ -199,33 +199,41 @@ do
 end
 
 do
-	root:divider('Configuration')
-	local positionRoot = root:list('Position')
-	positionRoot:slider_float('X Position', {}, '', 0, 100, 0, 1, function(value)
+	root:divider("Configuration")
+	local positionRoot = root:list("Position")
+	positionRoot:slider_float("X Position", {}, "", 0, 100, 0, 1, function(value)
 		xPos = value / 100
 	end)
-	positionRoot:slider_float('Y Position', {}, '', 0, 100, 0, 1, function(value)
+	positionRoot:slider_float("Y Position", {}, "", 0, 100, 0, 1, function(value)
 		yPos = value / 100
 	end)
 
-	local textRoot = root:list('Text')
-	textRoot:slider_float('Scale', {}, 'This is how the overlay width and height are changed, which respects the active views.', 0, 100, 46, 1, function(value)
+	local textRoot = root:list("Text")
+	textRoot:slider_float("Scale", {}, "This is how the overlay width and height are changed, which respects the active views.", 0, 100, 46, 1, function(value)
 		textSize = value / 100
 		calculateSize()
 	end)
-	textRoot:action('Register Font', {}, 'Install path: ' .. filesystem.resources_dir():gsub(filesystem.appdata_dir(), '') .. 'BusinessMonitor\\Font.spritefont.', function()
+	textRoot:action("Register Font", {}, "Install path: " .. filesystem.resources_dir():gsub(filesystem.appdata_dir(), "") .. "BusinessMonitor\\Font.spritefont.", function()
 		registerFont()
 	end)
 
-	local colourRoot = root:list('Colours')
-	colourRoot:colour('Background Colour', {}, '', backgroundColour.r, backgroundColour.g, backgroundColour.b, backgroundColour.a, true, function(colour)
+	local colourRoot = root:list("Colours")
+
+	local bgRef = colourRoot:colour("Background Colour", {}, "", backgroundColour.r, backgroundColour.g, backgroundColour.b, backgroundColour.a, true, function(colour)
 		backgroundColour = colour
 	end)
-	colourRoot:colour('Text Colour', {}, '', textColour.r, textColour.g, textColour.b, textColour.a, true, function(colour)
+	bgRef:action("Copy Stand Background Colour", {}, "", function()
+		bgRef:setState(menu.ref_by_path("Stand>Settings>Appearance>Colours>Background Colour"):getState())
+	end)
+	colourRoot:colour("Text Colour", {}, "", textColour.r, textColour.g, textColour.b, textColour.a, true, function(colour)
 		textColour = colour
 	end)
-	colourRoot:colour('Max Colour', {}, '', maxColour.r, maxColour.g, maxColour.b, maxColour.a, true, function(colour)
+
+ 	local maxColourRef = colourRoot:colour("Max Colour", {}, "", maxColour.r, maxColour.g, maxColour.b, maxColour.a, true, function(colour)
 		maxColour = colour
+	end)
+	maxColourRef:action("Copy Stand HUD Colour", {}, "", function()
+		maxColourRef:setState(menu.ref_by_path("Stand>Settings>Appearance>Colours>HUD Colour"):getState())
 	end)
 
 	menu.apply_command_states()
@@ -247,9 +255,9 @@ util.create_tick_handler(function()
 				if entry.supplyStat then
 					local value = readStat(entry.supplyStat)
 					value = math.floor(value / 10)
-					supplies[#supplies + 1] = $'{value}%'
+					supplies[#supplies + 1] = $"{value}%"
 				else
-					supplies[#supplies + 1] = ''
+					supplies[#supplies + 1] = ""
 				end
 				product[#product + 1] = readStat(entry.productStat)
 			end
@@ -258,7 +266,7 @@ util.create_tick_handler(function()
 		for k, entry in mcData do
 			local current
 			if 0 <= k and k <= 4 then
-				local slot = readStat($'factoryslot{k}')
+				local slot = readStat($"factoryslot{k}")
 				local propertyIdx = mcProperties[slot]
 				current = mcData[propertyIdx]
 
@@ -272,30 +280,30 @@ util.create_tick_handler(function()
 				current = mcData[k]
 			end
 			labels[#labels + 1] = current.label
-			supplies[#supplies + 1] = $'{readStat($'mattotalforfactory{k}')}%'
-			product[#product + 1] = $'{readStat($'prodtotalforfactory{k}')}/{current.max}'
+			supplies[#supplies + 1] = $"{readStat($"mattotalforfactory{k}")}%"
+			product[#product + 1] = $"{readStat($"prodtotalforfactory{k}")}/{current.max}"
 		end
 
 		for k, entry in ncData do
 			if ncListChildren[k + 1].value then
 				labels[#labels + 1] = entry.label
-				product[#product + 1] = $'{readStat($'hub_prod_total_{k}')}/{entry.max}'
+				product[#product + 1] = $"{readStat($"hub_prod_total_{k}")}/{entry.max}"
 			end
 		end
 
 		for k, v in ceoData do
-			local propertySlot = readStat($'prop_whouse_slot{k-1}')
+			local propertySlot = readStat($"prop_whouse_slot{k-1}")
 			if propertySlot != 0 and scListChildren[k].value then
 				local entry = ceoWarehouses[propertySlot]
 				labels[#labels + 1] = entry.label
-				product[#product + 1] = $'{readStat($'contotalforwhouse{k - 1}')}/{entry.max}'
+				product[#product + 1] = $"{readStat($"contotalforwhouse{k - 1}")}/{entry.max}"
 			end
 		end
 
 		do
-			local labelText = table.concat(labels, '\n')
-			local supplyText = table.concat(supplies, '\n')
-			local productText = table.concat(product, '\n')
+			local labelText = table.concat(labels, "\n")
+			local supplyText = table.concat(supplies, "\n")
+			local productText = table.concat(product, "\n")
 
 			local labelWidth, labelHeight = directx.get_text_size(labelText, textSize, font)
 			local supplyWidth = directx.get_text_size(supplyText, textSize, font)
@@ -344,10 +352,10 @@ util.create_tick_handler(function()
 				local isMax = false
 
 				-- assume entry is a "safe" value
-				if type(entry) == 'number' then
+				if type(entry) == "number" then
 					isMax = entry == safeData[k].max
 				else
-					local [current, max] = entry:split('/')
+					local [current, max] = entry:split("/")
 					isMax = current == max
 				end
 				directx.draw_text(
