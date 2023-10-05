@@ -136,15 +136,16 @@ local yPos = 0.0
 
 local font
 local textSize = 0.46
-local _, textRowHeight
+local textRowHeight
+
+local fontPath = $"{filesystem.resources_dir()}BusinessMonitor\\Font.spritefont"
 
 local function calculateSize()
 	_, textRowHeight = directx.get_text_size("hello", textSize, font)
 end
 local function registerFont()
-	local path = $"{filesystem.resources_dir()}BusinessMonitor\\Font.spritefont"
-	if filesystem.is_regular_file(path) then
-		font = directx.create_font(path)
+	if filesystem.is_regular_file(fontPath) then
+		font = directx.create_font(fontPath)
 		calculateSize()
 	end
 end
@@ -210,7 +211,7 @@ do
 		textSize = value / 100
 		calculateSize()
 	end)
-	textRoot:action("Register Font", {}, "Install path: " .. filesystem.resources_dir():gsub(filesystem.appdata_dir(), "") .. "BusinessMonitor\\Font.spritefont.", function()
+	textRoot:action("Register Font", {}, $"Install path: {fontPath:gsub(filesystem.appdata_dir(), "")}", function()
 		registerFont()
 	end)
 
