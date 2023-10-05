@@ -1,37 +1,34 @@
 --stupid autoupdater
 if async_http.have_access() then
 	local localVersion = "0.2"
-	util.create_thread(function()
-		async_http.init(
-			"raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/version",
-			nil,
-			function(remoteVersion, headers, statusCode)
-				if statusCode == 200 and soup.version_compare(localVersion, remoteVersion) == -1 then
-					menu.my_root():getChildren()[2]:attachBefore(
-						menu.shadow_root():action(
-							"Update Script",
-							{},
-							$"Version {remoteVersion} is now available.",
-							function()
-								async_http.init(
-									"raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/BusinessMonitor.pluto",
-									nil,
-									function(scriptBody)
-										local f = assert(io.open($"{filesystem.scripts_dir()}{SCRIPT_RELPATH}", "wb"))
-										f:write(scriptBody)
-										f:close()
-										util.restart_script()
-									end)
-								async_http.dispatch()
-							end
-						)
+	async_http.init(
+		"raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/version",
+		nil,
+		function(remoteVersion, headers, statusCode)
+			if statusCode == 200 and soup.version_compare(localVersion, remoteVersion) == -1 then
+				menu.my_root():getChildren()[2]:attachBefore(
+					menu.shadow_root():action(
+						"Update Script",
+						{},
+						$"Version {remoteVersion} is now available.",
+						function()
+							async_http.init(
+								"raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/BusinessMonitor.pluto",
+								nil,
+								function(scriptBody)
+									local f<close> = assert(io.open($"{filesystem.scripts_dir()}{SCRIPT_RELPATH}", "wb"))
+									f:write(scriptBody)
+									f:close()
+									util.restart_script()
+								end)
+							async_http.dispatch()
+						end
 					)
-				end
+				)
 			end
-		)
-		async_http.dispatch()
-		util.stop_thread()
-	end)
+		end
+	)
+	async_http.dispatch()
 end
 
 local directx, util = directx, util
@@ -173,6 +170,7 @@ local safeListChildren = createList(viewList, "Safes", safeData):getChildren()
 local mcListChildren = createList(viewList, "MC Business", mcData):getChildren()
 local ncListChildren = createList(viewList, "Nightclub", ncData):getChildren()
 local scListChildren = createList(viewList, "Special Cargo Warehouse", ceoData):getChildren()
+
 do
 	local refs = {}
 	for safeListChildren as child do
