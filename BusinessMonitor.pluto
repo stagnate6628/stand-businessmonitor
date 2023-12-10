@@ -141,7 +141,7 @@ local textRowHeight
 local fontPath = $"{filesystem.resources_dir()}BusinessMonitor\\Font.spritefont"
 
 local function calculateSize()
-	_, textRowHeight = directx.get_text_size("hello", textSize, font)
+	_, textRowHeight = directx.get_text_size_client("hello", textSize, font)
 end
 local function registerFont()
 	if filesystem.is_regular_file(fontPath) then
@@ -303,9 +303,9 @@ util.create_tick_handler(function()
 			local supplyText = table.concat(supplies, "\n")
 			local productText = table.concat(product, "\n")
 
-			local labelWidth, labelHeight = directx.get_text_size(labelText, textSize, font)
-			local supplyWidth = directx.get_text_size(supplyText, textSize, font)
-			local productWidth = directx.get_text_size(productText, textSize, font)
+			local labelWidth, labelHeight = directx.get_text_size_client(labelText, textSize, font)
+			local supplyWidth = directx.get_text_size_client(supplyText, textSize, font)
+			local productWidth = directx.get_text_size_client(productText, textSize, font)
 
 			directx.draw_rect(
 				xPos,
