@@ -155,7 +155,6 @@ calculateSize()
 
 local backgroundColour = { r = 0.0, g = 0.0, b = 0.0, a = 0.8 }
 local textColour = { r = 1.0, g = 1.0, b = 1.0, a = 1.0 }
-local maxColour = { r = 0.0, g = 1.0, b = 0.0, a = 1.0 }
 
 local function createList(parent, name, data)
 	local list = parent:list(name)
@@ -225,13 +224,6 @@ do
 	end)
 	colourRoot:colour("Text Colour", {"bmtextcolour"}, "", textColour.r, textColour.g, textColour.b, textColour.a, true, function(colour)
 		textColour = colour
-	end)
-
- 	local maxColourRef = colourRoot:colour("Max Colour", {"bmmaxcolour"}, "", maxColour.r, maxColour.g, maxColour.b, maxColour.a, true, function(colour)
-		maxColour = colour
-	end)
-	maxColourRef:action("Copy Stand HUD Colour", {}, "", function()
-		maxColourRef:setState(menu.ref_by_path("Stand>Settings>Appearance>Colours>HUD Colour"):getState())
 	end)
 
 	menu.apply_command_states()
@@ -346,30 +338,19 @@ util.create_tick_handler(function()
 				font
 			)
 			--product
-			for k, entry in product do
-				local isMax = false
-
-				-- assume entry is a "safe" value
-				if type(entry) == "number" then
-					isMax = entry == safeData[k].max
-				else
-					local [current, max] = entry:split("/")
-					isMax = current == max
-				end
-				directx.draw_text(
-					xPos + (labelWidth + supplyWidth + productWidth) * 1.12,
-					yPos + ((k - 1) * textRowHeight) + 0.01,
-					entry,
-					ALIGN_TOP_RIGHT,
-					textSize,
-					isMax ? maxColour.r : textColour.r,
-					isMax ? maxColour.g : textColour.g,
-					isMax ? maxColour.b : textColour.b,
-					isMax ? maxColour.a : textColour.a,
-					false,
-					font
-				)
-			end
+			directx.draw_text(
+				xPos + (labelWidth + supplyWidth + productWidth) * 1.12,
+				yPos + 0.01,
+				productText,
+				ALIGN_TOP_RIGHT,
+				textSize,
+				textColour.r,
+				textColour.g,
+				textColour.b,
+				textColour.a,
+				false,
+				font
+			)
 		end
 	end
 	return true
