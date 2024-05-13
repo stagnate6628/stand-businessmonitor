@@ -1,6 +1,6 @@
 --stupid autoupdater
 if async_http.have_access() then
-	local SCRIPT_VERSION = '0.1'
+	local SCRIPT_VERSION = '0.1.1'
 	local resp = false
 	async_http.init(
 		'raw.githubusercontent.com/stagnate6628/stand-businessmonitor/main/version',
