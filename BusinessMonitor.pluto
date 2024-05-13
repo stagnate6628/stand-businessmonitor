@@ -346,9 +346,8 @@ util.create_tick_handler(function()
 			})
 
 			if v.stat_1 then
-				if out := util.stat_get_int64(v.stat_1) then
-					out = math.floor(out / 10)
-				end
+				local out = util.stat_get_int64(v.stat_1)
+				out = math.floor(out / 10)
 
 				table.insert(to_draw, {
 					x_pos = x + gap_1,
